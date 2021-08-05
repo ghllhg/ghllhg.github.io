@@ -188,7 +188,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-08-06 01:25:48 / 修改时间：01:47:14" itemprop="dateCreated datePublished" datetime="2021-08-06T01:25:48+08:00">2021-08-06</time>
+              <time title="创建时间：2021-08-06 01:25:48 / 修改时间：01:57:14" itemprop="dateCreated datePublished" datetime="2021-08-06T01:25:48+08:00">2021-08-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -225,7 +225,7 @@
 <p>　　　　(4)在上面一趟比较完成后，最后一个数一定是数组中最大的一个数，所以在比较第二趟的时候，最后一个数是不参加比较的。</p>
 <p>　　　　(5)在第二趟比较完成后，倒数第二个数也一定是数组中倒数第二大数，所以在第三趟的比较中，最后两个数是不参与比较的。</p>
 <p>　　　　(6)依次类推，每一趟比较次数减少依次</p>
-<p><img src="/posts/872565162/1628173854190-198875a3-9bb9-45cd-b139-71ac88b8a739.png" alt="image.png"></p>
+<p><img src="/posts/872565162/1.png" alt="1"></p>
 <p>(2)第一趟排序：</p>
 <p>　　　　　　第一次排序：10和1比较，10大于1，交换位置 　  [1,10,35,61,89,36,55]</p>
 <p>　　　　　　第二趟排序：10和35比较，10小于35，不交换位置　　[1,10,35,61,89,36,55]</p>
@@ -245,7 +245,7 @@
 
 <p><strong>优化2：（数组中有有序部分优化）</strong></p>
 <p>在数组中，有着片段的子数组是有序的，在排序中我们不需要对他进行排列，可以将他视为一个整体进行排列；如果序列尾部已经局部有序，可以记录最后1次交换的位置，减少比较次数 。</p>
-<p><img src="/posts/872565162/1628184112698-1eed89dd-a003-48ed-a8fe-35c1d2252f24.png" alt="image.png"></p>
+<p><img src="/posts/872565162/2.png" alt="2"></p>
 <p>最后1次交换的位置是6</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">for (int end = array.length - 1; end &gt; 0; end--) &#123;</span><br><span class="line">            // sortedIndex的初始值在数组完全有序的时候有用</span><br><span class="line">            int sortedIndex = 1;</span><br><span class="line">            for (int begin = 1; begin &lt;= end; begin++) &#123;</span><br><span class="line">                if (array[begin] &lt; array[begin - 1]) &#123;</span><br><span class="line">                    int tmp = array[begin];</span><br><span class="line">                    array[begin] = array[begin - 1];</span><br><span class="line">                    array[begin - 1] = tmp;</span><br><span class="line">                    sortedIndex = begin;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            end = sortedIndex;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
       
