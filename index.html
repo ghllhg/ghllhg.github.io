@@ -190,7 +190,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-08-09 11:20:43 / 修改时间：11:25:46" itemprop="dateCreated datePublished" datetime="2021-08-09T11:20:43+08:00">2021-08-09</time>
+              <time title="创建时间：2021-08-09 11:20:43 / 修改时间：22:31:46" itemprop="dateCreated datePublished" datetime="2021-08-09T11:20:43+08:00">2021-08-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,7 +242,15 @@
 <p><strong>算法分析：</strong></p>
 <p>这个版本的实现存在以下问题：无法对负整数进行排序；极其浪费内存空间；是个不稳定的排序 。</p>
 <p>（用这个的人就很神奇）</p>
-
+<h2 id="计数排序-–-改进思路"><a href="#计数排序-–-改进思路" class="headerlink" title="计数排序 – 改进思路"></a>计数排序 – 改进思路</h2><p>原本我们是把数组的索引作为记录原序列中的数值，但是数组中没有负数，所以我们就没有办法比较序列中的负数。</p>
+<p>现在我们将数组中第一个位置就是序列中最小的数，利用这个数和数组索引的差，</p>
+<p><img src="/posts/3332896630.html/1628502501716-0b0fab4a-528f-4371-8956-5911b2b69299.png" alt="image.png"></p>
+<p>解决的不能负数的问题，现在来解决不稳定</p>
+<p><img src="/posts/3332896630.html/1628504775294-927e1ec9-5d2f-4616-9136-aef799f1bb1f.png" alt="image.png"></p>
+<p>假设array中的最小值是 min； array中的元素 k 对应的 counts 索引是 k – min； array中的元素 k 在有序序列中的索引； counts[k – min] – p； p 代表着是倒数第几个 k； </p>
+<p><img src="/posts/3332896630.html/1628504893826-410f34bf-89fe-4f9c-a60c-c38162ecd423.png" alt="image.png"></p>
+<p><img src="/posts/3332896630.html/1628504906903-6b638877-9008-431e-92d8-9497c162ded5.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// 找出最值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        int min = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">            if (array[i] &lt; min) &#123;</span><br><span class="line">                min = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 开辟内存空间，存储次数</span><br><span class="line">        int[] counts = new int[max - min + 1];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i] - min]++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 累加次数</span><br><span class="line">        for (int i = 1; i &lt; counts.length; i++) &#123;</span><br><span class="line">            counts[i] += counts[i - 1];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 从后往前遍历元素，将它放到有序数组中的合适位置</span><br><span class="line">        int[] newArray = new int[array.length];</span><br><span class="line">        for (int i = array.length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            newArray[--counts[array[i] - min]] = array[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将有序数组赋值到array</span><br><span class="line">        for (int i = 0; i &lt; newArray.length; i++) &#123;</span><br><span class="line">            array[i] = newArray[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
