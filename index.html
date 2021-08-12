@@ -165,6 +165,293 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/3328524930.html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="LL">
+      <meta itemprop="description" content="良良的个人博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GHL-Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/3328524930.html/" class="post-title-link" itemprop="url">递归</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-08-13 01:48:41 / 修改时间：01:49:40" itemprop="dateCreated datePublished" datetime="2021-08-13T01:48:41+08:00">2021-08-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92/" itemprop="url" rel="index"><span itemprop="name">递归</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/3328524930.html/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/3328524930.html/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h1><p>函数（方法）直接或间接调用自身。是一种常用的编程技巧 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//直接调用自身</span><br><span class="line">    int sum(int n)&#123;</span><br><span class="line">        if(n&lt;=1) &#123;return n;&#125;</span><br><span class="line">        return n+sum(n-1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//间接调用</span><br><span class="line">    void a(int v)&#123;</span><br><span class="line">        if(v&lt;0)&#123;return;&#125;</span><br><span class="line">        b(--v);</span><br><span class="line">    &#125;</span><br><span class="line">    void b(int v)&#123;</span><br><span class="line">        a(--v);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个有趣的问题：</p>
+<p>假设A在一个电影院，想知道自己坐在哪一排，但是前面人很多， </p>
+<p>A 懒得数，于是问前一排的人 B【你坐在哪一排？】，只要把 B 的答案加一，就是 A 的排数。 </p>
+<p>B 懒得数，于是问前一排的人 C【你坐在哪一排？】，只要把 C 的答案加一，就是 B 的排数。 </p>
+<p>C 懒得数，于是问前一排的人 D【你坐在哪一排？】，只要把 D 的答案加一，就是 C 的排数。 …… </p>
+<p>直到问到最前面的一排，最后大家都知道自己在哪一排了 </p>
+<h1 id="函数调用的过程"><a href="#函数调用的过程" class="headerlink" title="函数调用的过程"></a>函数调用的过程</h1><p>首先，我们要明确一件事情就是，一个函数如果没有执行完成，它就会一直占用内存。</p>
+<p><img src="/posts/3328524930.html/1628788869623-edd44e8a-3211-434a-97f9-55ad568579bc.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        test1(10);</span><br><span class="line">        test2(20);</span><br><span class="line">    &#125;</span><br><span class="line">    private static void test1(int v)&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    private static void test2(int v)&#123;</span><br><span class="line">        test3(30);</span><br><span class="line">    &#125;</span><br><span class="line">    private static void test3(int v)&#123;&#125;  </span><br><span class="line">/*</span><br><span class="line">先从main函数进入（main进栈），在执行test1函数（test1进栈），test1函数执行完毕之后（test1出栈），执行test2函数（test2进栈），执行test3函数（test3进栈）；</span><br><span class="line">test3函数执行完毕（test3出栈），test2函数执行完毕（test2出栈），main函数执行结束（main出栈）</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="函数的递归调用过程"><a href="#函数的递归调用过程" class="headerlink" title="函数的递归调用过程"></a>函数的递归调用过程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static void main( String[ ] args) &#123;</span><br><span class="line">    sum( 4);</span><br><span class="line">&#125;</span><br><span class="line">private static int sum( int n) &#123;</span><br><span class="line">    if (n &lt;= 1) &#123;return n;&#125;</span><br><span class="line">    return n + sum(n - 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 如果递归调用没有终止，将会一直消耗栈空间 最终导致栈内存溢出（Stack Overflow）</p>
+<p>所以必需要有一个明确的结束递归的条件 也叫作<strong>边界条件、递归基</strong> </p>
+<p><strong><img src="/posts/3328524930.html/1628789779769-d8900555-3eea-4f3c-bf51-12b76d1f15d9.png" alt="image.png"><img src="/posts/3328524930.html/1628789798965-7cfedcfa-c78e-4b4e-9378-3d3434efb8d5.png" alt="image.png"></strong>  </p>
+<h2 id="实例分析"><a href="#实例分析" class="headerlink" title="实例分析"></a>实例分析</h2><ul>
+<li>求 1+2+3+…+(n-1)+n 的和（n&gt;0）</li>
+</ul>
+<p>下面是三种解题方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">//递归方法</span><br><span class="line">int sum(int n) &#123;</span><br><span class="line">    if (n &lt;= 1) return n;</span><br><span class="line">    return n + sum(n - 1);</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">时间复杂度O(n)</span><br><span class="line">空间复杂度O(n)</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">//循环加法</span><br><span class="line">int sum(int n) &#123;</span><br><span class="line">    int result = 0;</span><br><span class="line">    for (int i = 1; i &lt;= n; i++)&#123;</span><br><span class="line">    result += i;</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">时间复杂度O(n)</span><br><span class="line">空间复杂度O(1)</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">//数学公式</span><br><span class="line">int sum(int n)&#123;</span><br><span class="line">    if (n &lt;= 1) return n;</span><br><span class="line">    return ( 1 +n)* n &gt;&gt;1;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">时间复杂度O(1)</span><br><span class="line">空间复杂度O(1)</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：使用递归不是为了求得最优解，是为了简化解决问题的思路，代码会更加简洁 递归求出来的很有可能不是最优解，也有可能是最优解</strong> </p>
+<h1 id="递归的基本思想"><a href="#递归的基本思想" class="headerlink" title="递归的基本思想"></a>递归的基本思想</h1><p>拆解问题：</p>
+<p>把规模大的问题变成规模较小的同类型问题 </p>
+<p>规模较小的问题又不断变成规模更小的问题 </p>
+<p>规模小到一定程度可以直接得出它的解</p>
+<p>求解：</p>
+<p>由最小规模问题的解得出较大规模问题的解 </p>
+<p>由较大规模问题的解不断得出规模更大问题的解 </p>
+<p>最后得出原来问题的解 </p>
+<p>凡是可以利用上述思想解决问题的，都可以尝试使用递归 很多链表、二叉树相关的问题都可以使用递归来解决 因为链表、二叉树本身就是递归的结构（链表中包含链表，二叉树中包含二叉树）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/1471950494.html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="LL">
+      <meta itemprop="description" content="良良的个人博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GHL-Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/1471950494.html/" class="post-title-link" itemprop="url">计算机网络基本概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-08-13 00:41:44 / 修改时间：00:43:00" itemprop="dateCreated datePublished" datetime="2021-08-13T00:41:44+08:00">2021-08-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/1471950494.html/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/1471950494.html/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="必知必会"><a href="#必知必会" class="headerlink" title="必知必会"></a>必知必会</h1><p><img src="/posts/1471950494.html/1628772576324-178a7943-a30e-476a-8ef0-74f635bdb290.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772587039-5bdc4101-4598-4a5c-9efb-563008c9f124.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772598945-83950ce0-f450-4a31-a07f-d1189a710f21.png" alt="image.png"></p>
+<h1 id="计算机之间的通信"><a href="#计算机之间的通信" class="headerlink" title="计算机之间的通信"></a>计算机之间的通信</h1><p>需要得知对方的IP地址</p>
+<p>最终是根据MAC地址（网卡地址），输送数据到网卡，被网卡接收</p>
+<p>如果网卡发现数据的目标MAC地址是自己，就会将数据传递给上一层进行处理 </p>
+<p>如果网卡发现数据的目标MAC地址不是自己，就会将数据丢弃，不会传递给上一层进行处理 </p>
+<h2 id="连接方式"><a href="#连接方式" class="headerlink" title="连接方式"></a>连接方式</h2><h3 id="最直接的方式——网线直连"><a href="#最直接的方式——网线直连" class="headerlink" title="最直接的方式——网线直连"></a>最直接的方式——网线直连</h3><p>需要用到交叉线（不是直通线）</p>
+<h3 id="同轴电缆"><a href="#同轴电缆" class="headerlink" title="同轴电缆"></a>同轴电缆</h3><p><img src="/posts/1471950494.html/1628772183243-05550d56-458a-4b5b-84dc-38eede5ba6b1.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>半双工通信</li>
+<li>容易冲突</li>
+<li>不安全</li>
+<li>某一点出问题整个通信瘫痪</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="集线器"><a href="#集线器" class="headerlink" title="集线器"></a>集线器</h3><p><img src="/posts/1471950494.html/1628772360766-ae26eeb9-4ea7-4780-9823-ab22f33ca3aa.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772364385-aced90a0-6da5-4d21-9ab9-d98f9716f0b5.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>半双工通信</li>
+<li>容易冲突</li>
+<li>不安全</li>
+<li>和同轴电缆一样没有智商</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="网桥"><a href="#网桥" class="headerlink" title="网桥"></a>网桥</h3><p><img src="/posts/1471950494.html/1628772662337-7bb5de77-a8f7-48da-8f7c-5174f763eb61.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772665539-b40d3242-e23f-42a4-98fb-f0d0e74d7d6c.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>能够通过自主学习得知网桥另一侧的MAC地址</li>
+<li>能够起到隔绝冲突域的作用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h3><p><img src="/posts/1471950494.html/1628772767924-37ce9248-ca75-466c-a6cf-9f1864d537c2.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772772054-9cb3cfbd-31a6-443f-92f0-e485787844ff.png" alt="image.png"><img src="/posts/1471950494.html/1628772776123-1974cef5-3a66-4a49-9c82-53709aebc81a.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>相当于更多接口的网桥</li>
+<li>全双工通信</li>
+<li>比集线器更安全</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如果全球的互联网都使用交换机连接会发生什么事情？</p>
+</li>
+</ul>
+<p>首先可能会产生IP地址不够用的，其次在最开始的时候需要通过ARP协议获取MAC地址，会产生广播风暴</p>
+<h3 id="路由器"><a href="#路由器" class="headerlink" title="路由器"></a>路由器</h3><p><img src="/posts/1471950494.html/1628786349778-a69989dc-b0fe-4e97-afa8-40e3fa1fdba7.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628786353210-f42102b9-1eab-46c9-8a4d-31babc70b8f9.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>可以在不同网段转发数据</li>
+<li>隔绝广播域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>网线直连、同轴电缆、集线器、网桥、交换机连接的设备必须在同一网段且处在同一广播域 </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/posts/3993241091.html/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -190,7 +477,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-08-11 20:06:32 / 修改时间：20:07:18" itemprop="dateCreated datePublished" datetime="2021-08-11T20:06:32+08:00">2021-08-11</time>
+              <time title="创建时间：2021-08-11 20:06:32 / 修改时间：20:12:36" itemprop="dateCreated datePublished" datetime="2021-08-11T20:06:32+08:00">2021-08-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,7 +527,7 @@
 <p>任意两个顶点之间都可以用边来表示它们之间的关系，边集E可以是空的</p>
 <p><img src="/posts/3993241091.html/1628657582650-5905f0d7-8048-4ed2-aff3-1254333da474.png" alt="image.png"></p>
 <p><strong>应用场景：</strong></p>
-<p><img src alt="img"><img src alt="img"><img src alt="img"><img src alt="img"><img src alt="img"><img src="/posts/3993241091.html/1628658038315-f4ac6809-634b-4739-b19e-eaf32a6e12ed.png" alt="image.png"><img src="/posts/3993241091.html/1628658049366-fac998a5-eb2e-4a9d-91a6-312b0981b1a4.png" alt="image.png"></p>
+<p><img src="/posts/3993241091.html/1628658038315-f4ac6809-634b-4739-b19e-eaf32a6e12ed.png" alt="image.png"><img src="/posts/3993241091.html/1628658049366-fac998a5-eb2e-4a9d-91a6-312b0981b1a4.png" alt="image.png"></p>
 <p>社交网络，地图等。。。</p>
 <h1 id="图的种类"><a href="#图的种类" class="headerlink" title="图的种类"></a>图的种类</h1><h3 id="有向图"><a href="#有向图" class="headerlink" title="有向图"></a>有向图</h3><p> 有向图的边是有明确方向的 </p>
 <p><img src="/posts/3993241091.html/1628658114609-b922cfd6-6cb6-4cee-8723-5701cc7c83a6.png" alt="image.png"></p>
@@ -1430,162 +1717,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/posts/3555854685.html/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="LL">
-      <meta itemprop="description" content="良良的个人博客">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GHL-Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/3555854685.html/" class="post-title-link" itemprop="url">Hexo教程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-07-04 17:28:53 / 修改时间：18:14:30" itemprop="dateCreated datePublished" datetime="2021-07-04T17:28:53+08:00">2021-07-04</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/posts/3555854685.html/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/3555854685.html/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>设计以以下为工具讲起</p>
-<ul>
-<li>PHP为开发语言</li>
-<li>基于Laravel框架</li>
-<li>MySQL为数据存储</li>
-</ul>
-<p>电商的可变性与孩子的心情一样，变化极快，所以在设计之处就要想好大部分的功能接入及开发，尽量减少重构次数。对老板来说节约成本，对程序员来说“珍惜生命”</p>
-<h1 id="数据表"><a href="#数据表" class="headerlink" title="数据表"></a>数据表</h1><p>前期业务简单时，我们可以将数据表设计为下列的样子</p>
-<table>
-<thead>
-<tr>
-<th>TableName</th>
-<th>Comments</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>member</td>
-<td>用户表</td>
-</tr>
-<tr>
-<td>member_address</td>
-<td>收货地址表</td>
-</tr>
-<tr>
-<td>member_card</td>
-<td>银行卡表</td>
-</tr>
-<tr>
-<td>member_cart</td>
-<td>购物车表</td>
-</tr>
-<tr>
-<td>member_cart_item</td>
-<td>购物车商品表</td>
-</tr>
-<tr>
-<td>member_collect_product</td>
-<td>商品收藏表</td>
-</tr>
-<tr>
-<td>member_collect_supplier</td>
-<td>店铺收藏表</td>
-</tr>
-<tr>
-<td>member_data</td>
-<td>用户信息表</td>
-</tr>
-<tr>
-<td>member_query_history</td>
-<td>用户搜索历史表</td>
-</tr>
-<tr>
-<td>member_wallet</td>
-<td>用户账户表</td>
-</tr>
-<tr>
-<td>member_withdrawal</td>
-<td>用户提现表</td>
-</tr>
-</tbody></table>
-<h2 id="用户表"><a href="#用户表" class="headerlink" title="用户表"></a>用户表</h2><p>考虑到多种登录方式，应在数据表中涉及到微信的openid,unionid,支付宝、QQ的用户token等，这些要在前期就涉及进去，因后期用户量大了之后加一个字段简直是噩梦,用户状态status也必不可少，比较人也是分好坏，其次就是创建时间，登录时间等，用户表与用户信息表绝逼是绑定关系，这就不多言了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `member` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `tel` bigint(20) DEFAULT NULL COMMENT &#x27;手机号码&#x27;,</span><br><span class="line">  `password` varchar(555) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT &#x27;登录密码&#x27;,</span><br><span class="line">  `wx_token` varchar(125) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT &#x27;微信TOKEN&#x27;,</span><br><span class="line">  `im_token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;用户融云token&#x27;,</span><br><span class="line">  `open_id` varchar(125) COLLATE utf8mb4_unicode_ci DEFAULT NULL,</span><br><span class="line">  `status` enum(&#x27;1&#x27;,&#x27;-1&#x27;) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT &#x27;1&#x27; COMMENT &#x27;账号状态&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `member_tel_unique` (`tel`),</span><br><span class="line">  UNIQUE KEY `member_wx_token_unique` (`wx_token`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://segmentfault.com/img/bVbck3s?w=1148&h=946" alt="clipboard.png"></p>
-<h2 id="收货地址表"><a href="#收货地址表" class="headerlink" title="收货地址表"></a>收货地址表</h2><p>收货地址与用户是一一相对的，在设计上增加需要的字段即可，例如 收货人、收货人手机号、城市、详细地址等</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `member_address` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `member_id` int(11) NOT NULL COMMENT &#x27;用户编号&#x27;,</span><br><span class="line">  `nick_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;收货人姓名&#x27;,</span><br><span class="line">  `tel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;手机号码&#x27;,</span><br><span class="line">  `prov` int(11) DEFAULT NULL COMMENT &#x27;省&#x27;,</span><br><span class="line">  `city` int(11) NOT NULL COMMENT &#x27;市&#x27;,</span><br><span class="line">  `area` int(11) DEFAULT NULL COMMENT &#x27;区&#x27;,</span><br><span class="line">  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT &#x27;&#x27; COMMENT &#x27;街道地址&#x27;,</span><br><span class="line">  `number` int(11) NOT NULL COMMENT &#x27;邮政编码&#x27;,</span><br><span class="line">  `default` enum(&#x27;0&#x27;,&#x27;1&#x27;) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT &#x27;0&#x27; COMMENT &#x27;默认收货地址 1=&gt;默认&#x27;,</span><br><span class="line">  `deleted_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://segmentfault.com/img/bVbck3A?w=882&h=732" alt="clipboard.png"></p>
-<h2 id="银行卡表"><a href="#银行卡表" class="headerlink" title="银行卡表"></a>银行卡表</h2><p>用于用户提现的业务等，大致将银行卡所需的信息记录即可，例如持卡人、卡号、归属银行等</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `member_card` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `member_id` int(11) NOT NULL COMMENT &#x27;用户编码&#x27;,</span><br><span class="line">  `card_name` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;持卡人姓名&#x27;,</span><br><span class="line">  `card_number` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;银行卡号&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `member_card_card_number_unique` (`card_number`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://segmentfault.com/img/bVbck3D?w=1132&h=564" alt="clipboard.png"></p>
-<h2 id="购物车表"><a href="#购物车表" class="headerlink" title="购物车表"></a>购物车表</h2><p>为何单独建这个表，也是又一定原因的，正常只需要member_cart_item表即可，根据实际下线的业务场景，正常购物到超市需要拿一个购物车，但这个购物车并非属于你，你使用之后，需要归还，他人可继续使用，将购物车公开化，并不是将购物车商品公开化。业务场景比较窄，例如京东到家和京东商城一样（我只是举例，并不清楚他们怎么做的），购物车不通用，那如何区分呢，是应该在购物车上区分还是在购物车商品上区分？我想你已经清楚了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `member_cart` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `member_id` int(11) NOT NULL COMMENT &#x27;用户编码&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `member_cart_member_id_unique` (`member_id`),</span><br><span class="line">  KEY `member_cart_member_id_index` (`member_id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-<h2 id="购物车商品表"><a href="#购物车商品表" class="headerlink" title="购物车商品表"></a>购物车商品表</h2><p>这块需要提的一点是 [并不是所有表的设计都是互相绑定,互相依赖的]，就例如购物车商品表，不仅仅将商品编码存储在内，还要将商品价格，商品的简介以及商品的规格(既SKU)存储，不能因卖家下架商品，而查询不到商品的存在，比较一切以用户为主，用户是上帝的原则，不能让商品悄悄的就消失了吧。所以在做购物车商品表查询时，切记不要使用join或者表关联查询</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `member_cart_item` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `cart_id` int(11) NOT NULL COMMENT &#x27;购物车编码&#x27;,</span><br><span class="line">  `product_desc` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;商品sku信息&#x27;,</span><br><span class="line">  `product_img` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;商品快照&#x27;,</span><br><span class="line">  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;商品名称&#x27;,</span><br><span class="line">  `price` decimal(8,2) NOT NULL DEFAULT &#x27;0.00&#x27; COMMENT &#x27;价格&#x27;,</span><br><span class="line">  `product_id` int(11) NOT NULL COMMENT &#x27;商品编码&#x27;,</span><br><span class="line">  `supplier_id` int(11) NOT NULL COMMENT &#x27;店铺编码&#x27;,</span><br><span class="line">  `sku_id` int(11) NOT NULL COMMENT &#x27;商品sku编码&#x27;,</span><br><span class="line">  `number` int(11) NOT NULL DEFAULT &#x27;1&#x27; COMMENT &#x27;商品数量&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  KEY `member_cart_item_cart_id_product_id_supplier_id_index` (`cart_id`,`product_id`,`supplier_id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-<h2 id="用户搜索历史表"><a href="#用户搜索历史表" class="headerlink" title="用户搜索历史表"></a>用户搜索历史表</h2><p>用户搜索的记录是一定要有的，为了未来的数据分析，智能推荐做准备，毕竟现在是信息共享的时代嘛～</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `member_query_history` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `member_id` int(11) NOT NULL COMMENT &#x27;用户编码&#x27;,</span><br><span class="line">  `keyword` varchar(125) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;关键字&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-<h1 id="数据记录"><a href="#数据记录" class="headerlink" title="数据记录"></a>数据记录</h1><p>有很多场景，都要将标题呀，内容呀直接存储，类似与收藏的店铺和商品，无论卖家怎么做，用户购物车，订单不能动，这是基准。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1653,20 +1789,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
