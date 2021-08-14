@@ -165,6 +165,243 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/2552668625.html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="LL">
+      <meta itemprop="description" content="良良的个人博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GHL-Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/2552668625.html/" class="post-title-link" itemprop="url">MAC&IP</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-08-15 01:01:59 / 修改时间：01:03:18" itemprop="dateCreated datePublished" datetime="2021-08-15T01:01:59+08:00">2021-08-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/MAC-IP/" itemprop="url" rel="index"><span itemprop="name">MAC&IP</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/2552668625.html/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/2552668625.html/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h1><p>每一个网卡都有一个6字节(48bit)的MAC地址(Media Access Control Address)</p>
+<p>全球唯一，固化在了网卡的ROM中，由IEEE802标准规定</p>
+<p>前3字节:OUT (Organizationally Unique Identifier)，组织唯一标识符由IEEE的注册管理机构分配给厂商</p>
+<p>后3字节：网络接口标识符 由厂商自行分配 </p>
+<p><img src="/posts/2552668625.html/1628876264485-e52cf54e-7c16-4293-8146-0d18b8d8fc8d.png" alt="image.png"></p>
+<h3 id="MAC地址的表示格式"><a href="#MAC地址的表示格式" class="headerlink" title="MAC地址的表示格式"></a>MAC地址的表示格式</h3><table>
+<thead>
+<tr>
+<th>Windows</th>
+<th>40-55-82-0A-8C-6D</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Linux、Android、Mac、iOS</td>
+<td>40:55:82:0A:8C:6D</td>
+</tr>
+<tr>
+<td>Packet Tracer</td>
+<td>4055.820A.8C6D</td>
+</tr>
+</tbody></table>
+<p>当48位全为1时，代表广播地址 FF-FF-FF-FF-FF-FF</p>
+<h3 id="MAC地址操作"><a href="#MAC地址操作" class="headerlink" title="MAC地址操作"></a>MAC地址操作</h3><p>查看MAC地址：ipconfig/all</p>
+<p>修改MAC地址：更改适配器选项-属性-配置-高级    网络地址；填写的时候需要把减号（-）去掉；有时可以修改MAC地址蹭网</p>
+<p><img src="/posts/2552668625.html/1628928585801-c3d1e8c5-d4dd-40d6-9646-252fb7c3ade3.png" alt="image.png"></p>
+<h3 id="MAC地址的获取"><a href="#MAC地址的获取" class="headerlink" title="MAC地址的获取"></a>MAC地址的获取</h3><p>当不知道对方主机的MAC地址时，可以通过发送ARP广播获取对方的MAC地址；获取成功后，会缓存IP地址、MAC地址的映射信息，俗称：ARP缓存；通过ARP广播获取的MAC地址，属于动态（dynamic）缓存；存储时间比较短（默认是2分钟），过期了就自动删除；</p>
+<p>相关命令 </p>
+<p>arp -a [主机地址]：查询ARP缓存 </p>
+<p>arp -d [主机地址]：删除ARP缓存 </p>
+<p>arp -s 主机地址 MAC地址：增加一条缓存信息（这是静态缓存，存储时间较久，不同系统的存储时间不同）</p>
+<h1 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h1><p>地址解析协议</p>
+<p>通过IP地址来获取MAC地址</p>
+<h2 id="RARP"><a href="#RARP" class="headerlink" title="RARP"></a>RARP</h2><p>逆地址解析协议</p>
+<p>使用与ARP相同的报头结构；作用与ARP相反，用于将MAC地址转换为IP地址；后来被BOOTP、DHCP所取代 </p>
+<h1 id="IPMP"><a href="#IPMP" class="headerlink" title="IPMP"></a>IPMP</h1><p>互联网控制消息协议</p>
+<p>IPv4中的ICMP被称作ICMPv4，IPv6中的ICMP则被称作ICMPv6；通常用于返回错误信息，比如TTL值过期、目的不可达；ICMP的错误消息总是包括了源数据并返回给发送者</p>
+<h1 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h1><p> IP地址（Internet Protocol Address）：互联网上的每一个主机都有一个IP地址 最初是IPv4版本，32bit（4字节），2019年11月25日，全球的IP地址已经用完 后面推出了IPv6版本，128bit（16字节）</p>
+<p><img src="/posts/2552668625.html/1628929142466-418de7a2-5dbc-4082-943f-77f5dce10a4d.png" alt="image.png"></p>
+<h2 id="IP地址的组成"><a href="#IP地址的组成" class="headerlink" title="IP地址的组成"></a>IP地址的组成</h2><p>IP地址由2部分组成：网络标识（网络ID）、主机标识（主机ID） 通过子网掩码（subnet mask）可以得知网络ID 、主机ID</p>
+<p>主机所在的网段 = 子网掩码 &amp; IP地址 网段其实 </p>
+<p>计算机和其他计算机通信前，会先判断目标主机和自己是否在同一网段；同一网段：不需要由路由器进行转发；不同网段：交由路由器进行转发</p>
+<h2 id="IP地址的分类"><a href="#IP地址的分类" class="headerlink" title="IP地址的分类"></a>IP地址的分类</h2><p>A类地址：默认子网掩码是255.0.0.0 </p>
+<table>
+<thead>
+<tr>
+<th>8bit</th>
+<th>24bit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络ID 0开头</td>
+<td>主机ID</td>
+</tr>
+</tbody></table>
+<p>B类地址：默认子网掩码是255.255.0.0 </p>
+<table>
+<thead>
+<tr>
+<th>16bit</th>
+<th>16bit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络ID 10开头</td>
+<td>主机ID</td>
+</tr>
+</tbody></table>
+<p>C类地址：默认子网掩码是255.255.255.0 </p>
+<table>
+<thead>
+<tr>
+<th>16bit</th>
+<th>16bit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络ID 10开头</td>
+<td>主机ID</td>
+</tr>
+</tbody></table>
+<p>D类地址：以1110开头，多播地址 </p>
+<p>E类地址：以1111开头，保留为今后使用 </p>
+<p>只有A\B\C类地址才能分配给主机 </p>
+<p>主机ID为全0，表示主机所在的网段 </p>
+<p>主机ID为全1，表示主机所在网段的全部主机（广播） </p>
+<p>可以尝试用ping给某个网段的全部主机发数据 </p>
+<h3 id="A类地址"><a href="#A类地址" class="headerlink" title="A类地址"></a>A类地址</h3><p><img src="/posts/2552668625.html/1628933103811-38e98b7d-805e-48bd-b783-300ced7d1ed9.png" alt="image.png"></p>
+<p><strong>网络ID：</strong>0不能用，127作为保留网段。其中127.0.0.1是本地环回地址（Loopback），代表本机地址；可以分配给主机的 第1部分的取值范围是：1~126 </p>
+<p><strong>主机ID：</strong> 第2、3、4部分的取值范围是：0~255；每个A类网络能容纳的最大主机数是：256 * 256 * 256 – 2 = 2的24次方 – 2 = 16777214</p>
+<h3 id="B类地址"><a href="#B类地址" class="headerlink" title="B类地址"></a>B类地址</h3><p><img src="/posts/2552668625.html/1628933282666-cea50444-d13d-441d-b823-8fc97364659c.png" alt="image.png"></p>
+<p><strong>网络ID：</strong> 可以分配给主机的；第1部分的取值范围是：128<del>191；第2部分的取值范围是：0</del>255 </p>
+<p><strong>主机ID：</strong> 第3、4部分的取值范围是：0~255；每个B类网络能容纳的最大主机数是：256 * 256 – 2 = 2的16次方 – 2 = 65534</p>
+<p><img src="/posts/2552668625.html/1628933369115-31484f23-5a6b-47b1-9652-99bd5aa06134.png" alt="image.png"></p>
+<p><strong>网络ID：</strong> 可以分配给主机的；第1部分的取值范围是：192<del>223；第2、3部分的取值范围是：0</del>255 </p>
+<p><strong>主机ID：</strong> 第4部分的取值范围是：0~255；每个C类网络能容纳的最大主机数是：256 – 2 = 254</p>
+<h3 id="D类地址，E类地址"><a href="#D类地址，E类地址" class="headerlink" title="D类地址，E类地址"></a>D类地址，E类地址</h3><p> D类地址：没有子网掩码，用于多播（组播）地址；第1部分取值范围是：224~239</p>
+<p><img src="/posts/2552668625.html/1628933999648-320c2d36-6d3f-4756-9a88-5fa4ba961c18.png" alt="image.png"></p>
+<p>E类地址：保留为今后使用；第1部分取值范围是：240~255 </p>
+<p><img src="/posts/2552668625.html/1628934019841-fd1a175f-2b24-4a27-8231-1b8d5dbf3929.png" alt="image.png">  </p>
+<h1 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h1><h2 id="子网掩码的CIDR表示方法"><a href="#子网掩码的CIDR表示方法" class="headerlink" title="子网掩码的CIDR表示方法"></a>子网掩码的CIDR表示方法</h2><p>CIDR（Classless Inter-Domain Routing）：无类别域间路由</p>
+<p>子网掩码的CIDR表示方法 </p>
+<p>192.168.1.100/24，代表子网掩码有24个1，也就是255.255.255.0 </p>
+<p>123.210.100.200/16，代表子网掩码有16个1，也就是255.255.0.0</p>
+<h2 id="为什么要进行子网划分"><a href="#为什么要进行子网划分" class="headerlink" title="为什么要进行子网划分"></a>为什么要进行子网划分</h2><p>如果需要让200台主机在同一个网段内，可以分配一个C类网段，比如192.168.1.0/24 </p>
+<p>共254个可用IP地址：192.168.1.1~192.168.1.254 </p>
+<p>多出54个空闲的IP地址，这种情况并不算浪费资源</p>
+<p>如果需要让500台主机在同一个网段内，那就分配一个B类网段，比如191.100.0.0/16 </p>
+<p>共65534个可用IP地址：191.100.0.1~191.100.255.254 </p>
+<p>多出65034个空闲的IP地址，这种情况属于极大的浪费资源</p>
+<p>如何尽量避免浪费IP地址资源？ </p>
+<p>合理进行子网划分</p>
+<h2 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h2><p>子网划分：借用主机位作子网位，划分出多个子网 </p>
+<p>可用分为 等长子网划分：将一个网段等分成多个子网，每个子网的可用IP地址数量是一样的 </p>
+<p>变长子网划分：每个子网的可用IP地址数量可以是不一样的  </p>
+<p>子网划分器：<a target="_blank" rel="noopener" href="http://www.ab126.com/web/3552.html">http://www.ab126.com/web/3552.html</a>  </p>
+<p>子网划分的步骤 </p>
+<p>确定子网的子网掩码长度 </p>
+<p>确定子网中第1个、最后1个主机可用的IP地址</p>
+<h4 id="等长子网划分——等分成2个子网"><a href="#等长子网划分——等分成2个子网" class="headerlink" title="等长子网划分——等分成2个子网"></a>等长子网划分——等分成2个子网</h4><p><img src="/posts/2552668625.html/1628959922263-f20adfd9-9b71-4fc7-9f82-ed75eb4e152d.png" alt="image.png"></p>
+<p>A子网 </p>
+<p>子网掩码：255.255.255.128/25 </p>
+<p>主机可用IP地址：192.168.0.1~192.168.0.126</p>
+<p>B子网 </p>
+<p>子网掩码：255.255.255.128/25 </p>
+<p>主机可用IP地址：192.168.0.129~192.168.0.254</p>
+<h4 id="等长子网划分——等分成4个子网"><a href="#等长子网划分——等分成4个子网" class="headerlink" title="等长子网划分——等分成4个子网"></a>等长子网划分——等分成4个子网</h4><p><img src="/posts/2552668625.html/1628959975821-e58c53ed-8028-4c7c-8637-774caa748945.png" alt="image.png"></p>
+<p>4个子网的子网掩码都是：255.255.255.192/26</p>
+<p>A子网的主机可用IP地址 192.168.0.1~192.168.0.62</p>
+<p>B子网的主机可用IP地址 192.168.0.65~192.168.0.126</p>
+<p>C子网的主机可用IP地址 192.168.0.129~192.168.0.190</p>
+<p>D子网的主机可用IP地址 192.168.0.193~192.168.0.254</p>
+<h5 id="等长子网划分——等分成4个子网的广播地址"><a href="#等长子网划分——等分成4个子网的广播地址" class="headerlink" title="等长子网划分——等分成4个子网的广播地址"></a>等长子网划分——等分成4个子网的广播地址</h5><p><img src="/posts/2552668625.html/1628960056727-14d7fee9-be1f-488f-ab57-86edff40de00.png" alt="image.png"></p>
+<h4 id="等长子网划分——等分成8个子网"><a href="#等长子网划分——等分成8个子网" class="headerlink" title="等长子网划分——等分成8个子网"></a>等长子网划分——等分成8个子网</h4><p><img src="/posts/2552668625.html/1628960075918-62876a3a-2897-4e04-84b4-2ae0068ba9d5.png" alt="image.png"></p>
+<p>4个子网的子网掩码都是：255.255.255.224/27</p>
+<p>A子网：192.168.0.1~192.168.0.30</p>
+<p>B子网：192.168.0.33~192.168.0.62</p>
+<p>C子网：192.168.0.65~192.168.0.94</p>
+<p>D子网：192.168.0.97~192.168.0.126</p>
+<p>E子网：192.168.0.129~192.168.0.158</p>
+<p>F子网：192.168.0.161~192.168.0.190</p>
+<p>G子网：192.168.0.193~192.168.0.222</p>
+<p>H子网：192.168.0.225~192.168.0.254 </p>
+<h4 id="等长子网划分——B类子网划分"><a href="#等长子网划分——B类子网划分" class="headerlink" title="等长子网划分——B类子网划分"></a>等长子网划分——B类子网划分</h4><p><img src="/posts/2552668625.html/1628960187434-9244e108-5b90-446d-83ee-115ae1746f90.png" alt="image.png"></p>
+<h4 id="等长子网划分——A类子网划分"><a href="#等长子网划分——A类子网划分" class="headerlink" title="等长子网划分——A类子网划分"></a>等长子网划分——A类子网划分</h4><p><img src="/posts/2552668625.html/1628960203601-9dc86c96-e248-42a8-9924-047913d662c4.png" alt="image.png"></p>
+<h4 id="变长子网划分"><a href="#变长子网划分" class="headerlink" title="变长子网划分"></a>变长子网划分</h4><p>如果一个子网地址块的长度是原网段的(1/2)^n，那么 子网的子网掩码，就是在原网段的子网掩码基础上增加n个1 不等长的子网，它们的子网掩码也不同 </p>
+<p><img src="/posts/2552668625.html/1628960240353-771952d9-b8c5-496b-9a18-c1cb4ac45fd0.png" alt="image.png"></p>
+<p>假设上图是对192.168.0.0/24进行变长子网划分 </p>
+<p>C网段：子网掩码是255.255.255.128/25 </p>
+<p>B网段：子网掩码是255.255.255.192/26 </p>
+<p>A网段：子网掩码是255.255.255.224/27 </p>
+<p>D网段：子网掩码是255.255.255.252/30 </p>
+<p>E网段：子网掩码是255.255.255.252/30</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/posts/3328524930.html/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1621,146 +1858,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/posts/3907716225.html/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="LL">
-      <meta itemprop="description" content="良良的个人博客">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GHL-Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/3907716225.html/" class="post-title-link" itemprop="url">二分查找</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-07-06 19:09:03 / 修改时间：19:15:36" itemprop="dateCreated datePublished" datetime="2021-07-06T19:09:03+08:00">2021-07-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" itemprop="url" rel="index"><span itemprop="name">二分查找</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/posts/3907716225.html/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/3907716225.html/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
-<p>示例 1:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
-<p>输出: 4</p>
-<p>解释: 9 出现在 nums 中并且下标为 4</p>
-<p>示例 2:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
-<p>输出: -1</p>
-<p>解释: 2 不存在 nums 中因此返回 -1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int search(int[] nums, int target) &#123;</span><br><span class="line">        int life=0,right=nums.length-1;</span><br><span class="line">        int p;</span><br><span class="line">        while (life&lt;=right)&#123;</span><br><span class="line">            p=life+(right-life)/2;</span><br><span class="line">            if(nums[p]==target) return p;</span><br><span class="line">            if(nums[p]&lt;target) life=p+1;</span><br><span class="line">            else right=p-1;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>分查找是一种基于比较目标值和数组中间元素的教科书式算法。</p>
-<ul>
-<li>如果目标值等于中间元素，则找到目标值。</li>
-<li>如果目标值较小，继续在左侧搜索。</li>
-<li>如果目标值较大，则继续在右侧搜索。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1834295/1625567991316-308e35ad-d3bc-4192-a91e-4cc9569111ee.jpeg" alt="image"></p>
-<h1 id="第一个错误版本"><a href="#第一个错误版本" class="headerlink" title="第一个错误版本"></a>第一个错误版本</h1><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
-<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
-<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
-<p>示例 1：</p>
-<p>输入：n = 5, bad = 4</p>
-<p>输出：4</p>
-<p>解释：</p>
-<p>调用 isBadVersion(3) -&gt; false</p>
-<p>调用 isBadVersion(5) -&gt; true</p>
-<p>调用 isBadVersion(4) -&gt; true</p>
-<p>所以，4 是第一个错误的版本。</p>
-<p>示例 2：</p>
-<p>输入：n = 1, bad = 1</p>
-<p>输出：1</p>
-<p>通过题干我们可以了解到，当一个版本为正确版本后，之前所有的版本都是正确版本，当一个版本为错误版本后之后的版本都是错误版本，我们所做的就是需要找到第一个出错的版本，就可以利用二分查找来确定</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class Solution extends VersionControl &#123;</span><br><span class="line">    public int firstBadVersion(int n) &#123;</span><br><span class="line">        int left = 1, right = n;</span><br><span class="line">        while (left &lt; right) &#123; // 循环直至区间左右端点相同</span><br><span class="line">            int mid = left + (right - left) / 2; // 防止计算时溢出</span><br><span class="line">            if (isBadVersion(mid)) &#123;</span><br><span class="line">                right = mid; // 答案在区间 [left, mid] 中</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1; // 答案在区间 [mid+1, right] 中</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 此时有 left == right，区间缩为一个点，即为答案</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
-<p>你可以假设数组中无重复元素。</p>
-<p>示例 1:</p>
-<p>输入: [1,3,5,6], 5</p>
-<p>输出: 2</p>
-<p>示例 2:</p>
-<p>输入: [1,3,5,6], 2</p>
-<p>输出: 1</p>
-<p>示例 3:</p>
-<p>输入: [1,3,5,6], 7</p>
-<p>输出: 4</p>
-<p>示例 4:</p>
-<p>输入: [1,3,5,6], 0</p>
-<p>输出: 0</p>
-<p>此题结合了前两道题，找到那个数的位置是什么，在左右指针移动时我们就要考虑他的角标移动。而且我们还需要一个值来记录循环时需要插入的位置。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int left = 0, right = n - 1, ans = n;</span><br><span class="line">        while (left &lt;= right) &#123;// 循环直至区间左右端点换位</span><br><span class="line">            int mid = ((right - left) &gt;&gt; 1) + left;// 防止计算时溢出</span><br><span class="line">            if (target &lt;= nums[mid]) &#123;</span><br><span class="line">                ans = mid;//记录此次循环中间位置</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">*ans存在的重要性，如果target大于nums中最大值，ans为n输出</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
-
-<p><strong>小知识：</strong>是右移运算，在计算机中是一种运算操作，但是他的运算结果正好能对应一个整数的二分之一值，这就正好能代替数学上的除2运算，但是比除2运算要快。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1833,14 +1930,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
