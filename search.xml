@@ -1,0 +1,1125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hexo教程</title>
+    <url>/posts/3555854685.html/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>设计以以下为工具讲起</p>
+<ul>
+<li>PHP为开发语言</li>
+<li>基于Laravel框架</li>
+<li>MySQL为数据存储</li>
+</ul>
+<p>电商的可变性与孩子的心情一样，变化极快，所以在设计之处就要想好大部分的功能接入及开发，尽量减少重构次数。对老板来说节约成本，对程序员来说“珍惜生命”</p>
+<h1 id="数据表"><a href="#数据表" class="headerlink" title="数据表"></a>数据表</h1><p>前期业务简单时，我们可以将数据表设计为下列的样子</p>
+<table>
+<thead>
+<tr>
+<th>TableName</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>member</td>
+<td>用户表</td>
+</tr>
+<tr>
+<td>member_address</td>
+<td>收货地址表</td>
+</tr>
+<tr>
+<td>member_card</td>
+<td>银行卡表</td>
+</tr>
+<tr>
+<td>member_cart</td>
+<td>购物车表</td>
+</tr>
+<tr>
+<td>member_cart_item</td>
+<td>购物车商品表</td>
+</tr>
+<tr>
+<td>member_collect_product</td>
+<td>商品收藏表</td>
+</tr>
+<tr>
+<td>member_collect_supplier</td>
+<td>店铺收藏表</td>
+</tr>
+<tr>
+<td>member_data</td>
+<td>用户信息表</td>
+</tr>
+<tr>
+<td>member_query_history</td>
+<td>用户搜索历史表</td>
+</tr>
+<tr>
+<td>member_wallet</td>
+<td>用户账户表</td>
+</tr>
+<tr>
+<td>member_withdrawal</td>
+<td>用户提现表</td>
+</tr>
+</tbody></table>
+<h2 id="用户表"><a href="#用户表" class="headerlink" title="用户表"></a>用户表</h2><p>考虑到多种登录方式，应在数据表中涉及到微信的openid,unionid,支付宝、QQ的用户token等，这些要在前期就涉及进去，因后期用户量大了之后加一个字段简直是噩梦,用户状态status也必不可少，比较人也是分好坏，其次就是创建时间，登录时间等，用户表与用户信息表绝逼是绑定关系，这就不多言了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE `member` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `tel` bigint(20) DEFAULT NULL COMMENT &#x27;手机号码&#x27;,</span><br><span class="line">  `password` varchar(555) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT &#x27;登录密码&#x27;,</span><br><span class="line">  `wx_token` varchar(125) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT &#x27;微信TOKEN&#x27;,</span><br><span class="line">  `im_token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;用户融云token&#x27;,</span><br><span class="line">  `open_id` varchar(125) COLLATE utf8mb4_unicode_ci DEFAULT NULL,</span><br><span class="line">  `status` enum(&#x27;1&#x27;,&#x27;-1&#x27;) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT &#x27;1&#x27; COMMENT &#x27;账号状态&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `member_tel_unique` (`tel`),</span><br><span class="line">  UNIQUE KEY `member_wx_token_unique` (`wx_token`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://segmentfault.com/img/bVbck3s?w=1148&h=946" alt="clipboard.png"></p>
+<h2 id="收货地址表"><a href="#收货地址表" class="headerlink" title="收货地址表"></a>收货地址表</h2><p>收货地址与用户是一一相对的，在设计上增加需要的字段即可，例如 收货人、收货人手机号、城市、详细地址等</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE `member_address` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `member_id` int(11) NOT NULL COMMENT &#x27;用户编号&#x27;,</span><br><span class="line">  `nick_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;收货人姓名&#x27;,</span><br><span class="line">  `tel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;手机号码&#x27;,</span><br><span class="line">  `prov` int(11) DEFAULT NULL COMMENT &#x27;省&#x27;,</span><br><span class="line">  `city` int(11) NOT NULL COMMENT &#x27;市&#x27;,</span><br><span class="line">  `area` int(11) DEFAULT NULL COMMENT &#x27;区&#x27;,</span><br><span class="line">  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT &#x27;&#x27; COMMENT &#x27;街道地址&#x27;,</span><br><span class="line">  `number` int(11) NOT NULL COMMENT &#x27;邮政编码&#x27;,</span><br><span class="line">  `default` enum(&#x27;0&#x27;,&#x27;1&#x27;) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT &#x27;0&#x27; COMMENT &#x27;默认收货地址 1=&gt;默认&#x27;,</span><br><span class="line">  `deleted_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://segmentfault.com/img/bVbck3A?w=882&h=732" alt="clipboard.png"></p>
+<h2 id="银行卡表"><a href="#银行卡表" class="headerlink" title="银行卡表"></a>银行卡表</h2><p>用于用户提现的业务等，大致将银行卡所需的信息记录即可，例如持卡人、卡号、归属银行等</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE `member_card` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `member_id` int(11) NOT NULL COMMENT &#x27;用户编码&#x27;,</span><br><span class="line">  `card_name` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;持卡人姓名&#x27;,</span><br><span class="line">  `card_number` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;银行卡号&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `member_card_card_number_unique` (`card_number`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://segmentfault.com/img/bVbck3D?w=1132&h=564" alt="clipboard.png"></p>
+<h2 id="购物车表"><a href="#购物车表" class="headerlink" title="购物车表"></a>购物车表</h2><p>为何单独建这个表，也是又一定原因的，正常只需要member_cart_item表即可，根据实际下线的业务场景，正常购物到超市需要拿一个购物车，但这个购物车并非属于你，你使用之后，需要归还，他人可继续使用，将购物车公开化，并不是将购物车商品公开化。业务场景比较窄，例如京东到家和京东商城一样（我只是举例，并不清楚他们怎么做的），购物车不通用，那如何区分呢，是应该在购物车上区分还是在购物车商品上区分？我想你已经清楚了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE `member_cart` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `member_id` int(11) NOT NULL COMMENT &#x27;用户编码&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `member_cart_member_id_unique` (`member_id`),</span><br><span class="line">  KEY `member_cart_member_id_index` (`member_id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+
+<h2 id="购物车商品表"><a href="#购物车商品表" class="headerlink" title="购物车商品表"></a>购物车商品表</h2><p>这块需要提的一点是 [并不是所有表的设计都是互相绑定,互相依赖的]，就例如购物车商品表，不仅仅将商品编码存储在内，还要将商品价格，商品的简介以及商品的规格(既SKU)存储，不能因卖家下架商品，而查询不到商品的存在，比较一切以用户为主，用户是上帝的原则，不能让商品悄悄的就消失了吧。所以在做购物车商品表查询时，切记不要使用join或者表关联查询</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE `member_cart_item` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `cart_id` int(11) NOT NULL COMMENT &#x27;购物车编码&#x27;,</span><br><span class="line">  `product_desc` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;商品sku信息&#x27;,</span><br><span class="line">  `product_img` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;商品快照&#x27;,</span><br><span class="line">  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;商品名称&#x27;,</span><br><span class="line">  `price` decimal(8,2) NOT NULL DEFAULT &#x27;0.00&#x27; COMMENT &#x27;价格&#x27;,</span><br><span class="line">  `product_id` int(11) NOT NULL COMMENT &#x27;商品编码&#x27;,</span><br><span class="line">  `supplier_id` int(11) NOT NULL COMMENT &#x27;店铺编码&#x27;,</span><br><span class="line">  `sku_id` int(11) NOT NULL COMMENT &#x27;商品sku编码&#x27;,</span><br><span class="line">  `number` int(11) NOT NULL DEFAULT &#x27;1&#x27; COMMENT &#x27;商品数量&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  KEY `member_cart_item_cart_id_product_id_supplier_id_index` (`cart_id`,`product_id`,`supplier_id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+
+<h2 id="用户搜索历史表"><a href="#用户搜索历史表" class="headerlink" title="用户搜索历史表"></a>用户搜索历史表</h2><p>用户搜索的记录是一定要有的，为了未来的数据分析，智能推荐做准备，毕竟现在是信息共享的时代嘛～</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE `member_query_history` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `member_id` int(11) NOT NULL COMMENT &#x27;用户编码&#x27;,</span><br><span class="line">  `keyword` varchar(125) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT &#x27;关键字&#x27;,</span><br><span class="line">  `created_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  `updated_at` timestamp NULL DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+
+<h1 id="数据记录"><a href="#数据记录" class="headerlink" title="数据记录"></a>数据记录</h1><p>有很多场景，都要将标题呀，内容呀直接存储，类似与收藏的店铺和商品，无论卖家怎么做，用户购物车，订单不能动，这是基准。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>MAC&amp;IP</title>
+    <url>/posts/2552668625.html/</url>
+    <content><![CDATA[<h1 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h1><p>每一个网卡都有一个6字节(48bit)的MAC地址(Media Access Control Address)</p>
+<p>全球唯一，固化在了网卡的ROM中，由IEEE802标准规定</p>
+<p>前3字节:OUT (Organizationally Unique Identifier)，组织唯一标识符由IEEE的注册管理机构分配给厂商</p>
+<p>后3字节：网络接口标识符 由厂商自行分配 </p>
+<p><img src="/posts/2552668625.html/1628876264485-e52cf54e-7c16-4293-8146-0d18b8d8fc8d.png" alt="image.png"></p>
+<h3 id="MAC地址的表示格式"><a href="#MAC地址的表示格式" class="headerlink" title="MAC地址的表示格式"></a>MAC地址的表示格式</h3><table>
+<thead>
+<tr>
+<th>Windows</th>
+<th>40-55-82-0A-8C-6D</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Linux、Android、Mac、iOS</td>
+<td>40:55:82:0A:8C:6D</td>
+</tr>
+<tr>
+<td>Packet Tracer</td>
+<td>4055.820A.8C6D</td>
+</tr>
+</tbody></table>
+<p>当48位全为1时，代表广播地址 FF-FF-FF-FF-FF-FF</p>
+<h3 id="MAC地址操作"><a href="#MAC地址操作" class="headerlink" title="MAC地址操作"></a>MAC地址操作</h3><p>查看MAC地址：ipconfig/all</p>
+<p>修改MAC地址：更改适配器选项-属性-配置-高级    网络地址；填写的时候需要把减号（-）去掉；有时可以修改MAC地址蹭网</p>
+<p><img src="/posts/2552668625.html/1628928585801-c3d1e8c5-d4dd-40d6-9646-252fb7c3ade3.png" alt="image.png"></p>
+<h3 id="MAC地址的获取"><a href="#MAC地址的获取" class="headerlink" title="MAC地址的获取"></a>MAC地址的获取</h3><p>当不知道对方主机的MAC地址时，可以通过发送ARP广播获取对方的MAC地址；获取成功后，会缓存IP地址、MAC地址的映射信息，俗称：ARP缓存；通过ARP广播获取的MAC地址，属于动态（dynamic）缓存；存储时间比较短（默认是2分钟），过期了就自动删除；</p>
+<p>相关命令 </p>
+<p>arp -a [主机地址]：查询ARP缓存 </p>
+<p>arp -d [主机地址]：删除ARP缓存 </p>
+<p>arp -s 主机地址 MAC地址：增加一条缓存信息（这是静态缓存，存储时间较久，不同系统的存储时间不同）</p>
+<h1 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h1><p>地址解析协议</p>
+<p>通过IP地址来获取MAC地址</p>
+<h2 id="RARP"><a href="#RARP" class="headerlink" title="RARP"></a>RARP</h2><p>逆地址解析协议</p>
+<p>使用与ARP相同的报头结构；作用与ARP相反，用于将MAC地址转换为IP地址；后来被BOOTP、DHCP所取代 </p>
+<h1 id="IPMP"><a href="#IPMP" class="headerlink" title="IPMP"></a>IPMP</h1><p>互联网控制消息协议</p>
+<p>IPv4中的ICMP被称作ICMPv4，IPv6中的ICMP则被称作ICMPv6；通常用于返回错误信息，比如TTL值过期、目的不可达；ICMP的错误消息总是包括了源数据并返回给发送者</p>
+<h1 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h1><p> IP地址（Internet Protocol Address）：互联网上的每一个主机都有一个IP地址 最初是IPv4版本，32bit（4字节），2019年11月25日，全球的IP地址已经用完 后面推出了IPv6版本，128bit（16字节）</p>
+<p><img src="/posts/2552668625.html/1628929142466-418de7a2-5dbc-4082-943f-77f5dce10a4d.png" alt="image.png"></p>
+<h2 id="IP地址的组成"><a href="#IP地址的组成" class="headerlink" title="IP地址的组成"></a>IP地址的组成</h2><p>IP地址由2部分组成：网络标识（网络ID）、主机标识（主机ID） 通过子网掩码（subnet mask）可以得知网络ID 、主机ID</p>
+<p>主机所在的网段 = 子网掩码 &amp; IP地址 网段其实 </p>
+<p>计算机和其他计算机通信前，会先判断目标主机和自己是否在同一网段；同一网段：不需要由路由器进行转发；不同网段：交由路由器进行转发</p>
+<h2 id="IP地址的分类"><a href="#IP地址的分类" class="headerlink" title="IP地址的分类"></a>IP地址的分类</h2><p>A类地址：默认子网掩码是255.0.0.0 </p>
+<table>
+<thead>
+<tr>
+<th>8bit</th>
+<th>24bit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络ID 0开头</td>
+<td>主机ID</td>
+</tr>
+</tbody></table>
+<p>B类地址：默认子网掩码是255.255.0.0 </p>
+<table>
+<thead>
+<tr>
+<th>16bit</th>
+<th>16bit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络ID 10开头</td>
+<td>主机ID</td>
+</tr>
+</tbody></table>
+<p>C类地址：默认子网掩码是255.255.255.0 </p>
+<table>
+<thead>
+<tr>
+<th>16bit</th>
+<th>16bit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络ID 10开头</td>
+<td>主机ID</td>
+</tr>
+</tbody></table>
+<p>D类地址：以1110开头，多播地址 </p>
+<p>E类地址：以1111开头，保留为今后使用 </p>
+<p>只有A\B\C类地址才能分配给主机 </p>
+<p>主机ID为全0，表示主机所在的网段 </p>
+<p>主机ID为全1，表示主机所在网段的全部主机（广播） </p>
+<p>可以尝试用ping给某个网段的全部主机发数据 </p>
+<h3 id="A类地址"><a href="#A类地址" class="headerlink" title="A类地址"></a>A类地址</h3><p><img src="/posts/2552668625.html/1628933103811-38e98b7d-805e-48bd-b783-300ced7d1ed9.png" alt="image.png"></p>
+<p><strong>网络ID：</strong>0不能用，127作为保留网段。其中127.0.0.1是本地环回地址（Loopback），代表本机地址；可以分配给主机的 第1部分的取值范围是：1~126 </p>
+<p><strong>主机ID：</strong> 第2、3、4部分的取值范围是：0~255；每个A类网络能容纳的最大主机数是：256 * 256 * 256 – 2 = 2的24次方 – 2 = 16777214</p>
+<h3 id="B类地址"><a href="#B类地址" class="headerlink" title="B类地址"></a>B类地址</h3><p><img src="/posts/2552668625.html/1628933282666-cea50444-d13d-441d-b823-8fc97364659c.png" alt="image.png"></p>
+<p><strong>网络ID：</strong> 可以分配给主机的；第1部分的取值范围是：128<del>191；第2部分的取值范围是：0</del>255 </p>
+<p><strong>主机ID：</strong> 第3、4部分的取值范围是：0~255；每个B类网络能容纳的最大主机数是：256 * 256 – 2 = 2的16次方 – 2 = 65534</p>
+<p><img src="/posts/2552668625.html/1628933369115-31484f23-5a6b-47b1-9652-99bd5aa06134.png" alt="image.png"></p>
+<p><strong>网络ID：</strong> 可以分配给主机的；第1部分的取值范围是：192<del>223；第2、3部分的取值范围是：0</del>255 </p>
+<p><strong>主机ID：</strong> 第4部分的取值范围是：0~255；每个C类网络能容纳的最大主机数是：256 – 2 = 254</p>
+<h3 id="D类地址，E类地址"><a href="#D类地址，E类地址" class="headerlink" title="D类地址，E类地址"></a>D类地址，E类地址</h3><p> D类地址：没有子网掩码，用于多播（组播）地址；第1部分取值范围是：224~239</p>
+<p><img src="/posts/2552668625.html/1628933999648-320c2d36-6d3f-4756-9a88-5fa4ba961c18.png" alt="image.png"></p>
+<p>E类地址：保留为今后使用；第1部分取值范围是：240~255 </p>
+<p><img src="/posts/2552668625.html/1628934019841-fd1a175f-2b24-4a27-8231-1b8d5dbf3929.png" alt="image.png">  </p>
+<h1 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h1><h2 id="子网掩码的CIDR表示方法"><a href="#子网掩码的CIDR表示方法" class="headerlink" title="子网掩码的CIDR表示方法"></a>子网掩码的CIDR表示方法</h2><p>CIDR（Classless Inter-Domain Routing）：无类别域间路由</p>
+<p>子网掩码的CIDR表示方法 </p>
+<p>192.168.1.100/24，代表子网掩码有24个1，也就是255.255.255.0 </p>
+<p>123.210.100.200/16，代表子网掩码有16个1，也就是255.255.0.0</p>
+<h2 id="为什么要进行子网划分"><a href="#为什么要进行子网划分" class="headerlink" title="为什么要进行子网划分"></a>为什么要进行子网划分</h2><p>如果需要让200台主机在同一个网段内，可以分配一个C类网段，比如192.168.1.0/24 </p>
+<p>共254个可用IP地址：192.168.1.1~192.168.1.254 </p>
+<p>多出54个空闲的IP地址，这种情况并不算浪费资源</p>
+<p>如果需要让500台主机在同一个网段内，那就分配一个B类网段，比如191.100.0.0/16 </p>
+<p>共65534个可用IP地址：191.100.0.1~191.100.255.254 </p>
+<p>多出65034个空闲的IP地址，这种情况属于极大的浪费资源</p>
+<p>如何尽量避免浪费IP地址资源？ </p>
+<p>合理进行子网划分</p>
+<h2 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h2><p>子网划分：借用主机位作子网位，划分出多个子网 </p>
+<p>可用分为 等长子网划分：将一个网段等分成多个子网，每个子网的可用IP地址数量是一样的 </p>
+<p>变长子网划分：每个子网的可用IP地址数量可以是不一样的  </p>
+<p>子网划分器：<a href="http://www.ab126.com/web/3552.html">http://www.ab126.com/web/3552.html</a>  </p>
+<p>子网划分的步骤 </p>
+<p>确定子网的子网掩码长度 </p>
+<p>确定子网中第1个、最后1个主机可用的IP地址</p>
+<h4 id="等长子网划分——等分成2个子网"><a href="#等长子网划分——等分成2个子网" class="headerlink" title="等长子网划分——等分成2个子网"></a>等长子网划分——等分成2个子网</h4><p><img src="/posts/2552668625.html/1628959922263-f20adfd9-9b71-4fc7-9f82-ed75eb4e152d.png" alt="image.png"></p>
+<p>A子网 </p>
+<p>子网掩码：255.255.255.128/25 </p>
+<p>主机可用IP地址：192.168.0.1~192.168.0.126</p>
+<p>B子网 </p>
+<p>子网掩码：255.255.255.128/25 </p>
+<p>主机可用IP地址：192.168.0.129~192.168.0.254</p>
+<h4 id="等长子网划分——等分成4个子网"><a href="#等长子网划分——等分成4个子网" class="headerlink" title="等长子网划分——等分成4个子网"></a>等长子网划分——等分成4个子网</h4><p><img src="/posts/2552668625.html/1628959975821-e58c53ed-8028-4c7c-8637-774caa748945.png" alt="image.png"></p>
+<p>4个子网的子网掩码都是：255.255.255.192/26</p>
+<p>A子网的主机可用IP地址 192.168.0.1~192.168.0.62</p>
+<p>B子网的主机可用IP地址 192.168.0.65~192.168.0.126</p>
+<p>C子网的主机可用IP地址 192.168.0.129~192.168.0.190</p>
+<p>D子网的主机可用IP地址 192.168.0.193~192.168.0.254</p>
+<h5 id="等长子网划分——等分成4个子网的广播地址"><a href="#等长子网划分——等分成4个子网的广播地址" class="headerlink" title="等长子网划分——等分成4个子网的广播地址"></a>等长子网划分——等分成4个子网的广播地址</h5><p><img src="/posts/2552668625.html/1628960056727-14d7fee9-be1f-488f-ab57-86edff40de00.png" alt="image.png"></p>
+<h4 id="等长子网划分——等分成8个子网"><a href="#等长子网划分——等分成8个子网" class="headerlink" title="等长子网划分——等分成8个子网"></a>等长子网划分——等分成8个子网</h4><p><img src="/posts/2552668625.html/1628960075918-62876a3a-2897-4e04-84b4-2ae0068ba9d5.png" alt="image.png"></p>
+<p>4个子网的子网掩码都是：255.255.255.224/27</p>
+<p>A子网：192.168.0.1~192.168.0.30</p>
+<p>B子网：192.168.0.33~192.168.0.62</p>
+<p>C子网：192.168.0.65~192.168.0.94</p>
+<p>D子网：192.168.0.97~192.168.0.126</p>
+<p>E子网：192.168.0.129~192.168.0.158</p>
+<p>F子网：192.168.0.161~192.168.0.190</p>
+<p>G子网：192.168.0.193~192.168.0.222</p>
+<p>H子网：192.168.0.225~192.168.0.254 </p>
+<h4 id="等长子网划分——B类子网划分"><a href="#等长子网划分——B类子网划分" class="headerlink" title="等长子网划分——B类子网划分"></a>等长子网划分——B类子网划分</h4><p><img src="/posts/2552668625.html/1628960187434-9244e108-5b90-446d-83ee-115ae1746f90.png" alt="image.png"></p>
+<h4 id="等长子网划分——A类子网划分"><a href="#等长子网划分——A类子网划分" class="headerlink" title="等长子网划分——A类子网划分"></a>等长子网划分——A类子网划分</h4><p><img src="/posts/2552668625.html/1628960203601-9dc86c96-e248-42a8-9924-047913d662c4.png" alt="image.png"></p>
+<h4 id="变长子网划分"><a href="#变长子网划分" class="headerlink" title="变长子网划分"></a>变长子网划分</h4><p>如果一个子网地址块的长度是原网段的(1/2)^n，那么 子网的子网掩码，就是在原网段的子网掩码基础上增加n个1 不等长的子网，它们的子网掩码也不同 </p>
+<p><img src="/posts/2552668625.html/1628960240353-771952d9-b8c5-496b-9a18-c1cb4ac45fd0.png" alt="image.png"></p>
+<p>假设上图是对192.168.0.0/24进行变长子网划分 </p>
+<p>C网段：子网掩码是255.255.255.128/25 </p>
+<p>B网段：子网掩码是255.255.255.192/26 </p>
+<p>A网段：子网掩码是255.255.255.224/27 </p>
+<p>D网段：子网掩码是255.255.255.252/30 </p>
+<p>E网段：子网掩码是255.255.255.252/30</p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+        <category>MAC&amp;IP</category>
+      </categories>
+      <tags>
+        <tag>计网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二分查找</title>
+    <url>/posts/3907716225.html/</url>
+    <content><![CDATA[<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
+<p>示例 1:</p>
+<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
+<p>输出: 4</p>
+<p>解释: 9 出现在 nums 中并且下标为 4</p>
+<p>示例 2:</p>
+<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
+<p>输出: -1</p>
+<p>解释: 2 不存在 nums 中因此返回 -1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int search(int[] nums, int target) &#123;</span><br><span class="line">        int life=0,right=nums.length-1;</span><br><span class="line">        int p;</span><br><span class="line">        while (life&lt;=right)&#123;</span><br><span class="line">            p=life+(right-life)/2;</span><br><span class="line">            if(nums[p]==target) return p;</span><br><span class="line">            if(nums[p]&lt;target) life=p+1;</span><br><span class="line">            else right=p-1;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分查找是一种基于比较目标值和数组中间元素的教科书式算法。</p>
+<ul>
+<li>如果目标值等于中间元素，则找到目标值。</li>
+<li>如果目标值较小，继续在左侧搜索。</li>
+<li>如果目标值较大，则继续在右侧搜索。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1834295/1625567991316-308e35ad-d3bc-4192-a91e-4cc9569111ee.jpeg" alt="image"></p>
+<h1 id="第一个错误版本"><a href="#第一个错误版本" class="headerlink" title="第一个错误版本"></a>第一个错误版本</h1><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
+<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
+<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
+<p>示例 1：</p>
+<p>输入：n = 5, bad = 4</p>
+<p>输出：4</p>
+<p>解释：</p>
+<p>调用 isBadVersion(3) -&gt; false</p>
+<p>调用 isBadVersion(5) -&gt; true</p>
+<p>调用 isBadVersion(4) -&gt; true</p>
+<p>所以，4 是第一个错误的版本。</p>
+<p>示例 2：</p>
+<p>输入：n = 1, bad = 1</p>
+<p>输出：1</p>
+<p>通过题干我们可以了解到，当一个版本为正确版本后，之前所有的版本都是正确版本，当一个版本为错误版本后之后的版本都是错误版本，我们所做的就是需要找到第一个出错的版本，就可以利用二分查找来确定</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Solution extends VersionControl &#123;</span><br><span class="line">    public int firstBadVersion(int n) &#123;</span><br><span class="line">        int left = 1, right = n;</span><br><span class="line">        while (left &lt; right) &#123; // 循环直至区间左右端点相同</span><br><span class="line">            int mid = left + (right - left) / 2; // 防止计算时溢出</span><br><span class="line">            if (isBadVersion(mid)) &#123;</span><br><span class="line">                right = mid; // 答案在区间 [left, mid] 中</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1; // 答案在区间 [mid+1, right] 中</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 此时有 left == right，区间缩为一个点，即为答案</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
+<p>你可以假设数组中无重复元素。</p>
+<p>示例 1:</p>
+<p>输入: [1,3,5,6], 5</p>
+<p>输出: 2</p>
+<p>示例 2:</p>
+<p>输入: [1,3,5,6], 2</p>
+<p>输出: 1</p>
+<p>示例 3:</p>
+<p>输入: [1,3,5,6], 7</p>
+<p>输出: 4</p>
+<p>示例 4:</p>
+<p>输入: [1,3,5,6], 0</p>
+<p>输出: 0</p>
+<p>此题结合了前两道题，找到那个数的位置是什么，在左右指针移动时我们就要考虑他的角标移动。而且我们还需要一个值来记录循环时需要插入的位置。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int left = 0, right = n - 1, ans = n;</span><br><span class="line">        while (left &lt;= right) &#123;// 循环直至区间左右端点换位</span><br><span class="line">            int mid = ((right - left) &gt;&gt; 1) + left;// 防止计算时溢出</span><br><span class="line">            if (target &lt;= nums[mid]) &#123;</span><br><span class="line">                ans = mid;//记录此次循环中间位置</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">*ans存在的重要性，如果target大于nums中最大值，ans为n输出</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
+
+<p><strong>小知识：</strong>是右移运算，在计算机中是一种运算操作，但是他的运算结果正好能对应一个整数的二分之一值，这就正好能代替数学上的除2运算，但是比除2运算要快。</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>二分查找</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>双指针</title>
+    <url>/posts/2443699409.html/</url>
+    <content><![CDATA[<h1 id="有序数组的平方"><a href="#有序数组的平方" class="headerlink" title=" 有序数组的平方"></a><a href="https://leetcode-cn.com/problems/squares-of-a-sorted-array/"> 有序数组的平方</a></h1><p>给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。</p>
+<p>示例 1：</p>
+<p>输入：nums = [-4,-1,0,3,10]</p>
+<p>输出：[0,1,9,16,100]</p>
+<p>解释：平方后，数组变为 [16,1,0,9,100]</p>
+<p>排序后，数组变为 [0,1,9,16,100]</p>
+<p>示例 2：</p>
+<p>输入：nums = [-7,-3,2,3,11]</p>
+<p>输出：[4,9,9,49,121]</p>
+<p>方法一：直接排序</p>
+<p>思路与算法</p>
+<p><strong>方法一：直接排序（自己想到的）</strong></p>
+<p><strong>思路与算法</strong></p>
+<p>最简单的方法就是将数组 <em>nums</em> 中的数平方后直接排序。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int[] sortedSquares(int[] nums) &#123;</span><br><span class="line">        int[] ans = new int[nums.length];</span><br><span class="line">        for (int i = 0; i &lt; nums.length; ++i) &#123;</span><br><span class="line">            ans[i] = nums[i] * nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        Arrays.sort(ans);</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(nlogn)，其中 n 是数组 nums 的长度。</li>
+</ul>
+<ul>
+<li>空间复杂度：O(logn)。除了存储答案的数组以外，我们需要 O(logn) 的栈空间进行排序。</li>
+</ul>
+<p><strong>方法二：双指针</strong></p>
+<p><strong>思路与算法</strong></p>
+<p>方法一没有利用「数组nums 已经按照升序排序」这个条件。显然，如果数组 nums 中的所有数都是非负数，那么将每个数平方后，数组仍然保持升序；如果数组 nums 中的所有数都是负数，那么将每个数平方后，数组会保持降序。</p>
+<p>由于我们得到了两个已经有序的子数组，因此就可以使用归并的方法进行排序了。具体地，使用两个指针分别指向位置 \textit{neg}neg 和 \textit{neg}+1neg+1，每次比较两个指针对应的数，选择较小的那个放入答案并移动指针。当某一指针移至边界时，将另一指针还未遍历到的数依次放入答案。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int[] sortedSquares(int[] nums) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int negative = -1;</span><br><span class="line">        for (int i = 0; i &lt; n; ++i) &#123;</span><br><span class="line">            if (nums[i] &lt; 0) &#123;</span><br><span class="line">                negative = i;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        int[] ans = new int[n];</span><br><span class="line">        int index = 0, i = negative, j = negative + 1;</span><br><span class="line">        while (i &gt;= 0 || j &lt; n) &#123;</span><br><span class="line">            if (i &lt; 0) &#123;</span><br><span class="line">                ans[index] = nums[j] * nums[j];</span><br><span class="line">                ++j;</span><br><span class="line">            &#125; else if (j == n) &#123;</span><br><span class="line">                ans[index] = nums[i] * nums[i];</span><br><span class="line">                --i;</span><br><span class="line">            &#125; else if (nums[i] * nums[i] &lt; nums[j] * nums[j]) &#123;</span><br><span class="line">                ans[index] = nums[i] * nums[i];</span><br><span class="line">                --i;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                ans[index] = nums[j] * nums[j];</span><br><span class="line">                ++j;</span><br><span class="line">            &#125;</span><br><span class="line">            ++index;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<p>时间复杂度：O(n)O(n)，其中 nn 是数组 \textit{nums}nums 的长度。</p>
+<p>空间复杂度：O(1)O(1)。除了存储答案的数组以外，我们只需要维护常量空间。</p>
+<p><strong>方法三：双指针</strong></p>
+<p><strong>思路与算法</strong></p>
+<p>同样地，我们可以使用两个指针分别指向位置 00 和 n-1n−1，每次比较两个指针对应的数，选择较大的那个逆序放入答案并移动指针。这种方法无需处理某一指针移动至边界的情况，读者可以仔细思考其精髓所在。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int[] sortedSquares(int[] nums) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int[] ans = new int[n];</span><br><span class="line">        for (int i = 0, j = n - 1, pos = n - 1; i &lt;= j;) &#123;</span><br><span class="line">            if (nums[i] * nums[i] &gt; nums[j] * nums[j]) &#123;</span><br><span class="line">                ans[pos] = nums[i] * nums[i];</span><br><span class="line">                ++i;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                ans[pos] = nums[j] * nums[j];</span><br><span class="line">                --j;</span><br><span class="line">            &#125;</span><br><span class="line">            --pos;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复杂度分析</p>
+<ul>
+<li>时间复杂度：O(n)O(n)，其中 nn 是数组 \textit{nums}nums 的长度。</li>
+<li>空间复杂度：O(1)O(1)。除了存储答案的数组以外，我们只需要维护常量空间。</li>
+</ul>
+<h1 id="旋转数组"><a href="#旋转数组" class="headerlink" title="旋转数组"></a>旋转数组</h1><p>给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。</p>
+<p><strong>进阶：</strong></p>
+<p>尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。</p>
+<p>你可以使用空间复杂度为 O(1) 的 原地 算法解决这个问题吗？</p>
+<p>示例 1:</p>
+<p>输入: nums = [1,2,3,4,5,6,7], k = 3</p>
+<p>输出: [5,6,7,1,2,3,4]</p>
+<p>解释:</p>
+<p>向右旋转 1 步: [7,1,2,3,4,5,6]</p>
+<p>向右旋转 2 步: [6,7,1,2,3,4,5]</p>
+<p>向右旋转 3 步: [5,6,7,1,2,3,4]</p>
+<p>示例 2:</p>
+<p>输入：nums = [-1,-100,3,99], k = 2</p>
+<p>输出：[3,99,-1,-100]</p>
+<p>解释: </p>
+<p>向右旋转 1 步: [99,-1,-100,3]</p>
+<p>向右旋转 2 步: [3,99,-1,-100]</p>
+<p><strong>使用额外的数组</strong></p>
+<p>我们可以使用额外的数组来将每个元素放至正确的位置。用 nn 表示数组的长度，我们遍历原数组，将原数组下标为 ii 的元素放至新数组下标为 （i+k)mod n 的位置，最后将新数组拷贝至原数组即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public void rotate(int[] nums, int k) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int[] newArr = new int[n];</span><br><span class="line">        for (int i = 0; i &lt; n; ++i) &#123;</span><br><span class="line">            newArr[(i + k) % n] = nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        System.arraycopy(newArr, 0, nums, 0, n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度： O(n)<em>O</em>(<em>n</em>)，其中 n<em>n</em> 为数组的长度。</li>
+<li>空间复杂度： O(n)<em>O</em>(<em>n</em>)。</li>
+</ul>
+<p><strong>数组翻转</strong></p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原始数组</td>
+<td>1 2 3 4 5 6 7</td>
+</tr>
+<tr>
+<td>翻转所有元素</td>
+<td>7 6 5 4 3 2 1</td>
+</tr>
+<tr>
+<td>翻转[0，k mod n-1]区间的元素</td>
+<td>5 6 7 4 3 2 1</td>
+</tr>
+<tr>
+<td>翻转[k mod n,n-1]区间的元素</td>
+<td>5 6 7 1 2 3 4</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public void rotate(int[] nums, int k) &#123;</span><br><span class="line">        k %= nums.length;</span><br><span class="line">        reverse(nums, 0, nums.length - 1);</span><br><span class="line">        reverse(nums, 0, k - 1);</span><br><span class="line">        reverse(nums, k, nums.length - 1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void reverse(int[] nums, int start, int end) &#123;</span><br><span class="line">        while (start &lt; end) &#123;</span><br><span class="line">            int temp = nums[start];</span><br><span class="line">            nums[start] = nums[end];</span><br><span class="line">            nums[end] = temp;</span><br><span class="line">            start += 1;</span><br><span class="line">            end -= 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复杂度分析</p>
+<ul>
+<li>时间复杂度：O(n)O(n)，其中 nn 为数组的长度。每个元素被翻转两次，一共 nn 个元素，因此总时间复杂度为 O(2n)=O(n)O(2n)=O(n)。</li>
+<li>空间复杂度：O(1)O(1)。</li>
+</ul>
+<h1 id="移动零"><a href="#移动零" class="headerlink" title="移动零"></a>移动零</h1><p>给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
+<p>示例:</p>
+<p>输入: [0,1,0,3,12]</p>
+<p>输出: [1,3,12,0,0]</p>
+<p>题解是用了双指针的方式来解决这个问题；使用双指针，左指针指向当前已经处理好的序列的尾部，右指针指向待处理序列的头部。右指针不断向右移动，每次右指针指向非零数，则将左右指针对应的数交换，同时左指针右移。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public void moveZeroes(int[] nums) &#123;</span><br><span class="line">        int n = nums.length, left = 0, right = 0;</span><br><span class="line">        while (right &lt; n) &#123;</span><br><span class="line">            if (nums[right] != 0) &#123; </span><br><span class="line">                swap(nums, left, right);</span><br><span class="line">                left++;</span><br><span class="line">            &#125;</span><br><span class="line">            right++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void swap(int[] nums, int left, int right) &#123;</span><br><span class="line">        int temp = nums[left];</span><br><span class="line">        nums[left] = nums[right];</span><br><span class="line">        nums[right] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我当时的想法是，找到数组中不为零的数，按照顺序重新排列，最后没有数的位置补零即可，因为省去了交换的，会节省比较多的时间，也有点走题目漏洞的感觉</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public void moveZeroes(int[] nums) &#123;</span><br><span class="line">        int indexNow = 0;</span><br><span class="line">        int indexNum = 0;</span><br><span class="line">        int m = nums.length;</span><br><span class="line"></span><br><span class="line">        while(indexNum&lt;m)&#123;</span><br><span class="line">            if(nums[indexNum] != 0) &#123;</span><br><span class="line">                nums[indexNow++] = nums[indexNum];</span><br><span class="line">            &#125;</span><br><span class="line">            ++indexNum;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for(int i = indexNow; i &lt; m; i++)&#123;</span><br><span class="line">            nums[i] = 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="两数之和——输入有数有序数组"><a href="#两数之和——输入有数有序数组" class="headerlink" title="两数之和——输入有数有序数组"></a>两数之和——输入有数有序数组</h1><p>给定一个已按照 升序排列  的整数数组 numbers ，请你从数组中找出两个数满足相加之和等于目标数 target 。</p>
+<p>函数应该以长度为 2 的整数数组的形式返回这两个数的下标值。numbers 的下标 从 1 开始计数 ，所以答案数组应当满足 1 &lt;= answer[0] &lt; answer[1] &lt;= numbers.length 。</p>
+<p>你可以假设每个输入只对应唯一的答案，而且你不可以重复使用相同的元素。</p>
+<p>示例 1：</p>
+<p>输入：numbers = [2,7,11,15], target = 9</p>
+<p>输出：[1,2]</p>
+<p>解释：2 与 7 之和等于目标数 9 。因此 index1 = 1, index2 = 2 。</p>
+<p>示例 2：</p>
+<p>输入：numbers = [2,3,4], target = 6</p>
+<p>输出：[1,3]</p>
+<p>示例 3：</p>
+<p>输入：numbers = [-1,0], target = -1</p>
+<p>输出：[1,2]</p>
+<p>最开始的想法是想确定一个数，在找到另一个数，后来发现这种方法太费时间，但是后来官方还是给出了这种解法的题解（当时就觉得每个数都要找一遍很费时间，就没有细化的想下去。）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int[] twoSum(int[] numbers, int target) &#123;</span><br><span class="line">        for (int i = 0; i &lt; numbers.length; ++i) &#123;</span><br><span class="line">            int low = i + 1, high = numbers.length - 1;</span><br><span class="line">            while (low &lt;= high) &#123;</span><br><span class="line">                int mid = (high - low) / 2 + low;</span><br><span class="line">                if (numbers[mid] == target - numbers[i]) &#123;</span><br><span class="line">                    return new int[]&#123;i + 1, mid + 1&#125;;</span><br><span class="line">                &#125; else if (numbers[mid] &gt; target - numbers[i]) &#123;</span><br><span class="line">                    high = mid - 1;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    low = mid + 1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return new int[]&#123;-1, -1&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我还是比较热衷有第二种双指针的解法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int[] twoSum(int[] numbers, int target) &#123;</span><br><span class="line">        int low = 0, high = numbers.length - 1;</span><br><span class="line">        while (low &lt; high) &#123;</span><br><span class="line">            int sum = numbers[low] + numbers[high];</span><br><span class="line">            if (sum == target) &#123;</span><br><span class="line">                return new int[]&#123;low + 1, high + 1&#125;;</span><br><span class="line">            &#125; else if (sum &lt; target) &#123;</span><br><span class="line">                ++low;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                --high;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return new int[]&#123;-1, -1&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="反转字符串"><a href="#反转字符串" class="headerlink" title="反转字符串"></a>反转字符串</h1><p>编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。</p>
+<p>不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。</p>
+<p>示例 1：</p>
+<p>输入：[“h”,”e”,”l”,”l”,”o”]</p>
+<p>输出：[“o”,”l”,”l”,”e”,”h”]</p>
+<p>示例 2：</p>
+<p>输入：[“H”,”a”,”n”,”n”,”a”,”h”]</p>
+<p>输出：[“h”,”a”,”n”,”n”,”a”,”H”]</p>
+<p>这题什么都不要说了，就记录一下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public void reverseString(char[] s) &#123;</span><br><span class="line">        int n = s.length;</span><br><span class="line">        for (int left = 0, right = n - 1; left &lt; right; ++left, --right) &#123;</span><br><span class="line">            char tmp = s[left];</span><br><span class="line">            s[left] = s[right];</span><br><span class="line">            s[right] = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="反转字符串中的单词"><a href="#反转字符串中的单词" class="headerlink" title="反转字符串中的单词"></a>反转字符串中的单词</h1><p>给定一个字符串，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。</p>
+<p>示例：</p>
+<p>输入：”Let’s take LeetCode contest”</p>
+<p>输出：”s’teL ekat edoCteeL tsetnoc”</p>
+<p>刚开始就想到了不好的东西导致解题思路一直不对，仔细读了题干发现，和上道题不一样，可以开辟新的空间。</p>
+<p>开辟一个新字符串。然后从头到尾遍历原字符串，直到找到空格为止，此时找到了一个单词，并能得到单词的起止位置。随后，根据单词的起止位置，可以将该单词逆序放到新字符串当中。如此循环多次，直到遍历完原字符串，就能得到翻转后的结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public String reverseWords(String s) &#123;</span><br><span class="line">        StringBuffer ret = new StringBuffer();</span><br><span class="line">        int length = s.length();</span><br><span class="line">        int i = 0;</span><br><span class="line">        while (i &lt; length) &#123;</span><br><span class="line">            int start = i;</span><br><span class="line">            while (i &lt; length &amp;&amp; s.charAt(i) != &#x27; &#x27;) &#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            for (int p = start; p &lt; i; p++) &#123;</span><br><span class="line">                ret.append(s.charAt(start + i - 1 - p));</span><br><span class="line">            &#125;</span><br><span class="line">            while (i &lt; length &amp;&amp; s.charAt(i) == &#x27; &#x27;) &#123;</span><br><span class="line">                i++;</span><br><span class="line">                ret.append(&#x27; &#x27;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ret.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>后来查了百度，发现，可以利用toCharArray()方法将字符串转变成数组</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public String reverseWords(String s) &#123;</span><br><span class="line">        char[] array = s.toCharArray();</span><br><span class="line">        int start = 0;</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] == &#x27; &#x27;) &#123;</span><br><span class="line">                reverse(array, start, i - 1);</span><br><span class="line">                start = i + 1; // 更新start为下一个单词的左索引</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i == array.length - 1) &#123;</span><br><span class="line">                reverse(array, start, i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return new String(array);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void reverse(char[] array, int l, int r) &#123;</span><br><span class="line">        while (l &lt; r) &#123;</span><br><span class="line">            char temp = array[l];</span><br><span class="line">            array[l] = array[r];</span><br><span class="line">            array[r] = temp;</span><br><span class="line">            l += 1;</span><br><span class="line">            r -= 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>算法</category>
+        <category>双指针</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>图</title>
+    <url>/posts/3993241091.html/</url>
+    <content><![CDATA[<p><strong>前言：</strong></p>
+<p>唉！昨天学了一天的并查集，但是觉得自己并没有搞的特别明白，就算写笔记意义也不大，先跳过了，过一段时间之后再来学习并查集，但是这个图还算是可以。</p>
+<p><strong>介绍：</strong></p>
+<p>图由顶点（vertex）和边（edge）组成，通常表示为 G = (V, E)；</p>
+<p>G表示一个图，V是顶点集，E是边集；</p>
+<p>顶点集V有穷且非空；</p>
+<p>任意两个顶点之间都可以用边来表示它们之间的关系，边集E可以是空的</p>
+<p><img src="/posts/3993241091.html/1628657582650-5905f0d7-8048-4ed2-aff3-1254333da474.png" alt="image.png"></p>
+<p><strong>应用场景：</strong></p>
+<p><img src="/posts/3993241091.html/1628658038315-f4ac6809-634b-4739-b19e-eaf32a6e12ed.png" alt="image.png"><img src="/posts/3993241091.html/1628658049366-fac998a5-eb2e-4a9d-91a6-312b0981b1a4.png" alt="image.png"></p>
+<p>社交网络，地图等。。。</p>
+<h1 id="图的种类"><a href="#图的种类" class="headerlink" title="图的种类"></a>图的种类</h1><h3 id="有向图"><a href="#有向图" class="headerlink" title="有向图"></a>有向图</h3><p> 有向图的边是有明确方向的 </p>
+<p><img src="/posts/3993241091.html/1628658114609-b922cfd6-6cb6-4cee-8723-5701cc7c83a6.png" alt="image.png"></p>
+<p><strong>有向无环图</strong>（Directed Acyclic Graph，简称 DAG） 如果一个有向图，从任意顶点出发无法经过若干条边回到该顶点，那么它就是一个有向无环图 </p>
+<p><img src="/posts/3993241091.html/1628658150350-dbb579eb-c0aa-4d47-b378-d581a75f3ae8.png" alt="image.png"></p>
+<h4 id="出度、入度"><a href="#出度、入度" class="headerlink" title="出度、入度"></a>出度、入度</h4><p>出度、入度适用于有向图</p>
+<p>出度（Out-degree） 一个顶点的出度为 x，是指有 x 条边以该顶点为起点 顶点11的出度是3</p>
+<p>入度（In-degree） 一个顶点的入度为 x，是指有 x 条边以该顶点为终点 顶点11的入度是2 </p>
+<p><img src="/posts/3993241091.html/1628658209857-56ee3748-30c9-4f9f-b5d4-37df32a42bb4.png" alt="image.png"></p>
+<h3 id="无向图"><a href="#无向图" class="headerlink" title="无向图"></a>无向图</h3><p>无向图的边是无方向的 </p>
+<p><img src="/posts/3993241091.html/1628658285899-9dfa0f08-a9bf-4a4f-8cc8-8e6c601a889a.png" alt="image.png"></p>
+<p>效果类似于下面的有向图 </p>
+<p><img src="/posts/3993241091.html/1628658298899-100cd689-ede8-4581-a37d-81f26a1f3549.png" alt="image.png"></p>
+<h3 id="混合图"><a href="#混合图" class="headerlink" title="混合图"></a>混合图</h3><p><img src="/posts/3993241091.html/1628658323152-39ef204a-6fc2-4d31-83b4-9631dd8e9ed3.png" alt="image.png"></p>
+<h3 id="简单图、多重图"><a href="#简单图、多重图" class="headerlink" title="简单图、多重图"></a>简单图、多重图</h3><p><strong>平行边</strong> </p>
+<p>在无向图中，关联一对顶点的无向边如果多于1条，则称这些边为平行边 在有向图中，关联一对顶点的有向边如果多于1条，并且它们的的方向相同，则称这些边为平行边</p>
+<p><strong>多重图</strong>（Multigraph） 有平行边或者有自环的图； <strong>简单图</strong>（Simple Graph） 既没有平行边也不没有自环的图 </p>
+<p><img src="/posts/3993241091.html/1628658483116-61cd81dc-5b18-45d3-8f8e-7cfa3a8d3dcf.png" alt="image.png"></p>
+<h3 id="无向完全图"><a href="#无向完全图" class="headerlink" title="无向完全图"></a>无向完全图</h3><p>无向完全图的任意两个顶点之间都存在边</p>
+<p>n 个顶点的无向完全图有 n(n − 1)/2 条边 n − 1    +    n − 2    +    n − 3    + ⋯ + 3 + 2 + 1</p>
+<p><img src="/posts/3993241091.html/1628658542366-b373073f-fb7c-4833-b4a5-7ceeec3d7f7c.png" alt="image.png"></p>
+<h3 id="有向完全图"><a href="#有向完全图" class="headerlink" title="有向完全图"></a>有向完全图</h3><p>有向完全图的任意两个顶点之间都存在方向相反的两条边</p>
+<p>n 个顶点的有向完全图有 n(n − 1) 条边 </p>
+<p><img src="/posts/3993241091.html/1628659923141-9975a6d1-9d0a-4ed7-af83-886de691f9ee.png" alt="image.png"></p>
+<p>稠密图（Dense Graph）：边数接近于或等于完全图 </p>
+<p>稀疏图（Sparse Graph）：边数远远少于完全图 </p>
+<h3 id="有权图"><a href="#有权图" class="headerlink" title="有权图"></a>有权图</h3><p><img src="/posts/3993241091.html/1628660181749-99a3d2f6-3959-4905-b4f6-e85d881da004.png" alt="image.png"></p>
+<h2 id="连通图"><a href="#连通图" class="headerlink" title="连通图"></a>连通图</h2><p>如果顶点 x 和 y 之间存在可相互抵达的路径（直接或间接的路径），则称 x 和 y 是连通的</p>
+<p>如果无向图 G 中任意2个顶点都是连通的，则称G为连通图 </p>
+<p><img src="/posts/3993241091.html/1628660235400-1cd3ba4c-4ac5-4651-97d8-a124a44462ac.png" alt="image.png"></p>
+<h3 id="连通分量"><a href="#连通分量" class="headerlink" title="连通分量"></a>连通分量</h3><p>连通分量：无向图的极大连通子图</p>
+<p>连通图只有一个连通分量，即其自身；非连通的无向图有多个连通分量</p>
+<p>下面的无向图有3个连通分量 </p>
+<p><img src="/posts/3993241091.html/1628660304778-9b8a3f15-1eb7-456a-88a4-2bca577a67f3.png" alt="image.png"></p>
+<h3 id="强连通图"><a href="#强连通图" class="headerlink" title="强连通图"></a>强连通图</h3><p>如果有向图 G 中任意2个顶点都是连通的，则称G为强连通图 ,并不是说要直接相连,是相连就可以</p>
+<p><img src="/posts/3993241091.html/1628660403565-45105917-c72e-475b-8010-fa6d1e881ca2.png" alt="image.png"></p>
+<h3 id="强连通分量"><a href="#强连通分量" class="headerlink" title="强连通分量"></a>强连通分量</h3><p>有向图的极大强连通子图 强连通图只有一个强连通分量，即其自身；非强连通的有向图有多个强连通分量</p>
+<p><img src="/posts/3993241091.html/1628660483437-931d45c4-73d9-485e-b647-b16632d76144.png" alt="image.png"></p>
+<h1 id="图的实现"><a href="#图的实现" class="headerlink" title="图的实现"></a>图的实现</h1><h2 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h2><p>邻接矩阵的存储方式 </p>
+<p>一维数组存放顶点信息 </p>
+<p>二维数组存放边信息 </p>
+<p><img src="/posts/3993241091.html/1628660634155-3d2274f0-fe5a-4e2e-bdb1-50776e66ad28.png" alt="image.png"></p>
+<p> 邻接矩阵比较适合稠密图 不然会比较浪费内存</p>
+<p><img src="/posts/3993241091.html/1628660873033-d0473340-487b-4048-aa7b-452669365b1d.png" alt="image.png"></p>
+<h2 id="邻接表"><a href="#邻接表" class="headerlink" title="邻接表"></a>邻接表</h2><p><img src="/posts/3993241091.html/1628660898916-e281634c-9ddb-4b37-bc45-f271af608a4f.png" alt="image.png"></p>
+<p><img src="/posts/3993241091.html/1628660923947-332eb67e-c1d4-48aa-9ea3-8b1a9ca32fef.png" alt="image.png"></p>
+<h1 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h1><p>图的遍历 </p>
+<p>从图中某一顶点出发访问图中其余顶点，且每一个顶点仅被访问一次</p>
+<p>图有2种常见的遍历方式（有向图、无向图都适用） </p>
+<p>广度优先搜索（Breadth First Search，BFS），又称为宽度优先搜索、横向优先搜索  </p>
+<p>深度优先搜索（Depth First Search，DFS） 发明“深度优先搜索”算法的2位科学家在1986年共同获得计算机领域的最高奖：图灵奖 </p>
+<h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><p>二叉树层序遍历就是一种广度优先搜索 </p>
+<p><img src="/posts/3993241091.html/1628683474690-544ac26b-2789-412f-a1ba-b72ecca36442.png" alt="image.png"></p>
+<p><img src="/posts/3993241091.html/1628683484031-8270f91e-da27-4234-a836-8e47a0446578.png" alt="image.png"></p>
+<p><img src="/posts/3993241091.html/1628683497620-bd67476c-3f7e-4c4e-b8a1-d3ed3002dea1.png" alt="image.png"></p>
+<h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><p>二叉树前序遍历就是一种深度优先搜索 </p>
+<p><img src="/posts/3993241091.html/1628683533612-0234828a-8eee-4ff3-a8ff-41ed4de9da58.png" alt="image.png"></p>
+<p><img src="/posts/3993241091.html/1628683544956-26b95925-b68a-4c1f-93f7-6cc54cee4111.png" alt="image.png"></p>
+<p>图的知识还有许多,因为都是理论,学的不是很透彻,等着下会做题的时候一起写</p>
+]]></content>
+      <categories>
+        <category>数据结构</category>
+        <category>图</category>
+      </categories>
+      <tags>
+        <tag>图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>归并排序2</title>
+    <url>/posts/362397694.html/</url>
+    <content><![CDATA[<p><strong>前言：</strong></p>
+<p>因为排序的种类实在是太多了，放在一篇文章里显得过于冗杂，所以把简单的排序方法放在一起了。</p>
+<p>今天要说的是归并排序，之前我没有接触，或者用过这个排序方式，也可能是我孤陋寡闻了。</p>
+<p>归并排序是1945年由约翰·冯·诺伊曼（John von Neumann）首次提出 。</p>
+<p><strong>原理：</strong></p>
+<p>执行流程 ① 不断地将当前序列平均分割成2个子序列 直到不能再分割（序列中只剩1个元素）； ② 不断地将2个子序列合并成一个有序序列 直到最终只剩下1个有序序列</p>
+<p><img src="/posts/362397694.html/1628328128618-6a6d0a8e-6650-4f27-b337-82d881a64fdc.png" alt="image.png"></p>
+<p>归并排序的主要步骤分为两个部分，一个是分开，一个是合并</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">protected void sort() &#123;</span><br><span class="line">        leftArray = (T[]) new Comparable[array.length &gt;&gt; 1];</span><br><span class="line">        sort(0, array.length);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // T(n) = T(n/2) + T(n/2) + O(n)</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 对 [begin, end) 范围的数据进行归并排序</span><br><span class="line">     */</span><br><span class="line">    private void sort(int begin, int end) &#123;</span><br><span class="line">        if (end - begin &lt; 2) return;</span><br><span class="line">        </span><br><span class="line">        int mid = (begin + end) &gt;&gt; 1;</span><br><span class="line">        sort(begin, mid);</span><br><span class="line">        sort(mid, end);</span><br><span class="line">        merge(begin, mid, end);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们已经将数组切开之后，我们该考虑如何让数组有序的合并在一起。</p>
+<p><img src="/posts/362397694.html/1628331170530-c49b9436-c1d6-4bc5-9e4b-4f7be396abf6.png" alt="image.png"></p>
+<p>我们将子数组开头第一个数字称之为索引，我们两两比较索引大小，将较小的索引提出，放到新的数组中，去除索引的组数下一位就是新的索引。</p>
+<p>但是，我们可能重新开辟一块新的空间来放置整理好后的数据； 需要 merge 的 2 组序列存在于同一个数组中，并且是挨在一起的，</p>
+<p><img src="/posts/362397694.html/1628331732980-bb618b2e-adc4-4817-9c41-216b13a363bc.png" alt="image.png"></p>
+<p>为了更好地完成 merge 操作，最好将其中 1 组序列备份出来，比如 [begin, mid) </p>
+<p><img src="/posts/362397694.html/1628331755711-bf19d171-a3b9-4dc8-abe8-b31497890787.png" alt="image.png"></p>
+<p>li == 0；le == mid – begin； ri == mid；re == end </p>
+<p><img src="/posts/362397694.html/1628331871912-761186ff-65a2-44ac-b5ad-0544112a3326.png" alt="image.png"></p>
+<p>我们排序到最后，两边数组总一个会先结束</p>
+<p>当左边先结束的</p>
+<p><img src="/posts/362397694.html/1628332296373-57dad76b-0ffb-4abd-b87f-49a1735914ef.png" alt="image.png"></p>
+<p>左边先结束，就是右边有剩余，我们不需要任何操作</p>
+<p>当右边先结束</p>
+<p><img src="/posts/362397694.html/1628332470268-f456fc31-bc17-47d9-9de9-f465566a20a1.png" alt="image.png"></p>
+<p>右边先结束，就是左边有剩余，我们需要将左边剩余部分原封不动的转移过来。</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private void merge(int begin, int mid, int end) &#123;</span><br><span class="line">        int li = 0, le = mid - begin;</span><br><span class="line">        int ri = mid, re = end;</span><br><span class="line">        int ai = begin;</span><br><span class="line"></span><br><span class="line">        // 备份左边数组</span><br><span class="line">        for (int i = li; i &lt; le; i++) &#123;</span><br><span class="line">            leftArray[i] = array[begin + i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 如果左边还没有结束</span><br><span class="line">        while (li &lt; le) &#123;</span><br><span class="line">            if (ri &lt; re &amp;&amp; (array[ri]-leftArray[li]) &lt; 0) &#123;</span><br><span class="line">                array[ai++] = array[ri++];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                array[ai++] = leftArray[li++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p><img src="/posts/362397694.html/image-20210807190819849.png" alt="image-20210807190819849"></p>
+<p>这是一段完整的归并排序代码，可以debug来查看代码运行过程，深入学习</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class test &#123;</span><br><span class="line">    private int[] leftArray;</span><br><span class="line">    private int[] array=&#123;1,4,2,12,16,19,7,8,3,9&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        test t=new test();</span><br><span class="line">        t.sort();</span><br><span class="line">        for(int i=0;i&lt;t.array.length;i++)&#123;</span><br><span class="line">            System.out.println(t.array[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    protected void sort() &#123;</span><br><span class="line">        leftArray = new int[array.length &gt;&gt; 1];</span><br><span class="line">        sort(0, array.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // T(n) = T(n/2) + T(n/2) + O(n)</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 对 [begin, end) 范围的数据进行归并排序</span><br><span class="line">     */</span><br><span class="line">    private void sort(int begin, int end) &#123;</span><br><span class="line">        if (end - begin &lt; 2) &#123;return;&#125;</span><br><span class="line"></span><br><span class="line">        int mid = (begin + end) &gt;&gt; 1;</span><br><span class="line">        sort(begin, mid);</span><br><span class="line">        sort(mid, end);</span><br><span class="line">        merge(begin, mid, end);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 将 [begin, mid) 和 [mid, end) 范围的序列合并成一个有序序列</span><br><span class="line">     */</span><br><span class="line">    private void merge(int begin, int mid, int end) &#123;</span><br><span class="line">        int li = 0, le = mid - begin;</span><br><span class="line">        int ri = mid, re = end;</span><br><span class="line">        int ai = begin;</span><br><span class="line"></span><br><span class="line">        // 备份左边数组</span><br><span class="line">        for (int i = li; i &lt; le; i++) &#123;</span><br><span class="line">            leftArray[i] = array[begin + i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 如果左边还没有结束</span><br><span class="line">        while (li &lt; le) &#123;</span><br><span class="line">            if (ri &lt; re &amp;&amp; (array[ri]-leftArray[li]) &lt; 0) &#123;</span><br><span class="line">                array[ai++] = array[ri++];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                array[ai++] = leftArray[li++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>算法</category>
+        <category>排序</category>
+      </categories>
+      <tags>
+        <tag>归并排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>排序1</title>
+    <url>/posts/2755965992.html/</url>
+    <content><![CDATA[<h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><p>冒泡排序可能是我们大部分人接触的第一个排序方法，也是最最最基础的算法了。</p>
+<p><strong>原理</strong>：</p>
+<p>​    比较两个相邻的元素，将值大的元素交换到右边</p>
+<p><strong>思路：</strong></p>
+<p>​    依次比较相邻的两个数，将比较小的数放在前面，比较大的数放在后面。</p>
+<p>　　　　(1)第一次比较：首先比较第一和第二个数，将小数放在前面，将大数放在后面。</p>
+<p>　　　　(2)比较第2和第3个数，将小数 放在前面，大数放在后面。</p>
+<p>　　　　……</p>
+<p>　　　　(3)如此继续，知道比较到最后的两个数，将小数放在前面，大数放在后面，重复步骤，直至全部排序完成</p>
+<p>　　　　(4)在上面一趟比较完成后，最后一个数一定是数组中最大的一个数，所以在比较第二趟的时候，最后一个数是不参加比较的。</p>
+<p>　　　　(5)在第二趟比较完成后，倒数第二个数也一定是数组中倒数第二大数，所以在第三趟的比较中，最后两个数是不参与比较的。</p>
+<p>　　　　(6)依次类推，每一趟比较次数减少依次</p>
+<p><img src="/posts/2755965992.html/1.png" alt="image.png"></p>
+<p>(2)第一趟排序：</p>
+<p>　　　　　　第一次排序：10和1比较，10大于1，交换位置 　  [1,10,35,61,89,36,55]</p>
+<p>　　　　　　第二趟排序：10和35比较，10小于35，不交换位置　　[1,10,35,61,89,36,55]</p>
+<p>　　　　　　第三趟排序：35和61比较，35小于61，不交换位置　　[1,10,35,61,89,36,55]</p>
+<p>　　　　　　第四趟排序：61和89比较，61小于89，不交换位置　　[1,10,35,61,89,36,55]</p>
+<p> 　　　　 第五趟排序：89和36比较，89大于36，交换位置　　　[1,10,35,61,36,89,55]</p>
+<p>　　　　　　第六趟排序：89和55比较，89大于55，交换位置　　　[1,10,35,61,36,55,89]</p>
+<p>　　　　　　第一趟总共进行了六次比较，排序结果：[1,10,35,61,36,55,89]</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> end = array.length - <span class="number">1</span>; end &gt; <span class="number">0</span>; end--) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> begin = <span class="number">1</span>; begin &lt;= end; begin++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (array[begin] &lt; array[begin - <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">int</span> tmp = array[begin];</span><br><span class="line">                    array[begin] = array[begin - <span class="number">1</span>];</span><br><span class="line">                    array[begin - <span class="number">1</span>] = tmp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p>　　　　(1)由此可见：N个数字要排序完成，总共进行N-1趟排序，每i趟的排序次数为(N-i)次，所以可以用双重循环语句，外层控制循环多少趟，内层控制每一趟的循环次数</p>
+<p>　　　　(2)冒泡排序的优点：每进行一趟排序，就会少比较一次，因为每进行一趟排序都会找出一个较大值。如上例：第一趟比较之后，排在最后的一个数一定是最大的一个数，第二趟排序的时候，只需要比较除了最后一个数以外的其他的数，同样也能找出一个最大的数排在参与第二趟比较的数后面，第三趟比较的时候，只需要比较除了最后两个数以外的其他的数，以此类推……也就是说，没进行一趟比较，每一趟少比较一次，一定程度上减少了算法的量。</p>
+<p><strong>优化1：（只能在数组前部部分有序的情况下优化）</strong></p>
+<p>如果经过一次排序后，剩下未排序的数字已经排列好，无需剩下的多次循环排序；则我们应设定变量来控制终止剩下的循环。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> end = array.length - <span class="number">1</span>; end &gt; <span class="number">0</span>; end--) &#123;</span><br><span class="line">            <span class="keyword">boolean</span> sorted = <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> begin = <span class="number">1</span>; begin &lt;= end; begin++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (array[begin] &lt; array[begin - <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">int</span> tmp = array[begin];</span><br><span class="line">                    array[begin] = array[begin - <span class="number">1</span>];</span><br><span class="line">                    array[begin - <span class="number">1</span>] = tmp;</span><br><span class="line">                    sorted = <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (sorted) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>优化2：（数组中有有序部分优化）</strong></p>
+<p>在数组中，有着片段的子数组是有序的，在排序中我们不需要对他进行排列，可以将他视为一个整体进行排列；如果序列尾部已经局部有序，可以记录最后1次交换的位置，减少比较次数 。</p>
+<p><img src="/posts/2755965992.html/2.png" alt="出来吧.png"></p>
+<p>最后1次交换的位置是6</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> end = array.length - <span class="number">1</span>; end &gt; <span class="number">0</span>; end--) &#123;</span><br><span class="line">            <span class="comment">// sortedIndex的初始值在数组完全有序的时候有用</span></span><br><span class="line">            <span class="keyword">int</span> sortedIndex = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> begin = <span class="number">1</span>; begin &lt;= end; begin++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (array[begin] &lt; array[begin - <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">int</span> tmp = array[begin];</span><br><span class="line">                    array[begin] = array[begin - <span class="number">1</span>];</span><br><span class="line">                    array[begin - <span class="number">1</span>] = tmp;</span><br><span class="line">                    sortedIndex = begin;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            end = sortedIndex;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p>最坏、平均时间复杂度：O(n2)； 最好时间复杂度：O(n) ；空间复杂度：O(1) ；</p>
+<p>优化之后冒泡排序，能快速地将数组内，已经排好序的子数组，不经子数组内部排序，将子数组当成一个整体进行排序；在某个数组中有多个已排好序的子数组，在时间运算上有极大的提升。</p>
+<p>如果相等的2个元素，在排序前后的相对位置保持不变，那么这是稳定的排序算法 </p>
+<p>排序前：      5, 1,3𝑎, 4,7,3𝑏 </p>
+<p>稳定的排序：   1,3𝑎, 3𝑏, 4,5,7 </p>
+<p>不稳定的排序： 1, 3𝑏, 3𝑎,4, 5,7  </p>
+<p>对自定义对象进行排序时，稳定性会影响最终的排序效果  </p>
+<p>冒泡排序属于稳定的排序算法 稍有不慎，稳定的排序算法也能被写成不稳定的排序算法，比如下面的冒泡排序代码是不稳定的</p>
+<p><img src="/posts/2755965992.html/1628229869158-d3d935de-990a-48f3-b99b-db4dfa487334.png" alt="image.png"></p>
+<h1 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h1><p>在我看来选择排序的冒泡排序有着异曲同工之妙，两者的区别是冒泡排序是遇到比自己大的就进行一次交换，而选择排序是找到此次排序中的最大值之后再进行一次交换，减少了不必要的交换次数。</p>
+<p><strong>原理：</strong></p>
+<p>1.从序列中找出最大的那个元素，然后与最末尾的元素交换位置 执行完一轮后，最末尾的那个元素就是最大的元素；</p>
+<p>2.忽略 1 中曾经找到的最大元素，重复执行步骤 1；</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> end = array.length - <span class="number">1</span>; end &gt; <span class="number">0</span>; end--) &#123;</span><br><span class="line">            <span class="keyword">int</span> maxIndex = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> begin = <span class="number">1</span>; begin &lt;= end; begin++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (array[maxIndex] &lt;= array[begin]) &#123;</span><br><span class="line">                    maxIndex = begin;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> tmp = array[maxIndex];</span><br><span class="line">            array[maxIndex] = array[end];</span><br><span class="line">            array[end] = tmp;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p>选择排序的交换次数要远远少于冒泡排序，平均性能优于冒泡排序 ；</p>
+<p>最好、最坏、平均时间复杂度：O(n2)，空间复杂度：O(1)，属于不稳定排序 ；</p>
+<h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><p>堆排序的排序方式可以看成选择排序的优化，在未排序部分利用堆的方式来寻找最大值。</p>
+<p><strong>原理：</strong></p>
+<p>执行流程 ：① 对序列进行原地建堆（heapify）； ② 重复执行以下操作，直到堆的元素数量为 1 ；交换堆顶元素与尾元素 ；堆的元素数量减 1 ；对 0 位置进行 1 次 siftDown 操作</p>
+<p><img src="/posts/2755965992.html/1628241066154-b2712219-05e7-4e1c-8fb4-00741b50283b.png" alt="image.png"><img src="/posts/2755965992.html/1628241075798-4cd4539b-67d1-486a-b405-a8f64e01cc26.png" alt="image.png"></p>
+<p><img src="/posts/2755965992.html/1628241095710-259f3776-2b55-4059-b0db-b4e7d0f47a36.png" alt="image.png"></p>
+<p><img src="/posts/2755965992.html/1628241106503-dd59400a-b050-443f-92c8-f82d4981d020.png" alt="image.png"></p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">        <span class="comment">// 原地建堆</span></span><br><span class="line">        heapSize = array.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = (heapSize &gt;&gt; <span class="number">1</span>) - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            siftDown(i);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (heapSize &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="comment">// 交换堆顶元素和尾部元素</span></span><br><span class="line">            swap(<span class="number">0</span>, --heapSize);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 对0位置进行siftDown（恢复堆的性质）</span></span><br><span class="line">            siftDown(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">siftDown</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        T element = array[index];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> half = heapSize &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (index &lt; half) &#123; <span class="comment">// index必须是非叶子节点</span></span><br><span class="line">            <span class="comment">// 默认是左边跟父节点比</span></span><br><span class="line">            <span class="keyword">int</span> childIndex = (index &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">            T child = array[childIndex];</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">int</span> rightIndex = childIndex + <span class="number">1</span>;</span><br><span class="line">            <span class="comment">// 右子节点比左子节点大</span></span><br><span class="line">            <span class="keyword">if</span> (rightIndex &lt; heapSize &amp;&amp; </span><br><span class="line">                    cmp(array[rightIndex], child) &gt; <span class="number">0</span>) &#123; </span><br><span class="line">                child = array[childIndex = rightIndex];</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 大于等于子节点</span></span><br><span class="line">            <span class="keyword">if</span> (cmp(element, child) &gt;= <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">            </span><br><span class="line">            array[index] = child;</span><br><span class="line">            index = childIndex;</span><br><span class="line">        &#125;</span><br><span class="line">        array[index] = element;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p>相较于选择排序，在选取最大值时利用了堆的数据结构，降低了复杂度，因为是利用数组原地进行建堆，所以空间复杂度为O(1)</p>
+<p>最好、最坏、平均时间复杂度：O(nlogn)，空间复杂度：O(1)，属于不稳定排序 ；</p>
+<h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p> 插入排序非常类似于扑克牌的排序 </p>
+<p><img src="/posts/2755965992.html/1628258813633-ed4291cd-e08a-4ef5-95c9-65ccd6be0153.png" alt="image.png"></p>
+<p> <strong>原理****：</strong></p>
+<p>① 在执行过程中，插入排序会将序列分为2部分 头部是已经排好序的，尾部是待排序的 </p>
+<p>② 从头开始扫描每一个元素 每当扫描到一个元素，就将它插入到头部合适的位置，使得头部数据依然保持有序 </p>
+<p><img src="/posts/2755965992.html/1628258885938-05355391-0a96-4095-9511-b504ac6c2a50.png" alt="image.png"></p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> begin = <span class="number">1</span>; begin &lt; array.length; begin++) &#123;</span><br><span class="line">        <span class="keyword">int</span> cur = begin;</span><br><span class="line">        <span class="keyword">while</span> (cur &gt; <span class="number">0</span> &amp;&amp; cmp(cur, cur - <span class="number">1</span>) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            swap(cur, cur - <span class="number">1</span>);</span><br><span class="line">            cur--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *cmp</span></span><br><span class="line"><span class="comment"> * 返回值等于0，代表 array[i1] == array[i2]</span></span><br><span class="line"><span class="comment"> * 返回值小于0，代表 array[i1] &lt; array[i2]</span></span><br><span class="line"><span class="comment"> * 返回值大于0，代表 array[i1] &gt; array[i2]</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *swap</span></span><br><span class="line"><span class="comment"> *交换</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="插入排序——逆序对"><a href="#插入排序——逆序对" class="headerlink" title="插入排序——逆序对"></a>插入排序——逆序对</h2><ul>
+<li>什么是逆序对？</li>
+</ul>
+<p>数组 &lt;2,3,8,6,1&gt; 的逆序对为：&lt;2,1&gt; &lt;3,1&gt; &lt;8,1&gt; &lt;8,6&gt; &lt;6,1&gt;，共5个逆序对。</p>
+<p><img src="/posts/2755965992.html/1628260358800-98a989db-7b64-4c94-b920-ede85d098ce1.png" alt="image.png"></p>
+<p><strong>算法分析：</strong></p>
+<p>最坏、平均时间复杂度：O(n2) </p>
+<p>最好时间复杂度：O(n) </p>
+<p>空间复杂度：O(1) </p>
+<p>属于稳定排序  </p>
+<p>当逆序对的数量极少时，插入排序的效率特别高 甚至速度比 O nlogn    级别的快速排序还要快</p>
+<p>数据量不是特别大的时候，插入排序的效率也是非常好的</p>
+<h2 id="插入排序——优化"><a href="#插入排序——优化" class="headerlink" title="插入排序——优化"></a>插入排序——优化</h2><p><strong>原理：</strong></p>
+<p> 思路是将【交换】转为【挪动】 </p>
+<p>① 先将待插入的元素备份 </p>
+<p>② 头部有序数据中比待插入元素大的，都朝尾部方向挪动1个位置</p>
+<p>③ 将待插入元素放到最终的合适位置 </p>
+<p><img src="/posts/2755965992.html/1628263489426-c7f1f69d-581c-4a9b-ba36-918d5182c7fd.png" alt="image.png"></p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> begin = <span class="number">1</span>; begin &lt; array.length; begin++) &#123;</span><br><span class="line">            <span class="keyword">int</span> cur = begin;</span><br><span class="line">            T v = array[cur];</span><br><span class="line">            <span class="keyword">while</span> (cur &gt; <span class="number">0</span> &amp;&amp; cmp(v, array[cur - <span class="number">1</span>]) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                array[cur] = array[cur - <span class="number">1</span>];</span><br><span class="line">                cur--;</span><br><span class="line">            &#125;</span><br><span class="line">            array[cur] = v;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="插入排序——二分搜索优化"><a href="#插入排序——二分搜索优化" class="headerlink" title="插入排序——二分搜索优化"></a>插入排序——二分搜索优化</h2><p>插入排序就像在已排列好的数据中，插入一个数值合适，位置合适的数，而我们寻找这个位置的时候就可以使用<strong>二分查找</strong>（在我的另一篇文章）来找到哪个合适的位置。</p>
+<p><strong>原理：</strong></p>
+<p>在元素 v 的插入过程中，可以先二分搜索出合适的插入位置，然后再将元素 v 插入 </p>
+<p><img src="/posts/2755965992.html/1628269044438-3615a888-a711-423b-ae36-0431f7730a0f.png" alt="image.png"></p>
+<p>要求二分搜索返回的插入位置：第1个大于 v 的元素位置</p>
+<p>如果 v 是 5，返回 2；</p>
+<p>如果 v 是 1，返回 0；</p>
+<p>如果 v 是 15，返回 7 ；</p>
+<p>如果 v 是 8，返回 5 </p>
+<p>假设在 [begin, end) 范围内搜索某个元素 v，mid == (begin + end) /2 </p>
+<p>如果 v &lt; m，去 [begin, mid) 范围内二分搜索 </p>
+<p>如果 v ≥ m，去 [mid + 1, end) 范围内二分搜索 </p>
+<p><img src="/posts/2755965992.html/1628269191271-63deb3aa-b08d-4374-85b1-d39fe31781f0.png" alt="image.png"></p>
+<p><img src="/posts/2755965992.html/1628269243699-6e5e2be4-33e6-4f6f-913a-bfe253183b32.png" alt="image.png"><img src="/posts/2755965992.html/1628269260394-b1b3d795-c55e-48f6-a4f5-f8248cf875ac.png" alt="image.png"></p>
+<p><img src="/posts/2755965992.html/1628269351051-cbed6358-5c92-482d-b2c9-571a3dc60395.png" alt="image.png"></p>
+<p><img src="/posts/2755965992.html/1628269396070-690ddbe3-f4aa-4e60-adfb-5eae94aaafa7.png" alt="image.png"></p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//排序方法</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> begin = <span class="number">1</span>; begin &lt; array.length; begin++) &#123;</span><br><span class="line">            insert(begin, search(begin));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将source位置的元素插入到dest位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> source</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dest</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> source, <span class="keyword">int</span> dest)</span> </span>&#123;</span><br><span class="line">        T v = array[source];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = source; i &gt; dest; i--) &#123;</span><br><span class="line">            array[i] = array[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        array[dest] = v;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 利用二分搜索找到 index 位置元素的待插入位置</span></span><br><span class="line"><span class="comment">     * 已经排好序数组的区间范围是 [0, index)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> end = index;</span><br><span class="line">        <span class="keyword">while</span> (begin &lt; end) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (begin + end) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (cmp(array[index], array[mid]) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                end = mid;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                begin = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> begin;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p>需要注意的是，使用了二分搜索后，只是减少了比较次数，但插入排序的平均时间复杂度依然是 O(n2) ；</p>
+<p>我们只是在原有的复杂度上在查找合适位置时，进行了优化原有的时间复杂度没有变化。</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>排序</category>
+      </categories>
+      <tags>
+        <tag>冒泡排序</tag>
+        <tag>选择排序</tag>
+        <tag>堆排序</tag>
+        <tag>插入排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>排序3</title>
+    <url>/posts/1489199829.html/</url>
+    <content><![CDATA[<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p><strong>前言：</strong></p>
+<p>快速排序相较于之前的排序方法是一种比较特别排序方法</p>
+<p><strong>原理：</strong></p>
+<p>1、从序列中选择一个轴点元素（pivot） 假设每次选择 0 位置的元素为轴点元素 ；</p>
+<p>2、利用 pivot 将序列分割成 2 个子序列 将小于 pivot 的元素放在pivot前面（左侧） 将大于 pivot 的元素放在pivot后面（右侧） 等于pivot的元素放哪边都可以 </p>
+<p>3、对子序列进行 1、2、 操作 直到不能再分割（子序列中只剩下1个元素）</p>
+<p><img src="/posts/1489199829.html/1628353377907-1868ad9a-a881-40fc-bc33-b787e897a661.png" alt="image.png"></p>
+<p>快速排序的本质：逐渐将每一个元素都转换成轴点元素</p>
+<h2 id="快速排序-–-轴点构造"><a href="#快速排序-–-轴点构造" class="headerlink" title="快速排序 – 轴点构造"></a>快速排序 – 轴点构造</h2><p><img src="/posts/1489199829.html/1628353501143-ea4ac142-6da8-443c-aae7-fff6ad9a3929.png" alt="image.png"></p>
+<p>一个轴点完成之后，数组被分割成两部分，我们就可以构造成一个前轴点，和一个后轴点；以此类推，当每个元素都成为轴点之后，数组排列完成。</p>
+<p>*<strong>示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">protected void sort() &#123;</span><br><span class="line">        sort(0, array.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 对 [begin, end) 范围的元素进行快速排序</span><br><span class="line">     * @param begin</span><br><span class="line">     * @param end</span><br><span class="line">     */</span><br><span class="line">    private void sort(int begin, int end) &#123; </span><br><span class="line">        if (end - begin &lt; 2) return;</span><br><span class="line">        </span><br><span class="line">        // 确定轴点位置 O(n)</span><br><span class="line">        int mid = pivotIndex(begin, end);</span><br><span class="line">        // 对子序列进行快速排序</span><br><span class="line">        sort(begin, mid); </span><br><span class="line">        sort(mid + 1, end); </span><br><span class="line">    &#125; </span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 构造出 [begin, end) 范围的轴点元素</span><br><span class="line">     * @return 轴点元素的最终位置</span><br><span class="line">     */</span><br><span class="line">    private int pivotIndex(int begin, int end) &#123;</span><br><span class="line">        // 随机选择一个元素跟begin位置进行交换</span><br><span class="line">        swap(begin, begin + (int)(Math.random() * (end - begin)));</span><br><span class="line">        </span><br><span class="line">        // 备份begin位置的元素</span><br><span class="line">        T pivot = array[begin];</span><br><span class="line">        // end指向最后一个元素</span><br><span class="line">        end--;</span><br><span class="line">        //这里是一个很神奇的交替循环方式，不过还是比较好用的</span><br><span class="line">        //如果大家有更好的方法可以评论</span><br><span class="line">        while (begin &lt; end) &#123;</span><br><span class="line">            while (begin &lt; end) &#123;</span><br><span class="line">                if (cmp(pivot, array[end]) &lt; 0) &#123; // 右边元素 &gt; 轴点元素</span><br><span class="line">                    end--;</span><br><span class="line">                &#125; else &#123; // 右边元素 &lt;= 轴点元素</span><br><span class="line">                    array[begin++] = array[end];</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            while (begin &lt; end) &#123;</span><br><span class="line">                if (cmp(pivot, array[begin]) &gt; 0) &#123; // 左边元素 &lt; 轴点元素</span><br><span class="line">                    begin++;</span><br><span class="line">                &#125; else &#123; // 左边元素 &gt;= 轴点元素</span><br><span class="line">                    array[end--] = array[begin];</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将轴点元素放入最终的位置</span><br><span class="line">        array[begin] = pivot;</span><br><span class="line">        // 返回轴点元素的位置</span><br><span class="line">        return begin;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p><img src="/posts/1489199829.html/1628354600150-c0bdfa64-7683-4954-8498-ba5f81ce756a.png" alt="`3%ML8W`D70YE~HAAS9BK8X.png"></p>
+<h2 id="快速排序-–-与轴点相等的元素"><a href="#快速排序-–-与轴点相等的元素" class="headerlink" title="快速排序 – 与轴点相等的元素"></a>快速排序 – 与轴点相等的元素</h2><p><img src="/posts/1489199829.html/1628354720337-95d1ac45-2216-494d-b2b7-39a1add80e90.png" alt="image.png"></p>
+<p>如果序列中的所有元素都与轴点元素相等，利用目前的算法实现，轴点元素可以将序列分割成 2 个均匀的子序列 </p>
+<p><img src="/posts/1489199829.html/1628354762652-c63f4bbc-9316-4619-afed-e72c40bbaeda.png" alt="image.png"></p>
+<p>我们利用if else 中else实现了如果其他元素与轴点相等的情况，但是如果将其中’&lt;’或’&gt;’修改成’&lt;=’或’&gt;=’这种情况呢？</p>
+<p><img src="/posts/1489199829.html/1628354947961-41a55c99-83bc-4432-960e-5b3bbcf01f1c.png" alt="image.png"></p>
+<p>导致的结果是显而易见，他会造成轴点元素切割出来的子序列极度不均匀，从而影响了效率，导致出现最坏的时间复杂度.</p>
+<h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><p><strong>前言：</strong></p>
+<p>总感觉希尔排序就像归并的那种感觉，但是！他的原理就像插入排序一样，在不断减少逆序对进行排序</p>
+<p><strong>原理：</strong></p>
+<p>希尔排序把序列看作是一个矩阵，分成 𝑚 列，逐列进行排序 </p>
+<p>𝑚 从某个整数逐渐减为1 </p>
+<p>当 𝑚 为1时，整个序列将完全有序  </p>
+<p>因此，希尔排序也被称为递减增量排序（Diminishing Increment Sort）  </p>
+<p>矩阵的列数取决于步长序列（step sequence） </p>
+<p>比如，如果步长序列为{1,5,19,41,109,…}，就代表依次分成109列、41列、19列、5列、1列进行排序 </p>
+<p>不同的步长序列，执行效率也不同 </p>
+<p>希尔本人给出的步长序列是 𝑛/2𝑘，比如 𝑛 为16时，步长序列是{1, 2, 4, 8} </p>
+<p><img src="/posts/1489199829.html/1628435708290-feb47ecc-6c04-41d6-b010-4d73963fa9cc.png" alt="image.png"></p>
+<p>分成8列进行排序</p>
+<p><img src="/posts/1489199829.html/1628435771749-764b3a5b-556b-4df4-9231-b54094bc981b.png" alt="image.png"></p>
+<p>分成4列进行排序</p>
+<p><img src="/posts/1489199829.html/1628435818477-1defd585-9992-4077-91a2-e1d60fe0326c.png" alt="image.png"></p>
+<p>分成2列进行排序</p>
+<p><img src="/posts/1489199829.html/1628435849108-f5ffa812-c6bc-4a2e-9fbe-f9bf6f7e90f6.png" alt="image.png"></p>
+<p>分成1列进行排序</p>
+<p><img src="/posts/1489199829.html/1628435876039-baba66db-3ec1-4581-a818-e6b4e088e485.png" alt="image.png"></p>
+<p>不难看出来，从8列 变为 1列的过程中，逆序对的数量在逐渐减少；因此希尔排序底层一般使用插入排序对每一列进行排序，也很多资料认为希尔排序是插入排序的改进版</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">protected void sort() &#123;</span><br><span class="line">    //选择不长序列，后面会讲到</span><br><span class="line">        List&lt;Integer&gt; stepSequence = sedgewickStepSequence();</span><br><span class="line">    //循环使用步长序列排序</span><br><span class="line">        for (Integer step : stepSequence) &#123;</span><br><span class="line">            sort(step);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 分成step列进行排序</span><br><span class="line">     */</span><br><span class="line">    private void sort(int step) &#123;</span><br><span class="line">        // col : 第几列，column的简称</span><br><span class="line">        for (int col = 0; col &lt; step; col++) &#123; // 对第col列进行排序</span><br><span class="line">            // col、col+step、col+2*step、col+3*step</span><br><span class="line">            for (int begin = col + step; begin &lt; array.length; begin += step) &#123;</span><br><span class="line">                int cur = begin;</span><br><span class="line">                while (cur &gt; col &amp;&amp; cmp(cur, cur - step) &lt; 0) &#123;</span><br><span class="line">                    swap(cur, cur - step);</span><br><span class="line">                    cur -= step;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //希尔提供的步长序列</span><br><span class="line">    private List&lt;Integer&gt; shellStepSequence() &#123;</span><br><span class="line">        List&lt;Integer&gt; stepSequence = new ArrayList&lt;&gt;();</span><br><span class="line">        int step = array.length;</span><br><span class="line">        while ((step &gt;&gt;= 1) &gt; 0) &#123;</span><br><span class="line">            stepSequence.add(step);</span><br><span class="line">        &#125;</span><br><span class="line">        return stepSequence;</span><br><span class="line">    &#125;</span><br><span class="line">    //目前最好的步长序列</span><br><span class="line">    private List&lt;Integer&gt; sedgewickStepSequence() &#123;</span><br><span class="line">        List&lt;Integer&gt; stepSequence = new LinkedList&lt;&gt;();</span><br><span class="line">        int k = 0, step = 0;</span><br><span class="line">        while (true) &#123;</span><br><span class="line">            if (k % 2 == 0) &#123;</span><br><span class="line">                int pow = (int) Math.pow(2, k &gt;&gt; 1);</span><br><span class="line">                step = 1 + 9 * (pow * pow - pow);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                int pow1 = (int) Math.pow(2, (k - 1) &gt;&gt; 1);</span><br><span class="line">                int pow2 = (int) Math.pow(2, (k + 1) &gt;&gt; 1);</span><br><span class="line">                step = 1 + 8 * pow1 * pow2 - 6 * pow2;</span><br><span class="line">            &#125;</span><br><span class="line">            if (step &gt;= array.length) break;</span><br><span class="line">            stepSequence.add(0, step);</span><br><span class="line">            k++;</span><br><span class="line">        &#125;</span><br><span class="line">        return stepSequence;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="希尔排序——步长序列"><a href="#希尔排序——步长序列" class="headerlink" title="希尔排序——步长序列"></a>希尔排序——步长序列</h2><p>希尔排序中最灵魂的地方可能就是步长序列了吧</p>
+<p>希尔排序是利用步长序列来分割原序列，而每次分割，都会影响排序的复杂度，而目前已知的最好的步长序列，最坏情况时间复杂度是 O(n4/3) ，1986年由Robert Sedgewick提出 </p>
+<p><img src="/posts/1489199829.html/1628437057030-81332644-22ae-4f96-acd3-7bcbef28ab89.png" alt="image.png"></p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private List&lt;Integer&gt; sedgewickStepSequence() &#123;</span><br><span class="line">        List&lt;Integer&gt; stepSequence = new LinkedList&lt;&gt;();</span><br><span class="line">        int k = 0, step = 0;</span><br><span class="line">        while (true) &#123;</span><br><span class="line">            if (k % 2 == 0) &#123;</span><br><span class="line">                int pow = (int) Math.pow(2, k &gt;&gt; 1);</span><br><span class="line">                step = 1 + 9 * (pow * pow - pow);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                int pow1 = (int) Math.pow(2, (k - 1) &gt;&gt; 1);</span><br><span class="line">                int pow2 = (int) Math.pow(2, (k + 1) &gt;&gt; 1);</span><br><span class="line">                step = 1 + 8 * pow1 * pow2 - 6 * pow2;</span><br><span class="line">            &#125;</span><br><span class="line">            if (step &gt;= array.length) break;</span><br><span class="line">            stepSequence.add(0, step);</span><br><span class="line">            k++;</span><br><span class="line">        &#125;</span><br><span class="line">        return stepSequence;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>算法</category>
+        <category>排序</category>
+      </categories>
+      <tags>
+        <tag>快速排序</tag>
+        <tag>希尔排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>排序4</title>
+    <url>/posts/3332896630.html/</url>
+    <content><![CDATA[<h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><p><strong>前言：</strong></p>
+<p>这是一种不需要比较的排序方式，但极其浪费空间。（写嵌入式的小伙伴会气死吧）</p>
+<p><strong>原理：</strong></p>
+<p>统计每个整数在序列中出现的次数，进而推导出每个整数在有序序列中的索引</p>
+<p><img src="/posts/3332896630.html/1628443378045-18531bd2-4697-4e8a-908c-c2da8ff65033.png" alt="image.png"></p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//这是最简单的实现方式</span><br><span class="line"> </span><br><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; // O(n)</span><br><span class="line">        </span><br><span class="line">        // 开辟内存空间，存储每个整数出现的次数</span><br><span class="line">        int[] counts = new int[1 + max];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i]]++;</span><br><span class="line">        &#125; // O(n)</span><br><span class="line">        </span><br><span class="line">        // 根据整数的出现次数，对整数进行排序</span><br><span class="line">        int index = 0;</span><br><span class="line">        for (int i = 0; i &lt; counts.length; i++) &#123;</span><br><span class="line">            while (counts[i]-- &gt; 0) &#123;</span><br><span class="line">                array[index++] = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; // O(n)</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p>这个版本的实现存在以下问题：无法对负整数进行排序；极其浪费内存空间；是个不稳定的排序 。</p>
+<p>（用这个的人就很神奇）</p>
+<h2 id="计数排序-–-改进思路"><a href="#计数排序-–-改进思路" class="headerlink" title="计数排序 – 改进思路"></a>计数排序 – 改进思路</h2><p>原本我们是把数组的索引作为记录原序列中的数值，但是数组中没有负数，所以我们就没有办法比较序列中的负数。</p>
+<p>现在我们将数组中第一个位置就是序列中最小的数，利用这个数和数组索引的差，</p>
+<p><img src="/posts/3332896630.html/1628502501716-0b0fab4a-528f-4371-8956-5911b2b69299.png" alt="image.png"></p>
+<p>解决的不能负数的问题，现在来解决不稳定</p>
+<p><img src="/posts/3332896630.html/1628504775294-927e1ec9-5d2f-4616-9136-aef799f1bb1f.png" alt="image.png"></p>
+<p>假设array中的最小值是 min； array中的元素 k 对应的 counts 索引是 k – min； array中的元素 k 在有序序列中的索引； counts[k – min] – p； p 代表着是倒数第几个 k； </p>
+<p><img src="/posts/3332896630.html/1628504893826-410f34bf-89fe-4f9c-a60c-c38162ecd423.png" alt="image.png"></p>
+<p><img src="/posts/3332896630.html/1628504906903-6b638877-9008-431e-92d8-9497c162ded5.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        int min = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">            if (array[i] &lt; min) &#123;</span><br><span class="line">                min = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 开辟内存空间，存储次数</span><br><span class="line">        int[] counts = new int[max - min + 1];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i] - min]++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 累加次数</span><br><span class="line">        for (int i = 1; i &lt; counts.length; i++) &#123;</span><br><span class="line">            counts[i] += counts[i - 1];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 从后往前遍历元素，将它放到有序数组中的合适位置</span><br><span class="line">        int[] newArray = new int[array.length];</span><br><span class="line">        for (int i = array.length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            newArray[--counts[array[i] - min]] = array[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将有序数组赋值到array</span><br><span class="line">        for (int i = 0; i &lt; newArray.length; i++) &#123;</span><br><span class="line">            array[i] = newArray[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h1><p><strong>前言：</strong></p>
+<p>基数排序，所谓的基数就是他的个位，十位，百位，通过个十百千的顺序依次排列各位的数字大小，最后得到所有数字的大小。</p>
+<p><strong>原理：</strong></p>
+<p>基数排序非常适合用于整数排序（尤其是非负整数），因此只演示对非负整数进行基数排序 执行流程：依次对个位数、十位数、百位数、千位数、万位数…进行排序（从低位到高位）</p>
+<p><img src="/posts/3332896630.html/1628525299836-3c0692cc-ae6d-4646-b9e6-2799e1b80f75.png" alt="image.png"></p>
+<p>对位数排序时，我们使用计数排序</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 个位数: array[i] / 1 % 10 = 3</span><br><span class="line">        // 十位数：array[i] / 10 % 10 = 9</span><br><span class="line">        // 百位数：array[i] / 100 % 10 = 5</span><br><span class="line">        // 千位数：array[i] / 1000 % 10 = ...</span><br><span class="line"></span><br><span class="line">        for (int divider = 1; divider &lt;= max; divider *= 10) &#123;</span><br><span class="line">            countingSort(divider);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">protected void countingSort(int divider) &#123;</span><br><span class="line">        // 开辟内存空间，存储次数</span><br><span class="line">        int[] counts = new int[10];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i] / divider % 10]++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 累加次数</span><br><span class="line">        for (int i = 1; i &lt; counts.length; i++) &#123;</span><br><span class="line">            counts[i] += counts[i - 1];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 从后往前遍历元素，将它放到有序数组中的合适位置</span><br><span class="line">        int[] newArray = new int[array.length];</span><br><span class="line">        for (int i = array.length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            newArray[--counts[array[i] / divider % 10]] = array[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将有序数组赋值到array</span><br><span class="line">        for (int i = 0; i &lt; newArray.length; i++) &#123;</span><br><span class="line">            array[i] = newArray[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基数排序-–-另一种思路"><a href="#基数排序-–-另一种思路" class="headerlink" title="基数排序 – 另一种思路"></a>基数排序 – 另一种思路</h2><p>我们先按照个位数的大小竖着放起来</p>
+<p><img src="/posts/3332896630.html/1628526998097-1d4fac61-723a-4ef6-bf58-5d56b4405973.png" alt="image.png"></p>
+<p>然后，我们依次将数穿起来，最后，就会把数列排好</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //用来记录的二维数组</span><br><span class="line">        int buckets[][]=new int[10][array.length];</span><br><span class="line">        //二维数组每列的数量</span><br><span class="line">        int bucketSizes[]=new int[buckets.length];</span><br><span class="line"></span><br><span class="line">        for (int divider = 1; divider &lt;= max; divider *= 10)&#123;</span><br><span class="line">            for (int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">                int a=array[i] / divider % 10;</span><br><span class="line">                buckets[a][bucketSizes[a]++]=array[i];</span><br><span class="line">            &#125;</span><br><span class="line">            int index=0;</span><br><span class="line">            for (int i=0;i&lt;buckets.length;i++)&#123;</span><br><span class="line">                for (int j=0;j&lt;bucketSizes[i];j++)&#123;</span><br><span class="line">                    array[index++]=buckets[i][j];</span><br><span class="line">                &#125;</span><br><span class="line">                bucketSizes[i]=0;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>算法</category>
+        <category>排序</category>
+      </categories>
+      <tags>
+        <tag>计数排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数组</title>
+    <url>/posts/872565161.html/</url>
+    <content><![CDATA[<h1 id="存在重复元素"><a href="#存在重复元素" class="headerlink" title="存在重复元素"></a>存在重复元素</h1><p>给定一个整数数组，判断是否存在重复元素。</p>
+<p>如果存在一值在数组中出现至少两次，函数返回 <code>true</code> 。如果数组中每个元素都不相同，则返回 <code>false</code> 。</p>
+<p>示例 1:</p>
+<p>输入: [1,2,3,1]</p>
+<p>输出: true</p>
+<p>示例 2:</p>
+<p>输入: [1,2,3,4]</p>
+<p>输出: false</p>
+<p>示例 3:</p>
+<p>输入: [1,1,1,3,3,4,3,2,4,2]</p>
+<p>输出: true</p>
+<p><strong>排序</strong></p>
+<p>在对数字从小到大排序之后，数组的重复元素一定出现在相邻位置中。因此，我们可以扫描已排序的数组，每次判断相邻的两个元素是否相等，如果相等则说明存在重复的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean containsDuplicate(int[] nums) &#123;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        for (int i = 0; i &lt; n - 1; i++) &#123;</span><br><span class="line">            if (nums[i] == nums[i + 1]) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>哈希表</strong></p>
+<p>对于数组中每个元素，我们将它插入到哈希表中。如果插入一个元素时发现该元素已经存在于哈希表中，则说明存在重复的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean containsDuplicate(int[] nums) &#123;</span><br><span class="line">        Set&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();</span><br><span class="line">        for (int x : nums) &#123;</span><br><span class="line">            if (!set.add(x)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PS：做这道题的时候看到的是查找重复的元素，就直接想到了哈希表，没有想到还有排序的这种解法</p>
+<h1 id="最大的子序和"><a href="#最大的子序和" class="headerlink" title="最大的子序和"></a>最大的子序和</h1><p>给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p>示例 1：</p>
+<p>输入：nums = [-2,1,-3,4,-1,2,1,-5,4]</p>
+<p>输出：6</p>
+<p>解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。</p>
+<p>示例 2：</p>
+<p>输入：nums = [1]</p>
+<p>输出：1</p>
+<p>示例 3：</p>
+<p>输入：nums = [0]</p>
+<p>输出：0</p>
+<p>示例 4：</p>
+<p>输入：nums = [-1]</p>
+<p>输出：-1</p>
+<p>示例 5：</p>
+<p>输入：nums = [-100000]</p>
+<p>输出：-100000</p>
+<p><strong>动态规划：</strong></p>
+<p>下面的解法是用动态规划的思想来做的，以后也会写一篇关于动态规划的专题，看了很多的讲解还是不能很好地理解，后来看到评论区中大神d而一句话：“之前数值所有的和加上自身，还没有我自己大，我要他干啥”看到这句话之后的我幡然醒悟。</p>
+<p>pre是用来存储之前数值和加上自身的值，maxAns是用来维护最大子序和</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int maxSubArray(int[] nums) &#123;</span><br><span class="line">        int pre = 0, maxAns = nums[0];</span><br><span class="line">        for (int x : nums) &#123;</span><br><span class="line">            pre = Math.max(pre + x, x);</span><br><span class="line">            maxAns = Math.max(maxAns, pre);</span><br><span class="line">        &#125;</span><br><span class="line">        return maxAns;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>数据结构</category>
+        <category>数组</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络基本概念</title>
+    <url>/posts/1471950494.html/</url>
+    <content><![CDATA[<h1 id="必知必会"><a href="#必知必会" class="headerlink" title="必知必会"></a>必知必会</h1><p><img src="/posts/1471950494.html/1628772576324-178a7943-a30e-476a-8ef0-74f635bdb290.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772587039-5bdc4101-4598-4a5c-9efb-563008c9f124.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772598945-83950ce0-f450-4a31-a07f-d1189a710f21.png" alt="image.png"></p>
+<h1 id="计算机之间的通信"><a href="#计算机之间的通信" class="headerlink" title="计算机之间的通信"></a>计算机之间的通信</h1><p>需要得知对方的IP地址</p>
+<p>最终是根据MAC地址（网卡地址），输送数据到网卡，被网卡接收</p>
+<p>如果网卡发现数据的目标MAC地址是自己，就会将数据传递给上一层进行处理 </p>
+<p>如果网卡发现数据的目标MAC地址不是自己，就会将数据丢弃，不会传递给上一层进行处理 </p>
+<h2 id="连接方式"><a href="#连接方式" class="headerlink" title="连接方式"></a>连接方式</h2><h3 id="最直接的方式——网线直连"><a href="#最直接的方式——网线直连" class="headerlink" title="最直接的方式——网线直连"></a>最直接的方式——网线直连</h3><p>需要用到交叉线（不是直通线）</p>
+<h3 id="同轴电缆"><a href="#同轴电缆" class="headerlink" title="同轴电缆"></a>同轴电缆</h3><p><img src="/posts/1471950494.html/1628772183243-05550d56-458a-4b5b-84dc-38eede5ba6b1.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>半双工通信</li>
+<li>容易冲突</li>
+<li>不安全</li>
+<li>某一点出问题整个通信瘫痪</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="集线器"><a href="#集线器" class="headerlink" title="集线器"></a>集线器</h3><p><img src="/posts/1471950494.html/1628772360766-ae26eeb9-4ea7-4780-9823-ab22f33ca3aa.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772364385-aced90a0-6da5-4d21-9ab9-d98f9716f0b5.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>半双工通信</li>
+<li>容易冲突</li>
+<li>不安全</li>
+<li>和同轴电缆一样没有智商</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="网桥"><a href="#网桥" class="headerlink" title="网桥"></a>网桥</h3><p><img src="/posts/1471950494.html/1628772662337-7bb5de77-a8f7-48da-8f7c-5174f763eb61.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772665539-b40d3242-e23f-42a4-98fb-f0d0e74d7d6c.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>能够通过自主学习得知网桥另一侧的MAC地址</li>
+<li>能够起到隔绝冲突域的作用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h3><p><img src="/posts/1471950494.html/1628772767924-37ce9248-ca75-466c-a6cf-9f1864d537c2.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628772772054-9cb3cfbd-31a6-443f-92f0-e485787844ff.png" alt="image.png"><img src="/posts/1471950494.html/1628772776123-1974cef5-3a66-4a49-9c82-53709aebc81a.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>相当于更多接口的网桥</li>
+<li>全双工通信</li>
+<li>比集线器更安全</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如果全球的互联网都使用交换机连接会发生什么事情？</p>
+</li>
+</ul>
+<p>首先可能会产生IP地址不够用的，其次在最开始的时候需要通过ARP协议获取MAC地址，会产生广播风暴</p>
+<h3 id="路由器"><a href="#路由器" class="headerlink" title="路由器"></a>路由器</h3><p><img src="/posts/1471950494.html/1628786349778-a69989dc-b0fe-4e97-afa8-40e3fa1fdba7.png" alt="image.png"></p>
+<p><img src="/posts/1471950494.html/1628786353210-f42102b9-1eab-46c9-8a4d-31babc70b8f9.png" alt="image.png"></p>
+<p>特点：</p>
+<ul>
+<li><ul>
+<li><ul>
+<li>可以在不同网段转发数据</li>
+<li>隔绝广播域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>网线直连、同轴电缆、集线器、网桥、交换机连接的设备必须在同一网段且处在同一广播域 </p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+        <category>基础</category>
+      </categories>
+      <tags>
+        <tag>计网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>递归</title>
+    <url>/posts/3328524930.html/</url>
+    <content><![CDATA[<h1 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h1><p>函数（方法）直接或间接调用自身。是一种常用的编程技巧 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//直接调用自身</span><br><span class="line">    int sum(int n)&#123;</span><br><span class="line">        if(n&lt;=1) &#123;return n;&#125;</span><br><span class="line">        return n+sum(n-1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//间接调用</span><br><span class="line">    void a(int v)&#123;</span><br><span class="line">        if(v&lt;0)&#123;return;&#125;</span><br><span class="line">        b(--v);</span><br><span class="line">    &#125;</span><br><span class="line">    void b(int v)&#123;</span><br><span class="line">        a(--v);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个有趣的问题：</p>
+<p>假设A在一个电影院，想知道自己坐在哪一排，但是前面人很多， </p>
+<p>A 懒得数，于是问前一排的人 B【你坐在哪一排？】，只要把 B 的答案加一，就是 A 的排数。 </p>
+<p>B 懒得数，于是问前一排的人 C【你坐在哪一排？】，只要把 C 的答案加一，就是 B 的排数。 </p>
+<p>C 懒得数，于是问前一排的人 D【你坐在哪一排？】，只要把 D 的答案加一，就是 C 的排数。 …… </p>
+<p>直到问到最前面的一排，最后大家都知道自己在哪一排了 </p>
+<h1 id="函数调用的过程"><a href="#函数调用的过程" class="headerlink" title="函数调用的过程"></a>函数调用的过程</h1><p>首先，我们要明确一件事情就是，一个函数如果没有执行完成，它就会一直占用内存。</p>
+<p><img src="/posts/3328524930.html/1628788869623-edd44e8a-3211-434a-97f9-55ad568579bc.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        test1(10);</span><br><span class="line">        test2(20);</span><br><span class="line">    &#125;</span><br><span class="line">    private static void test1(int v)&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    private static void test2(int v)&#123;</span><br><span class="line">        test3(30);</span><br><span class="line">    &#125;</span><br><span class="line">    private static void test3(int v)&#123;&#125;  </span><br><span class="line">/*</span><br><span class="line">先从main函数进入（main进栈），在执行test1函数（test1进栈），test1函数执行完毕之后（test1出栈），执行test2函数（test2进栈），执行test3函数（test3进栈）；</span><br><span class="line">test3函数执行完毕（test3出栈），test2函数执行完毕（test2出栈），main函数执行结束（main出栈）</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="函数的递归调用过程"><a href="#函数的递归调用过程" class="headerlink" title="函数的递归调用过程"></a>函数的递归调用过程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static void main( String[ ] args) &#123;</span><br><span class="line">    sum( 4);</span><br><span class="line">&#125;</span><br><span class="line">private static int sum( int n) &#123;</span><br><span class="line">    if (n &lt;= 1) &#123;return n;&#125;</span><br><span class="line">    return n + sum(n - 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 如果递归调用没有终止，将会一直消耗栈空间 最终导致栈内存溢出（Stack Overflow）</p>
+<p>所以必需要有一个明确的结束递归的条件 也叫作<strong>边界条件、递归基</strong> </p>
+<p><strong><img src="/posts/3328524930.html/1628789779769-d8900555-3eea-4f3c-bf51-12b76d1f15d9.png" alt="image.png"><img src="/posts/3328524930.html/1628789798965-7cfedcfa-c78e-4b4e-9378-3d3434efb8d5.png" alt="image.png"></strong>  </p>
+<h2 id="实例分析"><a href="#实例分析" class="headerlink" title="实例分析"></a>实例分析</h2><ul>
+<li>求 1+2+3+…+(n-1)+n 的和（n&gt;0）</li>
+</ul>
+<p>下面是三种解题方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//递归方法</span><br><span class="line">int sum(int n) &#123;</span><br><span class="line">    if (n &lt;= 1) return n;</span><br><span class="line">    return n + sum(n - 1);</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">时间复杂度O(n)</span><br><span class="line">空间复杂度O(n)</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">//循环加法</span><br><span class="line">int sum(int n) &#123;</span><br><span class="line">    int result = 0;</span><br><span class="line">    for (int i = 1; i &lt;= n; i++)&#123;</span><br><span class="line">    result += i;</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">时间复杂度O(n)</span><br><span class="line">空间复杂度O(1)</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">//数学公式</span><br><span class="line">int sum(int n)&#123;</span><br><span class="line">    if (n &lt;= 1) return n;</span><br><span class="line">    return ( 1 +n)* n &gt;&gt;1;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">时间复杂度O(1)</span><br><span class="line">空间复杂度O(1)</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：使用递归不是为了求得最优解，是为了简化解决问题的思路，代码会更加简洁 递归求出来的很有可能不是最优解，也有可能是最优解</strong> </p>
+<h1 id="递归的基本思想"><a href="#递归的基本思想" class="headerlink" title="递归的基本思想"></a>递归的基本思想</h1><p>拆解问题：</p>
+<p>把规模大的问题变成规模较小的同类型问题 </p>
+<p>规模较小的问题又不断变成规模更小的问题 </p>
+<p>规模小到一定程度可以直接得出它的解</p>
+<p>求解：</p>
+<p>由最小规模问题的解得出较大规模问题的解 </p>
+<p>由较大规模问题的解不断得出规模更大问题的解 </p>
+<p>最后得出原来问题的解 </p>
+<p>凡是可以利用上述思想解决问题的，都可以尝试使用递归 很多链表、二叉树相关的问题都可以使用递归来解决 因为链表、二叉树本身就是递归的结构（链表中包含链表，二叉树中包含二叉树）</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>明确函数的功能</p>
+<p>先不要去思考里面代码怎么写，首先搞清楚这个函数的干嘛用的，能完成什么功能？</p>
+<p>明确原问题与子问题的关系 </p>
+<p>寻找 f(n) 与 f(n – 1) 的关系</p>
+<p>明确递归基（边界条件）</p>
+<p>递归的过程中，子问题的规模在不断减小，当小到一定程度时可以直接得出它的解 </p>
+<p>寻找递归基，相当于是思考：问题规模小到什么程度可以直接得出解？</p>
+<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><h2 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h2><p>斐波那契数列：1、1、2、3、5、8、13、21、34、…… </p>
+<p>F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n≥3） </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int fib(int n)&#123;</span><br><span class="line">    if(n&lt;=2)&#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return fib(n-1)+fib(n-2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据递推式 T n= T n − 1+ T(n − 2) + O(1)，可得知时间复杂度：O（2n) </p>
+<p>空间复杂度：O(n) </p>
+<p>递归调用的空间复杂度 = 递归深度 * 每次调用所需的辅助空间</p>
+<h3 id="函数调用过程"><a href="#函数调用过程" class="headerlink" title="函数调用过程"></a>函数调用过程</h3><p><img src="/posts/3328524930.html/1628874285887-4dc97de3-ccf9-4ec7-96a5-328c2627a32d.png" alt="image.png"></p>
+<p>出现了特别多的重复计算 </p>
+<p>这是一种“自顶向下”的调用过程 </p>
+<h3 id="优化1"><a href="#优化1" class="headerlink" title="优化1"></a>优化1</h3><p>我们也看到了，在函数调用的过程中，出现了很多的重复调用和计算，我们利用数组来储存已经计算好的<strong>斐波那契数。</strong></p>
+<p><strong><img src="/posts/3328524930.html/1628874870864-574b2aee-bba8-44e1-ba47-c7c10dcca3bb.png" alt="image.png"></strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int fib(int n)&#123;</span><br><span class="line">    if(n&lt;=2)&#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    int [] array=new int[n+1];</span><br><span class="line">    array[2]=array[1]=1;</span><br><span class="line">    return fib(array,n);</span><br><span class="line">&#125;</span><br><span class="line">public int fib(int[] array,int n)&#123;</span><br><span class="line">    if(array[n]==0)&#123;</span><br><span class="line">        array[n]=fib(array,n-1)+fib(array,n-2);</span><br><span class="line">    &#125;</span><br><span class="line">    return array[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="优化2"><a href="#优化2" class="headerlink" title="优化2"></a>优化2</h3><p>递归是一种比较浪费空间的一种操作，我们舍弃递归调用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int fib(int n)&#123;</span><br><span class="line">    if(n&lt;=2)&#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    int [] array=new int[n+1];</span><br><span class="line">    array[2]=array[1]=1;</span><br><span class="line">    for (int i=3;i&lt;=n;i++)&#123;</span><br><span class="line">        array[i]=array[i-1]+array[i-2];</span><br><span class="line">    &#125;</span><br><span class="line">    return array[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O(n)，空间复杂度：O(n) </p>
+<p>这是一种“自底向上”的计算过程 </p>
+<h3 id="优化3"><a href="#优化3" class="headerlink" title="优化3"></a>优化3</h3><p>由于每次运算只需要用到数组中的 2 个元素，所以可以使用<strong>滚动数组</strong>来优化 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int fib(int n) &#123;</span><br><span class="line">    if (n &lt;= 2) &#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    int[] array=new int[2];</span><br><span class="line">    array[0]=array[1]=1;</span><br><span class="line">    for (int i=3;i&lt;=n;i++)&#123;</span><br><span class="line">        array[i%2]=array[(i-1)%2]+array[(i-2)%2];</span><br><span class="line">    &#125;</span><br><span class="line">    return array[n%2];</span><br><span class="line">&#125;   </span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O(n)，空间复杂度：O(1) </p>
+<h3 id="优化4"><a href="#优化4" class="headerlink" title="优化4"></a>优化4</h3><p>乘、除、模运算效率较低，建议用其他方式取代 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int fib(int n) &#123;</span><br><span class="line">    if (n &lt;= 2) &#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    int[] array=new int[2];</span><br><span class="line">    array[0]=array[1]=1;</span><br><span class="line">    for (int i=3;i&lt;=n;i++)&#123;</span><br><span class="line">        array[i&amp;1]=array[(i-1)&amp;1]+array[(i-2)&amp;1];</span><br><span class="line">    &#125;</span><br><span class="line">    return array[n&amp;1];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="优化5"><a href="#优化5" class="headerlink" title="优化5"></a>优化5</h3><p>滚动数组其实就是两个变量，我们不在采用数组的方式，使用变量</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int fib(int n) &#123;</span><br><span class="line">    if (n &lt;= 2)return 1;</span><br><span class="line">    int first = 1;</span><br><span class="line">    int second = 1;</span><br><span class="line">    for (int i = 3; i &lt;= n; i++)&#123;</span><br><span class="line">        second = first + second;</span><br><span class="line">        first = second - first;</span><br><span class="line">    &#125;</span><br><span class="line">    return second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O(n)，空间复杂度：O(1) </p>
+<h3 id="优化6"><a href="#优化6" class="headerlink" title="优化6"></a>优化6</h3><p><img src="/posts/3328524930.html/1628875850125-82fc7999-d95f-473c-a8aa-d9090ee071a6.png" alt="image.png"></p>
+<h2 id="走楼梯"><a href="#走楼梯" class="headerlink" title="走楼梯"></a>走楼梯</h2><p>楼梯有 n 阶台阶，上楼可以一步上 1 阶，也可以一步上 2 阶，走完 n 阶台阶共有多少种不同的走法？ </p>
+<p>假设 n 阶台阶有 f(n) 种走法，第 1 步有 2 种走法 </p>
+<p>如果上 1 阶，那就还剩 n – 1 阶，共 f(n – 1) 种走法 </p>
+<p>如果上 2 阶，那就还剩 n – 2 阶，共 f(n – 2) 种走法 </p>
+<p>所以 f(n) = f(n – 1) + f(n – 2) </p>
+<p><img src="/posts/3328524930.html/1628965789579-7ffec679-4f32-4288-b8ec-93f5645b6fed.png" alt="image.png"></p>
+<p><img src="/posts/3328524930.html/1628965803269-202c3951-ee31-495d-a892-06379a0e6400.png" alt="image.png"></p>
+<p>优化思路也是一至</p>
+<p><img src="/posts/3328524930.html/1628965826765-6f0bb89e-9f70-4392-bb55-5adc1818b37c.png" alt="image.png"></p>
+<h3 id="汉诺塔"><a href="#汉诺塔" class="headerlink" title="汉诺塔"></a>汉诺塔</h3><p>编程实现把 A 的 n 个盘子移动到 C（盘子编号是 [1, n] ） </p>
+<p>每次只能移动1个盘子 </p>
+<p>大盘子只能放在小盘子下面 </p>
+<p><img src="/posts/3328524930.html/1628965917642-e0d35724-409d-4897-a037-5172991a4be6.png" alt="image.png"></p>
+<p>一个盘子</p>
+<p><img src="/posts/3328524930.html/1628965937579-2c6570d5-dfc2-49b9-b84e-8d7c02ec390a.png" alt="image.png"></p>
+<p>两个盘子</p>
+<p><img src="/posts/3328524930.html/1628965967902-e4ca6503-ce20-4cc2-b2d1-3e642aba7ec7.png" alt="image.png"></p>
+<p>三个盘子</p>
+<p><img src="/posts/3328524930.html/1628965987202-b3db545c-7b1a-4572-bee9-e1e6846173c8.png" alt="image.png"></p>
+<p><img src="/posts/3328524930.html/1628965997109-2c5cfb3d-b896-47df-aa73-2134c6b6ddc0.png" alt="image.png"></p>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>其实分 2 种情况讨论即可</p>
+<p>当 n == 1时，直接将盘子从 A 移动到 C</p>
+<p>当 n &gt; 1时，可以拆分成3大步骤</p>
+<p>① 将 n – 1 个盘子从 A 移动到 B</p>
+<p>② 将编号为 n 的盘子从 A 移动到 C</p>
+<p>③ 将 n – 1 个盘子从 B 移动到 C</p>
+<p>步骤 ① ③ 明显是个递归调用</p>
+<p><img src="/posts/3328524930.html/1628966043628-3956bf94-7716-4c79-8667-cd7025a8343c.png" alt="image.png"></p>
+<p><img src="/posts/3328524930.html/1628966052035-0b2b1792-1cae-4712-b8f3-5e6317d1b660.png" alt="image.png"></p>
+<p><em><strong>实现：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void hanoi(int n, String p1, String p2, String p3) &#123;</span><br><span class="line">    if (n == 1) &#123;</span><br><span class="line">        move(n, p1, p3);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    hanoi(n - 1, p1, p3, p2);</span><br><span class="line">    move(n, p1, p3);</span><br><span class="line">    hanoi(n - 1, p2, p1, p3);</span><br><span class="line">&#125; </span><br><span class="line">void move(int no, String from, String to) &#123;</span><br><span class="line">    System.out.println(&quot;将&quot; + no + &quot;号盘子从&quot; + from + &quot;移动到&quot; + to);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> Tn= 2 ∗ Tn − 1+ O(1) 因此时间复杂度是：O（2n）;空间复杂度：O(n)</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>递归</category>
+      </categories>
+      <tags>
+        <tag>递归</tag>
+      </tags>
+  </entry>
+</search>
