@@ -242,6 +242,43 @@
 <p>A网段：子网掩码是255.255.255.224/27 </p>
 <p>D网段：子网掩码是255.255.255.252/30 </p>
 <p>E网段：子网掩码是255.255.255.252/30</p>
+<h1 id="超网"><a href="#超网" class="headerlink" title="超网"></a>超网</h1><p>跟子网反过来，它是将多个连续的网段合并成一个更大的网段 </p>
+<p>需求：原本有200台计算机使用192.168.0.0/24网段，现在希望增加200台设备到同一个网段 </p>
+<p>200台在192.168.0.0/24网段，200台在192.168.1.0/24网段 </p>
+<p>合并192.168.0.0/24、192.168.1.0/24为一个网段：192.168.0.0/23（子网掩码往左移动1位）</p>
+<p><img src="/posts/2552668625.html/1629048064654-179248c1-cc18-41cf-bf6d-caf4a8f2e937.png" alt="image.png"></p>
+<h2 id="合并网段"><a href="#合并网段" class="headerlink" title="合并网段"></a>合并网段</h2><p>子网掩码向左移动2位，可以合并4个网段 </p>
+<p><img src="/posts/2552668625.html/1629048251260-a4f6a470-d868-4c9a-8268-ad864449a47e.png" alt="image.png"></p>
+<p>将192.168.0.0/24、192.168.1.0/24、192.168.2.0/24、192.168.3.0/24合并为192.168.0.0/22网段 </p>
+<h3 id="合并网段的规律"><a href="#合并网段的规律" class="headerlink" title="合并网段的规律"></a>合并网段的规律</h3><p>假设n是2的k次幂（k≥1） </p>
+<p>子网掩码左移k位能够将能够合并n个网段</p>
+<p><img src="/posts/2552668625.html/1629048315876-b4bbcfc2-e1af-4653-8056-8047e5382789.png" alt="image.png"></p>
+<p>假设n是2的k次幂（k≥1） </p>
+<p>如果第一个网段的网络号能被n整除，那么由它开始连续的n个网段，能通过左移k位子网掩码进行合并</p>
+<p>比如 </p>
+<p>第一个网段的网络号以二进制0结尾，那么由它开始连续的2个网段，能通过左移1位子网掩码进行合并 </p>
+<p>第一个网段的网络号以二进制00结尾，那么由它开始连续的4个网段，能通过左移2位子网掩码进行合并 </p>
+<p>第一个网段的网络号以二进制000结尾，那么由它开始连续的8个网段，能通过左移3位子网掩码进行合并</p>
+<h3 id="判断一个网段是子网还是超网"><a href="#判断一个网段是子网还是超网" class="headerlink" title="判断一个网段是子网还是超网"></a>判断一个网段是子网还是超网</h3><p>首先 </p>
+<p>看看该网段的类型，是A类网络、B类网络、C类网络？ </p>
+<p>默认情况下，A类子网掩码的位数是8，B类子网掩码的位数是16，C类子网掩码的位数是24</p>
+<p>然后 </p>
+<p>如果该网段的子网掩码位数比默认子网掩码多，就是子网 </p>
+<p>如果该网段的子网掩码位数比默认子网掩码少，则是超网</p>
+<p>比如 </p>
+<p>25.100.0.0/16是一个A类子网 </p>
+<p>200.100.0.0/16是一个C类超网</p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>两台电脑能否正常通信</p>
+<p><img src="/posts/2552668625.html/1629046599763-c637daad-1aa0-4781-b04d-316040bcca8c.png" alt="image.png"></p>
+<p><img src alt="img"><img src alt="img"><img src="/posts/2552668625.html/1629047924552-c786958b-cb1b-4c98-b619-8f4c4660a8f6.jpeg" alt="QQ图片20210816011805.jpg"></p>
+<p>计算机1可以给计算机0发消息，但是计算机0不能给计算机1发消息</p>
+<p>所以不能相互通信</p>
+<p>192.168.0.255/23这个IP地址，可以分配给计算机使用么？ </p>
+<p><img src="/posts/2552668625.html/1629048099846-fb3191a3-d25d-4085-a07f-130d1b7ab028.png" alt="image.png"></p>
+<p>主机部分不是全为1，所以可以使用</p>
+<p>下面的2个网段，能通过子网掩码向左移动1位进行合并么</p>
+<p><img src="/posts/2552668625.html/1629048279730-4f285b59-b583-435e-9b3c-cfbb0caded0a.png" alt="image.png"></p>
+<p>不可以</p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
@@ -1113,6 +1150,29 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void hanoi(int n, String p1, String p2, String p3) &#123;</span><br><span class="line">    if (n == 1) &#123;</span><br><span class="line">        move(n, p1, p3);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    hanoi(n - 1, p1, p3, p2);</span><br><span class="line">    move(n, p1, p3);</span><br><span class="line">    hanoi(n - 1, p2, p1, p3);</span><br><span class="line">&#125; </span><br><span class="line">void move(int no, String from, String to) &#123;</span><br><span class="line">    System.out.println(&quot;将&quot; + no + &quot;号盘子从&quot; + from + &quot;移动到&quot; + to);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p> Tn= 2 ∗ Tn − 1+ O(1) 因此时间复杂度是：O（2n）;空间复杂度：O(n)</p>
+<h1 id="递归转非递归"><a href="#递归转非递归" class="headerlink" title="递归转非递归"></a>递归转非递归</h1><p>递归转非递归的万能方法：自己维护一个栈，来保存参数、局部变量；但是空间复杂度依然没有得到优化</p>
+<p><img src="/posts/3328524930.html/1629045920396-4467ece0-1a25-4e6c-92fe-cc7088255d2c.png" alt="image.png"><img src="/posts/3328524930.html/1629045923474-960f12a2-579c-4ae4-88f5-be05048caa68.png" alt="image.png"></p>
+<p>在某些时候，也可以重复使用一组相同的变量来保存每个栈帧的内容 </p>
+<p><img src="/posts/3328524930.html/1629045940624-b60602b9-b5a9-4ebe-910a-30b6e7d95604.png" alt="image.png"></p>
+<p>这里重复使用变量 i 保存原来栈帧中的参数；空间复杂度从 O n    降到了 O 1 </p>
+<h1 id="尾调用（多看）"><a href="#尾调用（多看）" class="headerlink" title="尾调用（多看）"></a>尾调用（多看）</h1><p>一个函数的最后一个动作是调用函数；如果最后一个动作是调用自身，称为尾递归（Tail Recursion），是尾调用的特殊情况</p>
+<p><img src="/posts/3328524930.html/1629046027637-d22dad77-a360-4102-8bde-79a062a3889e.png" alt="image.png"><img src="/posts/3328524930.html/1629046030815-b09092ef-ab4f-451f-b7df-31584ed13826.png" alt="image.png"></p>
+<p>一些编译器能对尾调用进行优化，以达到节省栈空间的目的 </p>
+<p><img src="/posts/3328524930.html/1629046134846-0ed1e07c-a095-4915-8194-2a5dd7f180cf.png" alt="image.png"></p>
+<h2 id="尾调用优化"><a href="#尾调用优化" class="headerlink" title="尾调用优化"></a>尾调用优化</h2><p>尾调用优化也叫做尾调用消除（Tail Call Elimination）</p>
+<p>如果当前栈帧上的局部变量等内容都不需要用了，当前栈帧经过适当的改变后可以直接当作被尾调用的函数的栈帧；</p>
+<p>使用，然后程序可以 jump 到被尾调用的函数代码 </p>
+<p>生成栈帧改变代码与 jump 的过程称作尾调用消除或尾调用优化 </p>
+<p>尾调用优化让位于尾位置的函数调用跟 goto 语句性能一样高</p>
+<p>消除尾递归里的尾调用比消除一般的尾调用容易很多 </p>
+<p>比如Java虚拟机（JVM）会消除尾递归里的尾调用，但不会消除一般的尾调用（因为改变不了栈帧） </p>
+<p>因此尾递归优化相对比较普遍，平时的递归代码可以考虑尽量使用尾递归的形式</p>
+<h2 id="尾递归示例"><a href="#尾递归示例" class="headerlink" title="尾递归示例"></a>尾递归示例</h2><h3 id="阶乘"><a href="#阶乘" class="headerlink" title="阶乘"></a>阶乘</h3><p><img src="/posts/3328524930.html/1629046303622-39b5c4b2-ba04-41d6-93b8-6125dcb1e7c7.png" alt="image.png"></p>
+<p>优化后</p>
+<p><img src="/posts/3328524930.html/1629046315546-0504c66c-c4cf-4574-8295-d938e107b7bc.png" alt="image.png"></p>
+<h3 id="斐波那契数列-1"><a href="#斐波那契数列-1" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h3><p><img src="/posts/3328524930.html/1629046330819-5a36b781-a5d0-4783-b2cc-65ed1e1f5685.png" alt="image.png"></p>
+<p>优化后</p>
+<p><img src="/posts/3328524930.html/1629046337921-a8826fbe-448b-497f-91cd-dc25c829ae73.png" alt="image.png"></p>
 ]]></content>
       <categories>
         <category>算法</category>

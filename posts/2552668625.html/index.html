@@ -42,8 +42,15 @@
 <meta property="og:image" content="http://example.com/posts/2552668625.html/1628960187434-9244e108-5b90-446d-83ee-115ae1746f90.png">
 <meta property="og:image" content="http://example.com/posts/2552668625.html/1628960203601-9dc86c96-e248-42a8-9924-047913d662c4.png">
 <meta property="og:image" content="http://example.com/posts/2552668625.html/1628960240353-771952d9-b8c5-496b-9a18-c1cb4ac45fd0.png">
+<meta property="og:image" content="http://example.com/posts/2552668625.html/1629048064654-179248c1-cc18-41cf-bf6d-caf4a8f2e937.png">
+<meta property="og:image" content="http://example.com/posts/2552668625.html/1629048251260-a4f6a470-d868-4c9a-8268-ad864449a47e.png">
+<meta property="og:image" content="http://example.com/posts/2552668625.html/1629048315876-b4bbcfc2-e1af-4653-8056-8047e5382789.png">
+<meta property="og:image" content="http://example.com/posts/2552668625.html/1629046599763-c637daad-1aa0-4781-b04d-316040bcca8c.png">
+<meta property="og:image" content="http://example.com/posts/2552668625.html/1629047924552-c786958b-cb1b-4c98-b619-8f4c4660a8f6.jpeg">
+<meta property="og:image" content="http://example.com/posts/2552668625.html/1629048099846-fb3191a3-d25d-4085-a07f-130d1b7ab028.png">
+<meta property="og:image" content="http://example.com/posts/2552668625.html/1629048279730-4f285b59-b583-435e-9b3c-cfbb0caded0a.png">
 <meta property="article:published_time" content="2021-08-14T17:01:59.000Z">
-<meta property="article:modified_time" content="2021-08-14T17:03:32.939Z">
+<meta property="article:modified_time" content="2021-08-15T17:29:41.326Z">
 <meta property="article:author" content="LL">
 <meta property="article:tag" content="计网">
 <meta name="twitter:card" content="summary">
@@ -235,10 +242,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-08-15 01:01:59 / 修改时间：01:03:32" itemprop="dateCreated datePublished" datetime="2021-08-15T01:01:59+08:00">2021-08-15</time>
+              <time title="创建时间：2021-08-15 01:01:59" itemprop="dateCreated datePublished" datetime="2021-08-15T01:01:59+08:00">2021-08-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-16 01:29:41" itemprop="dateModified" datetime="2021-08-16T01:29:41+08:00">2021-08-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -280,14 +293,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
+              <span>4.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -451,6 +464,43 @@
 <p>A网段：子网掩码是255.255.255.224/27 </p>
 <p>D网段：子网掩码是255.255.255.252/30 </p>
 <p>E网段：子网掩码是255.255.255.252/30</p>
+<h1 id="超网"><a href="#超网" class="headerlink" title="超网"></a>超网</h1><p>跟子网反过来，它是将多个连续的网段合并成一个更大的网段 </p>
+<p>需求：原本有200台计算机使用192.168.0.0/24网段，现在希望增加200台设备到同一个网段 </p>
+<p>200台在192.168.0.0/24网段，200台在192.168.1.0/24网段 </p>
+<p>合并192.168.0.0/24、192.168.1.0/24为一个网段：192.168.0.0/23（子网掩码往左移动1位）</p>
+<p><img src="/posts/2552668625.html/1629048064654-179248c1-cc18-41cf-bf6d-caf4a8f2e937.png" alt="image.png"></p>
+<h2 id="合并网段"><a href="#合并网段" class="headerlink" title="合并网段"></a>合并网段</h2><p>子网掩码向左移动2位，可以合并4个网段 </p>
+<p><img src="/posts/2552668625.html/1629048251260-a4f6a470-d868-4c9a-8268-ad864449a47e.png" alt="image.png"></p>
+<p>将192.168.0.0/24、192.168.1.0/24、192.168.2.0/24、192.168.3.0/24合并为192.168.0.0/22网段 </p>
+<h3 id="合并网段的规律"><a href="#合并网段的规律" class="headerlink" title="合并网段的规律"></a>合并网段的规律</h3><p>假设n是2的k次幂（k≥1） </p>
+<p>子网掩码左移k位能够将能够合并n个网段</p>
+<p><img src="/posts/2552668625.html/1629048315876-b4bbcfc2-e1af-4653-8056-8047e5382789.png" alt="image.png"></p>
+<p>假设n是2的k次幂（k≥1） </p>
+<p>如果第一个网段的网络号能被n整除，那么由它开始连续的n个网段，能通过左移k位子网掩码进行合并</p>
+<p>比如 </p>
+<p>第一个网段的网络号以二进制0结尾，那么由它开始连续的2个网段，能通过左移1位子网掩码进行合并 </p>
+<p>第一个网段的网络号以二进制00结尾，那么由它开始连续的4个网段，能通过左移2位子网掩码进行合并 </p>
+<p>第一个网段的网络号以二进制000结尾，那么由它开始连续的8个网段，能通过左移3位子网掩码进行合并</p>
+<h3 id="判断一个网段是子网还是超网"><a href="#判断一个网段是子网还是超网" class="headerlink" title="判断一个网段是子网还是超网"></a>判断一个网段是子网还是超网</h3><p>首先 </p>
+<p>看看该网段的类型，是A类网络、B类网络、C类网络？ </p>
+<p>默认情况下，A类子网掩码的位数是8，B类子网掩码的位数是16，C类子网掩码的位数是24</p>
+<p>然后 </p>
+<p>如果该网段的子网掩码位数比默认子网掩码多，就是子网 </p>
+<p>如果该网段的子网掩码位数比默认子网掩码少，则是超网</p>
+<p>比如 </p>
+<p>25.100.0.0/16是一个A类子网 </p>
+<p>200.100.0.0/16是一个C类超网</p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>两台电脑能否正常通信</p>
+<p><img src="/posts/2552668625.html/1629046599763-c637daad-1aa0-4781-b04d-316040bcca8c.png" alt="image.png"></p>
+<p><img src alt="img"><img src alt="img"><img src="/posts/2552668625.html/1629047924552-c786958b-cb1b-4c98-b619-8f4c4660a8f6.jpeg" alt="QQ图片20210816011805.jpg"></p>
+<p>计算机1可以给计算机0发消息，但是计算机0不能给计算机1发消息</p>
+<p>所以不能相互通信</p>
+<p>192.168.0.255/23这个IP地址，可以分配给计算机使用么？ </p>
+<p><img src="/posts/2552668625.html/1629048099846-fb3191a3-d25d-4085-a07f-130d1b7ab028.png" alt="image.png"></p>
+<p>主机部分不是全为1，所以可以使用</p>
+<p>下面的2个网段，能通过子网掩码向左移动1位进行合并么</p>
+<p><img src="/posts/2552668625.html/1629048279730-4f285b59-b583-435e-9b3c-cfbb0caded0a.png" alt="image.png"></p>
+<p>不可以</p>
 
     </div>
 
@@ -550,7 +600,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MAC%E5%9C%B0%E5%9D%80"><span class="nav-number">1.</span> <span class="nav-text">MAC地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC%E5%9C%B0%E5%9D%80%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">MAC地址的表示格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC%E5%9C%B0%E5%9D%80%E6%93%8D%E4%BD%9C"><span class="nav-number">1.0.2.</span> <span class="nav-text">MAC地址操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC%E5%9C%B0%E5%9D%80%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-number">1.0.3.</span> <span class="nav-text">MAC地址的获取</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP"><span class="nav-number">2.</span> <span class="nav-text">ARP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RARP"><span class="nav-number">2.1.</span> <span class="nav-text">RARP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPMP"><span class="nav-number">3.</span> <span class="nav-text">IPMP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP"><span class="nav-number">4.</span> <span class="nav-text">IP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">4.1.</span> <span class="nav-text">IP地址的组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">4.2.</span> <span class="nav-text">IP地址的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-number">4.2.1.</span> <span class="nav-text">A类地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-number">4.2.2.</span> <span class="nav-text">B类地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D%E7%B1%BB%E5%9C%B0%E5%9D%80%EF%BC%8CE%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-number">4.2.3.</span> <span class="nav-text">D类地址，E类地址</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%90%E7%BD%91"><span class="nav-number">5.</span> <span class="nav-text">子网</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81%E7%9A%84CIDR%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">子网掩码的CIDR表示方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%9B%E8%A1%8C%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.2.</span> <span class="nav-text">为什么要进行子网划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.3.</span> <span class="nav-text">子网划分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94%E7%AD%89%E5%88%86%E6%88%902%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="nav-number">5.3.0.1.</span> <span class="nav-text">等长子网划分——等分成2个子网</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94%E7%AD%89%E5%88%86%E6%88%904%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="nav-number">5.3.0.2.</span> <span class="nav-text">等长子网划分——等分成4个子网</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94%E7%AD%89%E5%88%86%E6%88%904%E4%B8%AA%E5%AD%90%E7%BD%91%E7%9A%84%E5%B9%BF%E6%92%AD%E5%9C%B0%E5%9D%80"><span class="nav-number">5.3.0.2.1.</span> <span class="nav-text">等长子网划分——等分成4个子网的广播地址</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94%E7%AD%89%E5%88%86%E6%88%908%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="nav-number">5.3.0.3.</span> <span class="nav-text">等长子网划分——等分成8个子网</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94B%E7%B1%BB%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.3.0.4.</span> <span class="nav-text">等长子网划分——B类子网划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94A%E7%B1%BB%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.3.0.5.</span> <span class="nav-text">等长子网划分——A类子网划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.3.0.6.</span> <span class="nav-text">变长子网划分</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MAC%E5%9C%B0%E5%9D%80"><span class="nav-number">1.</span> <span class="nav-text">MAC地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC%E5%9C%B0%E5%9D%80%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">MAC地址的表示格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC%E5%9C%B0%E5%9D%80%E6%93%8D%E4%BD%9C"><span class="nav-number">1.0.2.</span> <span class="nav-text">MAC地址操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC%E5%9C%B0%E5%9D%80%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-number">1.0.3.</span> <span class="nav-text">MAC地址的获取</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP"><span class="nav-number">2.</span> <span class="nav-text">ARP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RARP"><span class="nav-number">2.1.</span> <span class="nav-text">RARP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPMP"><span class="nav-number">3.</span> <span class="nav-text">IPMP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP"><span class="nav-number">4.</span> <span class="nav-text">IP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">4.1.</span> <span class="nav-text">IP地址的组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">4.2.</span> <span class="nav-text">IP地址的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-number">4.2.1.</span> <span class="nav-text">A类地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-number">4.2.2.</span> <span class="nav-text">B类地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D%E7%B1%BB%E5%9C%B0%E5%9D%80%EF%BC%8CE%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="nav-number">4.2.3.</span> <span class="nav-text">D类地址，E类地址</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%90%E7%BD%91"><span class="nav-number">5.</span> <span class="nav-text">子网</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81%E7%9A%84CIDR%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">子网掩码的CIDR表示方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%9B%E8%A1%8C%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.2.</span> <span class="nav-text">为什么要进行子网划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.3.</span> <span class="nav-text">子网划分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94%E7%AD%89%E5%88%86%E6%88%902%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="nav-number">5.3.0.1.</span> <span class="nav-text">等长子网划分——等分成2个子网</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94%E7%AD%89%E5%88%86%E6%88%904%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="nav-number">5.3.0.2.</span> <span class="nav-text">等长子网划分——等分成4个子网</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94%E7%AD%89%E5%88%86%E6%88%904%E4%B8%AA%E5%AD%90%E7%BD%91%E7%9A%84%E5%B9%BF%E6%92%AD%E5%9C%B0%E5%9D%80"><span class="nav-number">5.3.0.2.1.</span> <span class="nav-text">等长子网划分——等分成4个子网的广播地址</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94%E7%AD%89%E5%88%86%E6%88%908%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="nav-number">5.3.0.3.</span> <span class="nav-text">等长子网划分——等分成8个子网</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94B%E7%B1%BB%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.3.0.4.</span> <span class="nav-text">等长子网划分——B类子网划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E2%80%94%E2%80%94A%E7%B1%BB%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.3.0.5.</span> <span class="nav-text">等长子网划分——A类子网划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="nav-number">5.3.0.6.</span> <span class="nav-text">变长子网划分</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B6%85%E7%BD%91"><span class="nav-number">6.</span> <span class="nav-text">超网</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E7%BD%91%E6%AE%B5"><span class="nav-number">6.1.</span> <span class="nav-text">合并网段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E7%BD%91%E6%AE%B5%E7%9A%84%E8%A7%84%E5%BE%8B"><span class="nav-number">6.1.1.</span> <span class="nav-text">合并网段的规律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E7%BD%91%E6%AE%B5%E6%98%AF%E5%AD%90%E7%BD%91%E8%BF%98%E6%98%AF%E8%B6%85%E7%BD%91"><span class="nav-number">6.1.2.</span> <span class="nav-text">判断一个网段是子网还是超网</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">思考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -644,13 +694,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">40k</span>
+    <span title="站点总字数">41k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">36 分钟</span>
+    <span title="站点阅读时长">37 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
