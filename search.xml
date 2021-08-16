@@ -1041,6 +1041,62 @@
       </tags>
   </entry>
   <entry>
+    <title>计网名词</title>
+    <url>/posts/521997408.html/</url>
+    <content><![CDATA[<h1 id="网络、互联网、因特网"><a href="#网络、互联网、因特网" class="headerlink" title="网络、互联网、因特网"></a>网络、互联网、因特网</h1><p><img src="/posts/521997408.html/1629130821204-5705f111-60b9-4fc9-82f8-74878839f519.png" alt="image.png"></p>
+<p>网络</p>
+<p><img src="/posts/521997408.html/1629130829620-adf8d5c3-4541-4884-968c-2fb2858583ab.png" alt="image.png"></p>
+<p>互联网</p>
+<p>全球最大的互联网是：因特网；将全世界所有的计算机都连接在一起；一般使用大写I开头的Ineternet特指因特网；日常生活中说的：你的电脑上不了网。其实就是指：你的电脑没有连接到因特网 </p>
+<h1 id="ISP"><a href="#ISP" class="headerlink" title="ISP"></a>ISP</h1><p>ISP，Internet Service Provider，Internet服务提供商，比如移动、电信、网通、铁通等 </p>
+<p>我们平时拉的宽带都是通过ISP连接到Internet的</p>
+<p><img src="/posts/521997408.html/1629131061785-03d9188e-5568-40b2-a038-7a8633c48443.png" alt="image.png"></p>
+<h2 id="服务器机房"><a href="#服务器机房" class="headerlink" title="服务器机房"></a>服务器机房</h2><p><img src="/posts/521997408.html/1629131089550-ff68b2ca-bb42-4455-9535-be7b9fe7e261.png" alt="image.png"><img src="/posts/521997408.html/1629131098174-ac927715-3dcd-4f36-ac69-dd981702ab5b.png" alt="image.png"></p>
+<h1 id="网络分类"><a href="#网络分类" class="headerlink" title="网络分类"></a>网络分类</h1><p>按照网络的范围进行分类，可以分为：局域网、城域网、广域网等 </p>
+<p><strong>局域网（Local Area Network, LAN）</strong></p>
+<p>一般是范围在几百米到十几公里内的计算机所构成的计算机网络；常用于公司、家庭、学校、医院、机关、一幢大楼等；</p>
+<p>局域网中使用最广泛的网络技术叫<strong>以太网（Ethernet）</strong></p>
+<p>在电脑、手机上经常见到的一个英文；意思是无线局域网 </p>
+<p><strong>城域网（Metropolitan Area Network，MAN）</strong></p>
+<p>一般范围是数十公里到数百公里，可以覆盖一个城市</p>
+<p><strong>广域网（Wide Area Network，WAN）</strong></p>
+<p>一般范围是几百公里到几千公里，可以覆盖一个国家。通常都需要租用IPS线路</p>
+<h1 id="常见的几种接口"><a href="#常见的几种接口" class="headerlink" title="常见的几种接口"></a>常见的几种接口</h1><p>FastEthernet 快速以太网接口（100M）</p>
+<p>GigabitEthernet 千兆以太网接口</p>
+<p>Serial 串行接口</p>
+<h1 id="上网方式"><a href="#上网方式" class="headerlink" title="上网方式"></a>上网方式</h1><h2 id="电话线入户"><a href="#电话线入户" class="headerlink" title="电话线入户"></a>电话线入户</h2><p><img src="/posts/521997408.html/1629132959057-f86bd945-de25-4937-b280-55fd420eb388.png" alt="image.png"></p>
+<p>这就是平时说的：ADSL电话拨号上网；非对称数字用户线路，提供上、下行不对称的传输带宽 </p>
+<p>猫（Modem）,调制解调器，进行数字信号和模拟信号的转换 </p>
+<h2 id="光纤入户"><a href="#光纤入户" class="headerlink" title="光纤入户"></a>光纤入户</h2><p><img src="/posts/521997408.html/1629133048356-d7b33702-466c-49fc-86be-cd16694e88ef.png" alt="image.png"></p>
+<p>光猫（ Optical Modem）光调制解调器，进行数字信号和光信号的转换</p>
+<h2 id="网线入户"><a href="#网线入户" class="headerlink" title="网线入户"></a>网线入户</h2><p><img src="/posts/521997408.html/1629133106103-5a1caf2b-2949-456a-af15-65efb3b17178.png" alt="image.png"></p>
+<h1 id="家用无线路由器的逻辑结构"><a href="#家用无线路由器的逻辑结构" class="headerlink" title="家用无线路由器的逻辑结构"></a>家用无线路由器的逻辑结构</h1><p><img src="/posts/521997408.html/1629133136680-1cdf7a1a-8c87-4cd0-a6b9-80adf5909aa3.png" alt="image.png"></p>
+<h1 id="公网IP-amp-私网IP"><a href="#公网IP-amp-私网IP" class="headerlink" title="公网IP&amp;私网IP"></a>公网IP&amp;私网IP</h1><p>公网IP（Public） </p>
+<p>Internet上的路由器中只有到达公网的路由表，没有到达私网的路由表 </p>
+<p>公网IP由因特网信息中心统一分配和管理</p>
+<p>IPS需要向Inter NIC申请公网IP</p>
+<p>私网IP（Private） </p>
+<p>主要用于局域网。</p>
+<p>下面是保留的私网网段 </p>
+<p>A类：10.0.0.0/8，1个A类网络 </p>
+<p>B类：172.16.0.0/16 ~ 172.31.0.0/16，16个B类网络 </p>
+<p>C类：192.168.0.0/24 ~ 192.168.255.0/24，256个C类网络 </p>
+<h1 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h1><p>私网IP访问Internet需要进行NAT转换为公网IP；这一步可以由路由器来完成</p>
+<h2 id="NAT特点"><a href="#NAT特点" class="headerlink" title="NAT特点"></a>NAT特点</h2><p>可以节约公网IP资源；</p>
+<p>会隐藏内部真实IP</p>
+<h2 id="NAT分类"><a href="#NAT分类" class="headerlink" title="NAT分类"></a>NAT分类</h2><p>静态转换；手动配置NAT；映射表 一对一转换</p>
+<p>动态转换；定义外部地址池，动态随机转换；一对一转换</p>
+<h2 id="PAT"><a href="#PAT" class="headerlink" title="PAT"></a>PAT</h2><p>多对一转换，最大程度节约公网IP资源；采用端口多路复用方式，通过端口号标识不同的数据流；目前应用最广泛的NAT实现方式 </p>
+]]></content>
+      <categories>
+        <category>计算机网路</category>
+        <category>基础</category>
+      </categories>
+      <tags>
+        <tag>计网</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>递归</title>
     <url>/posts/3328524930.html/</url>
     <content><![CDATA[<h1 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h1><p>函数（方法）直接或间接调用自身。是一种常用的编程技巧 </p>
