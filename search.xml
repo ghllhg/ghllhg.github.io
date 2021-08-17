@@ -88,6 +88,73 @@
 ]]></content>
   </entry>
   <entry>
+    <title>二分查找</title>
+    <url>/posts/3907716225.html/</url>
+    <content><![CDATA[<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
+<p>示例 1:</p>
+<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
+<p>输出: 4</p>
+<p>解释: 9 出现在 nums 中并且下标为 4</p>
+<p>示例 2:</p>
+<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
+<p>输出: -1</p>
+<p>解释: 2 不存在 nums 中因此返回 -1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int search(int[] nums, int target) &#123;</span><br><span class="line">        int life=0,right=nums.length-1;</span><br><span class="line">        int p;</span><br><span class="line">        while (life&lt;=right)&#123;</span><br><span class="line">            p=life+(right-life)/2;</span><br><span class="line">            if(nums[p]==target) return p;</span><br><span class="line">            if(nums[p]&lt;target) life=p+1;</span><br><span class="line">            else right=p-1;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分查找是一种基于比较目标值和数组中间元素的教科书式算法。</p>
+<ul>
+<li>如果目标值等于中间元素，则找到目标值。</li>
+<li>如果目标值较小，继续在左侧搜索。</li>
+<li>如果目标值较大，则继续在右侧搜索。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1834295/1625567991316-308e35ad-d3bc-4192-a91e-4cc9569111ee.jpeg" alt="image"></p>
+<h1 id="第一个错误版本"><a href="#第一个错误版本" class="headerlink" title="第一个错误版本"></a>第一个错误版本</h1><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
+<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
+<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
+<p>示例 1：</p>
+<p>输入：n = 5, bad = 4</p>
+<p>输出：4</p>
+<p>解释：</p>
+<p>调用 isBadVersion(3) -&gt; false</p>
+<p>调用 isBadVersion(5) -&gt; true</p>
+<p>调用 isBadVersion(4) -&gt; true</p>
+<p>所以，4 是第一个错误的版本。</p>
+<p>示例 2：</p>
+<p>输入：n = 1, bad = 1</p>
+<p>输出：1</p>
+<p>通过题干我们可以了解到，当一个版本为正确版本后，之前所有的版本都是正确版本，当一个版本为错误版本后之后的版本都是错误版本，我们所做的就是需要找到第一个出错的版本，就可以利用二分查找来确定</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Solution extends VersionControl &#123;</span><br><span class="line">    public int firstBadVersion(int n) &#123;</span><br><span class="line">        int left = 1, right = n;</span><br><span class="line">        while (left &lt; right) &#123; // 循环直至区间左右端点相同</span><br><span class="line">            int mid = left + (right - left) / 2; // 防止计算时溢出</span><br><span class="line">            if (isBadVersion(mid)) &#123;</span><br><span class="line">                right = mid; // 答案在区间 [left, mid] 中</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1; // 答案在区间 [mid+1, right] 中</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 此时有 left == right，区间缩为一个点，即为答案</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
+<p>你可以假设数组中无重复元素。</p>
+<p>示例 1:</p>
+<p>输入: [1,3,5,6], 5</p>
+<p>输出: 2</p>
+<p>示例 2:</p>
+<p>输入: [1,3,5,6], 2</p>
+<p>输出: 1</p>
+<p>示例 3:</p>
+<p>输入: [1,3,5,6], 7</p>
+<p>输出: 4</p>
+<p>示例 4:</p>
+<p>输入: [1,3,5,6], 0</p>
+<p>输出: 0</p>
+<p>此题结合了前两道题，找到那个数的位置是什么，在左右指针移动时我们就要考虑他的角标移动。而且我们还需要一个值来记录循环时需要插入的位置。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int left = 0, right = n - 1, ans = n;</span><br><span class="line">        while (left &lt;= right) &#123;// 循环直至区间左右端点换位</span><br><span class="line">            int mid = ((right - left) &gt;&gt; 1) + left;// 防止计算时溢出</span><br><span class="line">            if (target &lt;= nums[mid]) &#123;</span><br><span class="line">                ans = mid;//记录此次循环中间位置</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">*ans存在的重要性，如果target大于nums中最大值，ans为n输出</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
+
+<p><strong>小知识：</strong>是右移运算，在计算机中是一种运算操作，但是他的运算结果正好能对应一个整数的二分之一值，这就正好能代替数学上的除2运算，但是比除2运算要快。</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>二分查找</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MAC&amp;IP</title>
     <url>/posts/2552668625.html/</url>
     <content><![CDATA[<h1 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h1><p>每一个网卡都有一个6字节(48bit)的MAC地址(Media Access Control Address)</p>
@@ -289,73 +356,6 @@
       </tags>
   </entry>
   <entry>
-    <title>二分查找</title>
-    <url>/posts/3907716225.html/</url>
-    <content><![CDATA[<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
-<p>示例 1:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
-<p>输出: 4</p>
-<p>解释: 9 出现在 nums 中并且下标为 4</p>
-<p>示例 2:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
-<p>输出: -1</p>
-<p>解释: 2 不存在 nums 中因此返回 -1</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int search(int[] nums, int target) &#123;</span><br><span class="line">        int life=0,right=nums.length-1;</span><br><span class="line">        int p;</span><br><span class="line">        while (life&lt;=right)&#123;</span><br><span class="line">            p=life+(right-life)/2;</span><br><span class="line">            if(nums[p]==target) return p;</span><br><span class="line">            if(nums[p]&lt;target) life=p+1;</span><br><span class="line">            else right=p-1;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>分查找是一种基于比较目标值和数组中间元素的教科书式算法。</p>
-<ul>
-<li>如果目标值等于中间元素，则找到目标值。</li>
-<li>如果目标值较小，继续在左侧搜索。</li>
-<li>如果目标值较大，则继续在右侧搜索。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1834295/1625567991316-308e35ad-d3bc-4192-a91e-4cc9569111ee.jpeg" alt="image"></p>
-<h1 id="第一个错误版本"><a href="#第一个错误版本" class="headerlink" title="第一个错误版本"></a>第一个错误版本</h1><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
-<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
-<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
-<p>示例 1：</p>
-<p>输入：n = 5, bad = 4</p>
-<p>输出：4</p>
-<p>解释：</p>
-<p>调用 isBadVersion(3) -&gt; false</p>
-<p>调用 isBadVersion(5) -&gt; true</p>
-<p>调用 isBadVersion(4) -&gt; true</p>
-<p>所以，4 是第一个错误的版本。</p>
-<p>示例 2：</p>
-<p>输入：n = 1, bad = 1</p>
-<p>输出：1</p>
-<p>通过题干我们可以了解到，当一个版本为正确版本后，之前所有的版本都是正确版本，当一个版本为错误版本后之后的版本都是错误版本，我们所做的就是需要找到第一个出错的版本，就可以利用二分查找来确定</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Solution extends VersionControl &#123;</span><br><span class="line">    public int firstBadVersion(int n) &#123;</span><br><span class="line">        int left = 1, right = n;</span><br><span class="line">        while (left &lt; right) &#123; // 循环直至区间左右端点相同</span><br><span class="line">            int mid = left + (right - left) / 2; // 防止计算时溢出</span><br><span class="line">            if (isBadVersion(mid)) &#123;</span><br><span class="line">                right = mid; // 答案在区间 [left, mid] 中</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1; // 答案在区间 [mid+1, right] 中</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 此时有 left == right，区间缩为一个点，即为答案</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
-<p>你可以假设数组中无重复元素。</p>
-<p>示例 1:</p>
-<p>输入: [1,3,5,6], 5</p>
-<p>输出: 2</p>
-<p>示例 2:</p>
-<p>输入: [1,3,5,6], 2</p>
-<p>输出: 1</p>
-<p>示例 3:</p>
-<p>输入: [1,3,5,6], 7</p>
-<p>输出: 4</p>
-<p>示例 4:</p>
-<p>输入: [1,3,5,6], 0</p>
-<p>输出: 0</p>
-<p>此题结合了前两道题，找到那个数的位置是什么，在左右指针移动时我们就要考虑他的角标移动。而且我们还需要一个值来记录循环时需要插入的位置。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int left = 0, right = n - 1, ans = n;</span><br><span class="line">        while (left &lt;= right) &#123;// 循环直至区间左右端点换位</span><br><span class="line">            int mid = ((right - left) &gt;&gt; 1) + left;// 防止计算时溢出</span><br><span class="line">            if (target &lt;= nums[mid]) &#123;</span><br><span class="line">                ans = mid;//记录此次循环中间位置</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">*ans存在的重要性，如果target大于nums中最大值，ans为n输出</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
-
-<p><strong>小知识：</strong>是右移运算，在计算机中是一种运算操作，但是他的运算结果正好能对应一个整数的二分之一值，这就正好能代替数学上的除2运算，但是比除2运算要快。</p>
-]]></content>
-      <categories>
-        <category>算法</category>
-        <category>二分查找</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>双指针</title>
     <url>/posts/2443699409.html/</url>
     <content><![CDATA[<h1 id="有序数组的平方"><a href="#有序数组的平方" class="headerlink" title=" 有序数组的平方"></a><a href="https://leetcode-cn.com/problems/squares-of-a-sorted-array/"> 有序数组的平方</a></h1><p>给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。</p>
@@ -522,6 +522,68 @@
       </tags>
   </entry>
   <entry>
+    <title>回溯</title>
+    <url>/posts/4180606813.html/</url>
+    <content><![CDATA[<p><strong>含义：</strong></p>
+<p>回溯可以理解为通过选择不同的岔路口来通往目的地（找到想要的结果）； 每一步都选择一条路出发，能进则进，不能进则退回上一步（回溯），换一条路再试</p>
+<p>树、图的深度优先搜索（DFS）、八皇后、走迷宫都是典型的回溯应用</p>
+<p><img src="/posts/4180606813.html/1629215002802-ea35ae8b-f726-45ec-9941-04ace1b34437.png" alt="image.png"></p>
+<p>不难看出来，回溯很适合使用递归 </p>
+<h1 id="八皇后问题"><a href="#八皇后问题" class="headerlink" title="八皇后问题"></a>八皇后问题</h1><p>要知道想要明白一种算法，最直接的方式就是做一道题去理解它，再多的理论都要架在做题的基础之上</p>
+<p>八皇后问题是一个古老而著名的问题 </p>
+<p>在8x8格的国际象棋上摆放八个皇后，使其不能互相攻击：任意两个皇后都不能处于同一行、同一列、同一斜线上 </p>
+<p>请问有多少种摆法？</p>
+<p><img src="/posts/4180606813.html/1629215505310-a10d9f1a-2453-46ee-8d8b-05c2b283a93c.png" alt="image.png"></p>
+<p>leetcode_51_N皇后：<a href="https://leetcode-cn.com/problems/n-queens/">https://leetcode-cn.com/problems/n-queens/</a></p>
+<p>leetcode_52_N皇后 II： <a href="https://leetcode-cn.com/problems/n-queens-ii/">https://leetcode-cn.com/problems/n-queens-ii/</a> </p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>一、暴力破解，正所谓大力出奇迹，暴力的确可以解决问题，但是必不可面的就是他浪费了大量的资源，我们所得到的和所花费的不成比例，也不是我们学习算法的初衷；从 64 个格子中选出任意 8 个格子摆放皇后，检查每一种摆法的可行性，一共 C648种摆法（大概是 4.4 ∗ 109 种摆法）；根据题意，很显然，每一行只能放一个皇后，所以共有 88 种摆法（16777216 种），检查每一种摆法的可行性</p>
+<p>二、回溯法</p>
+<p>回溯+剪枝</p>
+<h3 id="四皇后——回溯法"><a href="#四皇后——回溯法" class="headerlink" title="四皇后——回溯法"></a>四皇后——回溯法</h3><p>在解决八皇后问题之前，我们并不需要那么大的数据规模，我们可以先解决四皇后问题，在变换成八皇后，因为代码的思路是相同的</p>
+<p>看图须知：我们四皇后问题在4×4的表格内，就说明在每行每列都应该存在且仅存在一个皇后。</p>
+<p><img src="/posts/4180606813.html/1629215964841-c686131e-24b0-463a-b644-97e64854c7d9.png" alt="image.png"></p>
+<p>如图所示，我们先选择（0，0）的位置作为第一个皇后，在剩下蓝色区域按序选择（1，2）位置作为第二个皇后的位置，但是我们发现第三行已经不能摆放皇后，说明我们之前摆放有问题，我们回到上一次摆放（图中3➡2），我们已经知道（1，2）不能摆放，我们按序拜访下一个位置（1，3）作为第二个皇后的位置，在剩下蓝色区域按序选择（2，1）位置作为第三个皇后的位置，此时我们发现第四行无摆放皇后位置，说明我们前几次摆放错误，我们向前回溯时发现，我们第二行和第三行的蓝色位置我们都进行了尝试，所以我们回溯到第一次摆放皇后（图中5➡1）；我们按序更改第一次摆放皇后的位置，~</p>
+<p>按照规则我们进行摆放，当我们成功时，我们进行上一行的回溯，如果不行，继续上跳，当第一行将每个位置尝试过之后，我们就可以有多少种摆放方法。</p>
+<h3 id="四皇后-–-剪枝"><a href="#四皇后-–-剪枝" class="headerlink" title="四皇后 – 剪枝"></a>四皇后 – 剪枝</h3><p><img src="/posts/4180606813.html/1629216763311-78fd3b4d-558a-46b1-9629-df66bcf85a84.png" alt="image.png"></p>
+<p>剪枝，如图所示，就是将不符合条件的选项筛选掉。</p>
+<h2 id="八皇后——回溯"><a href="#八皇后——回溯" class="headerlink" title="八皇后——回溯"></a>八皇后——回溯</h2><p><img src="/posts/4180606813.html/1629216844047-212df020-3b63-4891-8519-4de20994d86d.png" alt="image.png"></p>
+<p><img src="/posts/4180606813.html/1629216867163-a953c44b-53d0-4f47-af55-e38bcf1e55fe.png" alt="image.png"></p>
+<p><img src="/posts/4180606813.html/1629216874315-87ebd62d-738a-4208-a63f-0b2d5aaa0da1.png" alt="image.png"></p>
+<p>先是通过四皇后来整理了思路，现在我们开始上代码</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    // TODO Auto-generated method stub</span><br><span class="line">    new Queens().placeQueens(4);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 数组索引是行号，数组元素是列号</span><br><span class="line"> */</span><br><span class="line">int[] cols;</span><br><span class="line">/**</span><br><span class="line"> * 一共有多少种摆法</span><br><span class="line"> */</span><br><span class="line">int ways;</span><br><span class="line"></span><br><span class="line">void placeQueens(int n) &#123;</span><br><span class="line">    if (n &lt; 1) return;</span><br><span class="line">    cols = new int[n];</span><br><span class="line">    place(0);</span><br><span class="line">    System.out.println(n + &quot;皇后一共有&quot; + ways + &quot;种摆法&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 从第row行开始摆放皇后</span><br><span class="line"> * @param row</span><br><span class="line"> */</span><br><span class="line">void place(int row) &#123;</span><br><span class="line">    if (row == cols.length) &#123;</span><br><span class="line">        ways++;</span><br><span class="line">        show();</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    for (int col = 0; col &lt; cols.length; col++) &#123;</span><br><span class="line">        if (isValid(row, col)) &#123;</span><br><span class="line">            // 在第row行第col列摆放皇后</span><br><span class="line">            cols[row] = col;</span><br><span class="line">            place(row + 1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 判断第row行第col列是否可以摆放皇后</span><br><span class="line"> */</span><br><span class="line">boolean isValid(int row, int col) &#123;</span><br><span class="line">    for (int i = 0; i &lt; row; i++) &#123;</span><br><span class="line">        // 第col列已经有皇后</span><br><span class="line">        if (cols[i] == col) &#123;</span><br><span class="line">            System.out.println(&quot;[&quot; + row + &quot;][&quot; + col + &quot;]=false&quot;);</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        // 第i行的皇后跟第row行第col列格子处在同一斜线上</span><br><span class="line">        if (row - i == Math.abs(col - cols[i])) &#123;</span><br><span class="line">            System.out.println(&quot;[&quot; + row + &quot;][&quot; + col + &quot;]=false&quot;);</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(&quot;[&quot; + row + &quot;][&quot; + col + &quot;]=true&quot;);</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void show() &#123;</span><br><span class="line">    for (int row = 0; row &lt; cols.length; row++) &#123;</span><br><span class="line">        for (int col = 0; col &lt; cols.length; col++) &#123;</span><br><span class="line">            if (cols[row] == col) &#123;</span><br><span class="line">                System.out.print(&quot;1 &quot;);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                System.out.print(&quot;0 &quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(&quot;------------------------------&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="八皇后——优化1"><a href="#八皇后——优化1" class="headerlink" title="八皇后——优化1"></a>八皇后——优化1</h3><p>我们可以很好的找到皇后所对应的行列，但是对于他的对角线问题我们就不能快速的解决</p>
+<p><img src="/posts/4180606813.html/1629218440471-1aec547f-f62a-465c-b5e0-7010089503d2.png" alt="image.png"></p>
+<p>看到这幅图的时候我相信大家都明白了，我们按照这种对角线的方式我们能很好的找到我们斜线</p>
+<p>我们将整型数组变成了布尔类型</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        // TODO Auto-generated method stub</span><br><span class="line">        new Queens2().placeQueens(4);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 数组索引是行号，数组元素是列号</span><br><span class="line">     */</span><br><span class="line">    int[] queens;</span><br><span class="line">    /**</span><br><span class="line">     * 标记着某一列是否有皇后</span><br><span class="line">     */</span><br><span class="line">    boolean[] cols;</span><br><span class="line">    /**</span><br><span class="line">     * 标记着某一斜线上是否有皇后（左上角 -&gt; 右下角）</span><br><span class="line">     */</span><br><span class="line">    boolean[] leftTop;</span><br><span class="line">    /**</span><br><span class="line">     * 标记着某一斜线上是否有皇后（右上角 -&gt; 左下角）</span><br><span class="line">     */</span><br><span class="line">    boolean[] rightTop;</span><br><span class="line">    /**</span><br><span class="line">     * 一共有多少种摆法</span><br><span class="line">     */</span><br><span class="line">    int ways;</span><br><span class="line">    </span><br><span class="line">    void placeQueens(int n) &#123;</span><br><span class="line">        if (n &lt; 1) return;</span><br><span class="line">        queens = new int[n];</span><br><span class="line">        cols = new boolean[n];</span><br><span class="line">        leftTop = new boolean[(n &lt;&lt; 1) - 1];</span><br><span class="line">        rightTop = new boolean[leftTop.length];</span><br><span class="line">        place(0);</span><br><span class="line">        System.out.println(n + &quot;皇后一共有&quot; + ways + &quot;种摆法&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 从第row行开始摆放皇后</span><br><span class="line">     * @param row</span><br><span class="line">     */</span><br><span class="line">    void place(int row) &#123;</span><br><span class="line">        if (row == cols.length) &#123;</span><br><span class="line">            ways++;</span><br><span class="line">            show();</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        for (int col = 0; col &lt; cols.length; col++) &#123;</span><br><span class="line">            if (cols[col]) continue;</span><br><span class="line">            int ltIndex = row - col + cols.length - 1;</span><br><span class="line">            if (leftTop[ltIndex]) continue;</span><br><span class="line">            int rtIndex = row +col;</span><br><span class="line">            if (rightTop[rtIndex]) continue;</span><br><span class="line">            </span><br><span class="line">            queens[row] = col;</span><br><span class="line">            cols[col] = true;</span><br><span class="line">            leftTop[ltIndex] = true;</span><br><span class="line">            rightTop[rtIndex] = true;</span><br><span class="line">            place(row + 1);</span><br><span class="line">            //我们必须要将它回到原位</span><br><span class="line">            cols[col] = false;</span><br><span class="line">            leftTop[ltIndex] = false;</span><br><span class="line">            rightTop[rtIndex] = false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void show() &#123;</span><br><span class="line">        for (int row = 0; row &lt; cols.length; row++) &#123;</span><br><span class="line">            for (int col = 0; col &lt; cols.length; col++) &#123;</span><br><span class="line">                if (queens[row] == col) &#123;</span><br><span class="line">                    System.out.print(&quot;1 &quot;);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    System.out.print(&quot;0 &quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;------------------------------&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="八皇后——优化2"><a href="#八皇后——优化2" class="headerlink" title="八皇后——优化2"></a>八皇后——优化2</h3><p>这种优化只限于八皇后，或者更少的皇后，但是一种思路，我看到别人家的都有，我也要有。</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        // 01111101 n</span><br><span class="line">        //&amp;11111011  ~00000100</span><br><span class="line">        // 01111001</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        //&amp;00100000 v</span><br><span class="line">//      int n = 125;</span><br><span class="line">//      for (int i = 0; i &lt; 8; i++) &#123;</span><br><span class="line">//          int result = n &amp; (1 &lt;&lt; i);</span><br><span class="line">//          System.out.println(i + &quot;_&quot; + (result != 0));</span><br><span class="line">//      &#125;</span><br><span class="line">//      int col = 7;</span><br><span class="line">//      int result = n &amp; (1 &lt;&lt; col);</span><br><span class="line">//      System.out.println(result != 0);</span><br><span class="line">        </span><br><span class="line">//      System.out.println(Integer.toBinaryString(n));</span><br><span class="line">        </span><br><span class="line">        // TODO Auto-generated method stub</span><br><span class="line">        new Queens3().place8Queens();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 数组索引是行号，数组元素是列号</span><br><span class="line">     */</span><br><span class="line">    int[] queens;</span><br><span class="line">    /**</span><br><span class="line">     * 标记着某一列是否有皇后</span><br><span class="line">     */</span><br><span class="line">    byte cols;</span><br><span class="line">    /**</span><br><span class="line">     * 标记着某一斜线上是否有皇后（左上角 -&gt; 右下角）</span><br><span class="line">     */</span><br><span class="line">    short leftTop;</span><br><span class="line">    /**</span><br><span class="line">     * 标记着某一斜线上是否有皇后（右上角 -&gt; 左下角）</span><br><span class="line">     */</span><br><span class="line">    short rightTop;</span><br><span class="line">    /**</span><br><span class="line">     * 一共有多少种摆法</span><br><span class="line">     */</span><br><span class="line">    int ways;</span><br><span class="line">    </span><br><span class="line">    void place8Queens() &#123;</span><br><span class="line">        queens = new int[8];</span><br><span class="line">        place(0);</span><br><span class="line">        System.out.println(&quot;8皇后一共有&quot; + ways + &quot;种摆法&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 从第row行开始摆放皇后</span><br><span class="line">     * @param row</span><br><span class="line">     */</span><br><span class="line">    void place(int row) &#123;</span><br><span class="line">        if (row == 8) &#123;</span><br><span class="line">            ways++;</span><br><span class="line">            show();</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        for (int col = 0; col &lt; 8; col++) &#123;</span><br><span class="line">            int cv = 1 &lt;&lt; col;</span><br><span class="line">            if ((cols &amp; cv) != 0) continue;</span><br><span class="line">            </span><br><span class="line">            int lv = 1 &lt;&lt; (row - col + 7);</span><br><span class="line">            if ((leftTop &amp; lv) != 0) continue;</span><br><span class="line">            </span><br><span class="line">            int rv = 1 &lt;&lt; (row + col);</span><br><span class="line">            if ((rightTop &amp; rv) != 0) continue;</span><br><span class="line">            </span><br><span class="line">            queens[row] = col;</span><br><span class="line">            cols |= cv;</span><br><span class="line">            leftTop |= lv;</span><br><span class="line">            rightTop |= rv;</span><br><span class="line">            place(row + 1);</span><br><span class="line">            cols &amp;= ~cv;</span><br><span class="line">            leftTop &amp;= ~lv;</span><br><span class="line">            rightTop &amp;= ~rv;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void show() &#123;</span><br><span class="line">        for (int row = 0; row &lt; 8; row++) &#123;</span><br><span class="line">            for (int col = 0; col &lt; 8; col++) &#123;</span><br><span class="line">                if (queens[row] == col) &#123;</span><br><span class="line">                    System.out.print(&quot;1 &quot;);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    System.out.print(&quot;0 &quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;------------------------------&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<p>本文代码均可进行复制粘贴到编译器，后进行debug，来了解代码运行过程</p>
+<p>有问题可进行留言，博主看后回复</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>递归</category>
+      </categories>
+      <tags>
+        <tag>递归</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>图</title>
     <url>/posts/3993241091.html/</url>
     <content><![CDATA[<p><strong>前言：</strong></p>
@@ -600,52 +662,6 @@
       </categories>
       <tags>
         <tag>图</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>归并排序2</title>
-    <url>/posts/362397694.html/</url>
-    <content><![CDATA[<p><strong>前言：</strong></p>
-<p>因为排序的种类实在是太多了，放在一篇文章里显得过于冗杂，所以把简单的排序方法放在一起了。</p>
-<p>今天要说的是归并排序，之前我没有接触，或者用过这个排序方式，也可能是我孤陋寡闻了。</p>
-<p>归并排序是1945年由约翰·冯·诺伊曼（John von Neumann）首次提出 。</p>
-<p><strong>原理：</strong></p>
-<p>执行流程 ① 不断地将当前序列平均分割成2个子序列 直到不能再分割（序列中只剩1个元素）； ② 不断地将2个子序列合并成一个有序序列 直到最终只剩下1个有序序列</p>
-<p><img src="/posts/362397694.html/1628328128618-6a6d0a8e-6650-4f27-b337-82d881a64fdc.png" alt="image.png"></p>
-<p>归并排序的主要步骤分为两个部分，一个是分开，一个是合并</p>
-<p><em><strong>示例：</strong></em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">protected void sort() &#123;</span><br><span class="line">        leftArray = (T[]) new Comparable[array.length &gt;&gt; 1];</span><br><span class="line">        sort(0, array.length);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // T(n) = T(n/2) + T(n/2) + O(n)</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 对 [begin, end) 范围的数据进行归并排序</span><br><span class="line">     */</span><br><span class="line">    private void sort(int begin, int end) &#123;</span><br><span class="line">        if (end - begin &lt; 2) return;</span><br><span class="line">        </span><br><span class="line">        int mid = (begin + end) &gt;&gt; 1;</span><br><span class="line">        sort(begin, mid);</span><br><span class="line">        sort(mid, end);</span><br><span class="line">        merge(begin, mid, end);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>当我们已经将数组切开之后，我们该考虑如何让数组有序的合并在一起。</p>
-<p><img src="/posts/362397694.html/1628331170530-c49b9436-c1d6-4bc5-9e4b-4f7be396abf6.png" alt="image.png"></p>
-<p>我们将子数组开头第一个数字称之为索引，我们两两比较索引大小，将较小的索引提出，放到新的数组中，去除索引的组数下一位就是新的索引。</p>
-<p>但是，我们可能重新开辟一块新的空间来放置整理好后的数据； 需要 merge 的 2 组序列存在于同一个数组中，并且是挨在一起的，</p>
-<p><img src="/posts/362397694.html/1628331732980-bb618b2e-adc4-4817-9c41-216b13a363bc.png" alt="image.png"></p>
-<p>为了更好地完成 merge 操作，最好将其中 1 组序列备份出来，比如 [begin, mid) </p>
-<p><img src="/posts/362397694.html/1628331755711-bf19d171-a3b9-4dc8-abe8-b31497890787.png" alt="image.png"></p>
-<p>li == 0；le == mid – begin； ri == mid；re == end </p>
-<p><img src="/posts/362397694.html/1628331871912-761186ff-65a2-44ac-b5ad-0544112a3326.png" alt="image.png"></p>
-<p>我们排序到最后，两边数组总一个会先结束</p>
-<p>当左边先结束的</p>
-<p><img src="/posts/362397694.html/1628332296373-57dad76b-0ffb-4abd-b87f-49a1735914ef.png" alt="image.png"></p>
-<p>左边先结束，就是右边有剩余，我们不需要任何操作</p>
-<p>当右边先结束</p>
-<p><img src="/posts/362397694.html/1628332470268-f456fc31-bc17-47d9-9de9-f465566a20a1.png" alt="image.png"></p>
-<p>右边先结束，就是左边有剩余，我们需要将左边剩余部分原封不动的转移过来。</p>
-<p><em><strong>示例：</strong></em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private void merge(int begin, int mid, int end) &#123;</span><br><span class="line">        int li = 0, le = mid - begin;</span><br><span class="line">        int ri = mid, re = end;</span><br><span class="line">        int ai = begin;</span><br><span class="line"></span><br><span class="line">        // 备份左边数组</span><br><span class="line">        for (int i = li; i &lt; le; i++) &#123;</span><br><span class="line">            leftArray[i] = array[begin + i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 如果左边还没有结束</span><br><span class="line">        while (li &lt; le) &#123;</span><br><span class="line">            if (ri &lt; re &amp;&amp; (array[ri]-leftArray[li]) &lt; 0) &#123;</span><br><span class="line">                array[ai++] = array[ri++];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                array[ai++] = leftArray[li++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>算法分析：</strong></p>
-<p><img src="/posts/362397694.html/image-20210807190819849.png" alt="image-20210807190819849"></p>
-<p>这是一段完整的归并排序代码，可以debug来查看代码运行过程，深入学习</p>
-<p><em><strong>示例：</strong></em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class test &#123;</span><br><span class="line">    private int[] leftArray;</span><br><span class="line">    private int[] array=&#123;1,4,2,12,16,19,7,8,3,9&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        test t=new test();</span><br><span class="line">        t.sort();</span><br><span class="line">        for(int i=0;i&lt;t.array.length;i++)&#123;</span><br><span class="line">            System.out.println(t.array[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    protected void sort() &#123;</span><br><span class="line">        leftArray = new int[array.length &gt;&gt; 1];</span><br><span class="line">        sort(0, array.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // T(n) = T(n/2) + T(n/2) + O(n)</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 对 [begin, end) 范围的数据进行归并排序</span><br><span class="line">     */</span><br><span class="line">    private void sort(int begin, int end) &#123;</span><br><span class="line">        if (end - begin &lt; 2) &#123;return;&#125;</span><br><span class="line"></span><br><span class="line">        int mid = (begin + end) &gt;&gt; 1;</span><br><span class="line">        sort(begin, mid);</span><br><span class="line">        sort(mid, end);</span><br><span class="line">        merge(begin, mid, end);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 将 [begin, mid) 和 [mid, end) 范围的序列合并成一个有序序列</span><br><span class="line">     */</span><br><span class="line">    private void merge(int begin, int mid, int end) &#123;</span><br><span class="line">        int li = 0, le = mid - begin;</span><br><span class="line">        int ri = mid, re = end;</span><br><span class="line">        int ai = begin;</span><br><span class="line"></span><br><span class="line">        // 备份左边数组</span><br><span class="line">        for (int i = li; i &lt; le; i++) &#123;</span><br><span class="line">            leftArray[i] = array[begin + i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 如果左边还没有结束</span><br><span class="line">        while (li &lt; le) &#123;</span><br><span class="line">            if (ri &lt; re &amp;&amp; (array[ri]-leftArray[li]) &lt; 0) &#123;</span><br><span class="line">                array[ai++] = array[ri++];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                array[ai++] = leftArray[li++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>算法</category>
-        <category>排序</category>
-      </categories>
-      <tags>
-        <tag>归并排序</tag>
       </tags>
   </entry>
   <entry>
@@ -785,6 +801,52 @@
         <tag>选择排序</tag>
         <tag>堆排序</tag>
         <tag>插入排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>归并排序2</title>
+    <url>/posts/362397694.html/</url>
+    <content><![CDATA[<p><strong>前言：</strong></p>
+<p>因为排序的种类实在是太多了，放在一篇文章里显得过于冗杂，所以把简单的排序方法放在一起了。</p>
+<p>今天要说的是归并排序，之前我没有接触，或者用过这个排序方式，也可能是我孤陋寡闻了。</p>
+<p>归并排序是1945年由约翰·冯·诺伊曼（John von Neumann）首次提出 。</p>
+<p><strong>原理：</strong></p>
+<p>执行流程 ① 不断地将当前序列平均分割成2个子序列 直到不能再分割（序列中只剩1个元素）； ② 不断地将2个子序列合并成一个有序序列 直到最终只剩下1个有序序列</p>
+<p><img src="/posts/362397694.html/1628328128618-6a6d0a8e-6650-4f27-b337-82d881a64fdc.png" alt="image.png"></p>
+<p>归并排序的主要步骤分为两个部分，一个是分开，一个是合并</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">protected void sort() &#123;</span><br><span class="line">        leftArray = (T[]) new Comparable[array.length &gt;&gt; 1];</span><br><span class="line">        sort(0, array.length);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // T(n) = T(n/2) + T(n/2) + O(n)</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 对 [begin, end) 范围的数据进行归并排序</span><br><span class="line">     */</span><br><span class="line">    private void sort(int begin, int end) &#123;</span><br><span class="line">        if (end - begin &lt; 2) return;</span><br><span class="line">        </span><br><span class="line">        int mid = (begin + end) &gt;&gt; 1;</span><br><span class="line">        sort(begin, mid);</span><br><span class="line">        sort(mid, end);</span><br><span class="line">        merge(begin, mid, end);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们已经将数组切开之后，我们该考虑如何让数组有序的合并在一起。</p>
+<p><img src="/posts/362397694.html/1628331170530-c49b9436-c1d6-4bc5-9e4b-4f7be396abf6.png" alt="image.png"></p>
+<p>我们将子数组开头第一个数字称之为索引，我们两两比较索引大小，将较小的索引提出，放到新的数组中，去除索引的组数下一位就是新的索引。</p>
+<p>但是，我们可能重新开辟一块新的空间来放置整理好后的数据； 需要 merge 的 2 组序列存在于同一个数组中，并且是挨在一起的，</p>
+<p><img src="/posts/362397694.html/1628331732980-bb618b2e-adc4-4817-9c41-216b13a363bc.png" alt="image.png"></p>
+<p>为了更好地完成 merge 操作，最好将其中 1 组序列备份出来，比如 [begin, mid) </p>
+<p><img src="/posts/362397694.html/1628331755711-bf19d171-a3b9-4dc8-abe8-b31497890787.png" alt="image.png"></p>
+<p>li == 0；le == mid – begin； ri == mid；re == end </p>
+<p><img src="/posts/362397694.html/1628331871912-761186ff-65a2-44ac-b5ad-0544112a3326.png" alt="image.png"></p>
+<p>我们排序到最后，两边数组总一个会先结束</p>
+<p>当左边先结束的</p>
+<p><img src="/posts/362397694.html/1628332296373-57dad76b-0ffb-4abd-b87f-49a1735914ef.png" alt="image.png"></p>
+<p>左边先结束，就是右边有剩余，我们不需要任何操作</p>
+<p>当右边先结束</p>
+<p><img src="/posts/362397694.html/1628332470268-f456fc31-bc17-47d9-9de9-f465566a20a1.png" alt="image.png"></p>
+<p>右边先结束，就是左边有剩余，我们需要将左边剩余部分原封不动的转移过来。</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private void merge(int begin, int mid, int end) &#123;</span><br><span class="line">        int li = 0, le = mid - begin;</span><br><span class="line">        int ri = mid, re = end;</span><br><span class="line">        int ai = begin;</span><br><span class="line"></span><br><span class="line">        // 备份左边数组</span><br><span class="line">        for (int i = li; i &lt; le; i++) &#123;</span><br><span class="line">            leftArray[i] = array[begin + i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 如果左边还没有结束</span><br><span class="line">        while (li &lt; le) &#123;</span><br><span class="line">            if (ri &lt; re &amp;&amp; (array[ri]-leftArray[li]) &lt; 0) &#123;</span><br><span class="line">                array[ai++] = array[ri++];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                array[ai++] = leftArray[li++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p><img src="/posts/362397694.html/image-20210807190819849.png" alt="image-20210807190819849"></p>
+<p>这是一段完整的归并排序代码，可以debug来查看代码运行过程，深入学习</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class test &#123;</span><br><span class="line">    private int[] leftArray;</span><br><span class="line">    private int[] array=&#123;1,4,2,12,16,19,7,8,3,9&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        test t=new test();</span><br><span class="line">        t.sort();</span><br><span class="line">        for(int i=0;i&lt;t.array.length;i++)&#123;</span><br><span class="line">            System.out.println(t.array[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    protected void sort() &#123;</span><br><span class="line">        leftArray = new int[array.length &gt;&gt; 1];</span><br><span class="line">        sort(0, array.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // T(n) = T(n/2) + T(n/2) + O(n)</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 对 [begin, end) 范围的数据进行归并排序</span><br><span class="line">     */</span><br><span class="line">    private void sort(int begin, int end) &#123;</span><br><span class="line">        if (end - begin &lt; 2) &#123;return;&#125;</span><br><span class="line"></span><br><span class="line">        int mid = (begin + end) &gt;&gt; 1;</span><br><span class="line">        sort(begin, mid);</span><br><span class="line">        sort(mid, end);</span><br><span class="line">        merge(begin, mid, end);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 将 [begin, mid) 和 [mid, end) 范围的序列合并成一个有序序列</span><br><span class="line">     */</span><br><span class="line">    private void merge(int begin, int mid, int end) &#123;</span><br><span class="line">        int li = 0, le = mid - begin;</span><br><span class="line">        int ri = mid, re = end;</span><br><span class="line">        int ai = begin;</span><br><span class="line"></span><br><span class="line">        // 备份左边数组</span><br><span class="line">        for (int i = li; i &lt; le; i++) &#123;</span><br><span class="line">            leftArray[i] = array[begin + i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 如果左边还没有结束</span><br><span class="line">        while (li &lt; le) &#123;</span><br><span class="line">            if (ri &lt; re &amp;&amp; (array[ri]-leftArray[li]) &lt; 0) &#123;</span><br><span class="line">                array[ai++] = array[ri++];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                array[ai++] = leftArray[li++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>算法</category>
+        <category>排序</category>
+      </categories>
+      <tags>
+        <tag>归并排序</tag>
       </tags>
   </entry>
   <entry>
