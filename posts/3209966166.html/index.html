@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="存在重复元素给定一个整数数组，判断是否存在重复元素。 如果存在一值在数组中出现至少两次，函数返回 true 。如果数组中每个元素都不相同，则返回 false 。 示例 1: 输入: [1,2,3,1] 输出: true 示例 2: 输入: [1,2,3,4] 输出: false 示例 3: 输入: [1,1,1,3,3,4,3,2,4,2] 输出: true 排序 在对数字从小到大排序之后，数组的">
+  <meta name="description" content="这里对贪心算法进行了简单的讲解，对于那些首次接触到贪心算法的人十分友好……">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数组">
-<meta property="og:url" content="http://example.com/posts/872565161.html/index.html">
+<meta property="og:title" content="浅谈贪心算法">
+<meta property="og:url" content="http://example.com/posts/3209966166.html/index.html">
 <meta property="og:site_name" content="GHL-Blog">
-<meta property="og:description" content="存在重复元素给定一个整数数组，判断是否存在重复元素。 如果存在一值在数组中出现至少两次，函数返回 true 。如果数组中每个元素都不相同，则返回 false 。 示例 1: 输入: [1,2,3,1] 输出: true 示例 2: 输入: [1,2,3,4] 输出: false 示例 3: 输入: [1,1,1,3,3,4,3,2,4,2] 输出: true 排序 在对数字从小到大排序之后，数组的">
+<meta property="og:description" content="这里对贪心算法进行了简单的讲解，对于那些首次接触到贪心算法的人十分友好……">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-07-07T14:16:14.000Z">
-<meta property="article:modified_time" content="2021-07-07T14:20:41.653Z">
+<meta property="og:image" content="http://example.com/posts/3209966166.html/1629304811500-244cd73d-9667-420f-b8a3-cb74ab511cdf.png">
+<meta property="article:published_time" content="2021-08-18T16:50:22.000Z">
+<meta property="article:modified_time" content="2021-08-18T16:53:06.065Z">
 <meta property="article:author" content="LL">
-<meta property="article:tag" content="Java">
+<meta property="article:tag" content="贪心算法">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/3209966166.html/1629304811500-244cd73d-9667-420f-b8a3-cb74ab511cdf.png">
 
-<link rel="canonical" href="http://example.com/posts/872565161.html/">
+<link rel="canonical" href="http://example.com/posts/3209966166.html/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>数组 | GHL-Blog</title>
+  <title>浅谈贪心算法 | GHL-Blog</title>
   
 
 
@@ -197,7 +199,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/posts/872565161.html/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/3209966166.html/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -210,7 +212,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数组
+          浅谈贪心算法
         </h1>
 
         <div class="post-meta">
@@ -221,7 +223,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-07-07 22:16:14 / 修改时间：22:20:41" itemprop="dateCreated datePublished" datetime="2021-07-07T22:16:14+08:00">2021-07-07</time>
+              <time title="创建时间：2021-08-19 00:50:22 / 修改时间：00:53:06" itemprop="dateCreated datePublished" datetime="2021-08-19T00:50:22+08:00">2021-08-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,11 +231,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">数组</span></a>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83/" itemprop="url" rel="index"><span itemprop="name">贪心</span></a>
                 </span>
             </span>
 
@@ -253,8 +255,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/posts/872565161.html/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/872565161.html/" itemprop="commentCount"></span>
+    <a title="valine" href="/posts/3209966166.html/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/3209966166.html/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -264,15 +266,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>3.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
+            <div class="post-description">这里对贪心算法进行了简单的讲解，对于那些首次接触到贪心算法的人十分友好……</div>
 
         </div>
       </header>
@@ -283,47 +286,67 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="存在重复元素"><a href="#存在重复元素" class="headerlink" title="存在重复元素"></a>存在重复元素</h1><p>给定一个整数数组，判断是否存在重复元素。</p>
-<p>如果存在一值在数组中出现至少两次，函数返回 <code>true</code> 。如果数组中每个元素都不相同，则返回 <code>false</code> 。</p>
-<p>示例 1:</p>
-<p>输入: [1,2,3,1]</p>
-<p>输出: true</p>
-<p>示例 2:</p>
-<p>输入: [1,2,3,4]</p>
-<p>输出: false</p>
-<p>示例 3:</p>
-<p>输入: [1,1,1,3,3,4,3,2,4,2]</p>
-<p>输出: true</p>
-<p><strong>排序</strong></p>
-<p>在对数字从小到大排序之后，数组的重复元素一定出现在相邻位置中。因此，我们可以扫描已排序的数组，每次判断相邻的两个元素是否相等，如果相等则说明存在重复的元素。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean containsDuplicate(int[] nums) &#123;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        for (int i = 0; i &lt; n - 1; i++) &#123;</span><br><span class="line">            if (nums[i] == nums[i + 1]) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>本篇文章是利用了简单的例题，对贪心算法进行理解，并没有用到特别难的题，只是单独的利用了贪心算法，后续会对贪心算法进行例题式详解</p>
+<p>含义： 贪心策略，也称为贪婪策略 每一步都采取当前状态下最优的选择（局部最优解），从而希望推导出全局最优解</p>
+<p>贪心的应用：</p>
+<p>哈夫曼树 </p>
+<p>最小生成树算法：Prim、Kruskal </p>
+<p>最短路径算法：Dijkstra </p>
+<h1 id="最优装载问题（加勒比海盗）"><a href="#最优装载问题（加勒比海盗）" class="headerlink" title="最优装载问题（加勒比海盗）"></a>最优装载问题（加勒比海盗）</h1><p>题目：</p>
+<p>在北美洲东南部，有一片神秘的海域，是海盗最活跃的加勒比海 有一天，海盗们截获了一艘装满各种各样古董的货船，每一件古董都价值连城，一旦打碎就失去了它的价值 </p>
+<p>海盗船的载重量为 W，每件古董的重量为 𝑤i，海盗们该如何把尽可能多数量的古董装上海盗船？ </p>
+<p>比如 W 为 30，𝑤i 分别为 3、5、4、10、7、14、2、11</p>
+<p>贪心策略：每一次都优先选择重量最小的古董 </p>
+<p>① 选择重量为 2 的古董，剩重量 28 </p>
+<p>② 选择重量为 3 的古董，剩重量 25 </p>
+<p>③ 选择重量为 4 的古董，剩重量 21</p>
+<p>④ 选择重量为 5 的古董，剩重量 16 </p>
+<p>⑤ 选择重量为 7 的古董，剩重量 9 </p>
+<p>最多能装载 5 个古董 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        int[] weights = &#123;3, 5, 4, 10, 7, 14, 2, 11&#125;;</span><br><span class="line">        Arrays.sort(weights);</span><br><span class="line">        int capacity = 30, weight = 0, count = 0;</span><br><span class="line">        </span><br><span class="line">        for (int i = 0; i &lt; weights.length &amp;&amp; weight &lt; capacity; i++) &#123;</span><br><span class="line">            int newWeight = weight + weights[i];</span><br><span class="line">            if (newWeight &lt;= capacity) &#123;</span><br><span class="line">                weight = newWeight;</span><br><span class="line">                count++;</span><br><span class="line">                System.out.println(weights[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        System.out.println(&quot;一共选了&quot; + count + &quot;件古董&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-<p><strong>哈希表</strong></p>
-<p>对于数组中每个元素，我们将它插入到哈希表中。如果插入一个元素时发现该元素已经存在于哈希表中，则说明存在重复的元素。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean containsDuplicate(int[] nums) &#123;</span><br><span class="line">        Set&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();</span><br><span class="line">        for (int x : nums) &#123;</span><br><span class="line">            if (!set.add(x)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="零钱兑换"><a href="#零钱兑换" class="headerlink" title="零钱兑换"></a>零钱兑换</h1><p>题目：</p>
+<p>假设有 25 分、10 分、5 分、1 分的硬币，现要找给客户 41 分的零钱，如何办到硬币个数最少？ </p>
+<p>贪心策略：每一次都优先选择面值最大的硬币 </p>
+<p>① 选择 25 分的硬币，剩 16 分 </p>
+<p>② 选择 10 分的硬币，剩 6 分 </p>
+<p>③ 选择 5 分的硬币，剩 1 分 </p>
+<p>④ 选择 1 分的硬币 </p>
+<p>最终的解是共 4 枚硬币 25 分、10 分、5 分、1 分硬币各一枚</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        int[] a=&#123;25,5,10,1&#125;;</span><br><span class="line">        Arrays.sort(a);</span><br><span class="line">        int money=50;</span><br><span class="line">        int coins=0;</span><br><span class="line">        for(int i=a.length-1;i&gt;=0;i--)&#123;</span><br><span class="line">            if(money&lt;a[i])&#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            money-=a[i];</span><br><span class="line">            i++;</span><br><span class="line">            coins++;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(coins);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-<p>PS：做这道题的时候看到的是查找重复的元素，就直接想到了哈希表，没有想到还有排序的这种解法</p>
-<h1 id="最大的子序和"><a href="#最大的子序和" class="headerlink" title="最大的子序和"></a>最大的子序和</h1><p>给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
-<p>示例 1：</p>
-<p>输入：nums = [-2,1,-3,4,-1,2,1,-5,4]</p>
-<p>输出：6</p>
-<p>解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。</p>
-<p>示例 2：</p>
-<p>输入：nums = [1]</p>
-<p>输出：1</p>
-<p>示例 3：</p>
-<p>输入：nums = [0]</p>
-<p>输出：0</p>
-<p>示例 4：</p>
-<p>输入：nums = [-1]</p>
-<p>输出：-1</p>
-<p>示例 5：</p>
-<p>输入：nums = [-100000]</p>
-<p>输出：-100000</p>
-<p><strong>动态规划：</strong></p>
-<p>下面的解法是用动态规划的思想来做的，以后也会写一篇关于动态规划的专题，看了很多的讲解还是不能很好地理解，后来看到评论区中大神d而一句话：“之前数值所有的和加上自身，还没有我自己大，我要他干啥”看到这句话之后的我幡然醒悟。</p>
-<p>pre是用来存储之前数值和加上自身的值，maxAns是用来维护最大子序和</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int maxSubArray(int[] nums) &#123;</span><br><span class="line">        int pre = 0, maxAns = nums[0];</span><br><span class="line">        for (int x : nums) &#123;</span><br><span class="line">            pre = Math.max(pre + x, x);</span><br><span class="line">            maxAns = Math.max(maxAns, pre);</span><br><span class="line">        &#125;</span><br><span class="line">        return maxAns;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="另一种方式的零钱兑换"><a href="#另一种方式的零钱兑换" class="headerlink" title="另一种方式的零钱兑换"></a>另一种方式的零钱兑换</h2><p>题目：</p>
+<p>假设有 25 分、20 分、5 分、1 分的硬币，现要找给客户 41 分的零钱，如何办到硬币个数最少？ </p>
+<p>贪心策略：每一步都优先选择面值最大的硬币 </p>
+<p>① 选择 25 分的硬币，剩 16 分 </p>
+<p>② 选择 5 分的硬币，剩 11 分 </p>
+<p>③ 选择 5 分的硬币，剩 6 分 </p>
+<p>④ 选择 5 分的硬币，剩 1 分 </p>
+<p>⑤ 选择 1 分的硬币 </p>
+<p>最终的解是 1 枚 25 分、3 枚 5 分、1 枚 1 分的硬币，共 5 枚硬币</p>
+<p>实际上本题的最优解是：2 枚 20 分、1 枚 1 分的硬币，共 3 枚硬币</p>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>贪心策略并不一定能得到全局最优解 </p>
+<p>因为一般没有测试所有可能的解，容易过早做决定，所以没法达到最佳解 </p>
+<p>贪图眼前局部的利益最大化，看不到长远未来，走一步看一步  优点：简单、高效、不需要穷举所有可能，通常作为其他算法的辅助算法来使用  </p>
+<p>缺点：鼠目寸光，不从整体上考虑其他可能，每次采取局部最优解，不会再回溯，因此很少情况会得到最优解 </p>
+<p><strong>其实我们多数关于贪心算法的题解并不是单单只用了贪心算法，多数都会搭配上动态数组来进行配合解题</strong></p>
+<h1 id="0-1背包"><a href="#0-1背包" class="headerlink" title="0-1背包"></a>0-1背包</h1><p>问题：</p>
+<p>有 n 件物品和一个最大承重为 W 的背包，每件物品的重量是 𝑤i、价值是 𝑣i </p>
+<p>在保证总重量不超过 W 的前提下，将哪几件物品装入背包，可以使得背包的总价值最大？ </p>
+<p>注意：每个物品只有 1 件，也就是每个物品只能选择 0 件或者 1 件，因此称为 0-1背包问题</p>
+<p>如果采取贪心策略，有3个方案 </p>
+<p>① 价值主导：优先选择价值最高的物品放进背包 </p>
+<p>② 重量主导：优先选择重量最轻的物品放进背包 </p>
+<p>③ 价值密度主导：优先选择价值密度最高的物品放进背包（价值密度 = 价值 ÷ 重量）</p>
+<p><img src="/posts/3209966166.html/1629304811500-244cd73d-9667-420f-b8a3-cb74ab511cdf.png" alt="image.png"></p>
+<p>因为不是在<strong>leetcode</strong>中直接做题，所以我们做题前需要实现一个实体类</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">//存储物品的实体类  </span><br><span class="line">public class Article &#123;</span><br><span class="line">    public int weight;</span><br><span class="line">    public int value;</span><br><span class="line">    public double valueDensity;</span><br><span class="line">    public Article(int weight, int value) &#123;</span><br><span class="line">        this.weight = weight;</span><br><span class="line">        this.value = value;</span><br><span class="line">        valueDensity = value * 1.0 / weight;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return &quot;Article [weight=&quot; + weight + &quot;, value=&quot; + value + &quot;, valueDensity=&quot; + valueDensity + &quot;]&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实现类</span><br><span class="line">public class Knapsack &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        select(&quot;价值主导&quot;, (Article a1, Article a2) -&gt; &#123;</span><br><span class="line">            return a2.value - a1.value;</span><br><span class="line">        &#125;);</span><br><span class="line">        select(&quot;重量主导&quot;, (Article a1, Article a2) -&gt; &#123;</span><br><span class="line">            return a1.weight - a2.weight;</span><br><span class="line">        &#125;);</span><br><span class="line">        select(&quot;价值密度主导&quot;, (Article a1, Article a2) -&gt; &#123;</span><br><span class="line">            return Double.compare(a2.valueDensity, a1.valueDensity);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    static void select(String title, Comparator&lt;Article&gt; cmp) &#123;</span><br><span class="line">        Article[] articles = new Article[] &#123;</span><br><span class="line">            new Article(35, 10), new Article(30, 40),</span><br><span class="line">            new Article(60, 30), new Article(50, 50),</span><br><span class="line">            new Article(40, 35), new Article(10, 40),</span><br><span class="line">            new Article(25, 30)</span><br><span class="line">        &#125;;</span><br><span class="line">        Arrays.sort(articles, cmp);</span><br><span class="line">        </span><br><span class="line">        int capacity = 150, weight = 0, value = 0;</span><br><span class="line">        List&lt;Article&gt; selectedArticles = new LinkedList&lt;&gt;();</span><br><span class="line">        for (int i = 0; i &lt; articles.length &amp;&amp; weight &lt; capacity; i++) &#123;</span><br><span class="line">            int newWeight = weight + articles[i].weight;</span><br><span class="line">            if (newWeight &lt;= capacity) &#123;</span><br><span class="line">                weight = newWeight;</span><br><span class="line">                value += articles[i].value;</span><br><span class="line">                selectedArticles.add(articles[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        System.out.println(&quot;【&quot; + title + &quot;】&quot;);</span><br><span class="line">        System.out.println(&quot;总价值：&quot; + value);</span><br><span class="line">        for (int i = 0; i &lt; selectedArticles.size(); i++) &#123;</span><br><span class="line">            System.out.println(selectedArticles.get(i));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;-----------------------------&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在实现类中用到了选择器，既然说到了，我们学习一下（有空肯定补）</p>
+<p>本文代码均可进行复制粘贴到编译器，后进行debug，来了解代码运行过程</p>
+<p>有问题可进行留言，博主看后回复</p>
+
     </div>
 
     
@@ -338,7 +361,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/posts/872565161.html/" title="数组">http://example.com/posts/872565161.html/</a>
+    <a href="http://example.com/posts/3209966166.html/" title="浅谈贪心算法">http://example.com/posts/3209966166.html/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -349,7 +372,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" rel="tag"># 贪心算法</a>
           </div>
 
         
@@ -358,13 +381,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/3907716225.html/" rel="prev" title="二分查找">
-      <i class="fa fa-chevron-left"></i> 二分查找
+    <a href="/posts/37276003.html/" rel="prev" title="网路互通模型">
+      <i class="fa fa-chevron-left"></i> 网路互通模型
     </a></div>
-      <div class="post-nav-item">
-    <a href="/posts/2443699409.html/" rel="next" title="双指针">
-      双指针 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -425,7 +445,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0"><span class="nav-number">1.</span> <span class="nav-text">存在重复元素</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%9A%84%E5%AD%90%E5%BA%8F%E5%92%8C"><span class="nav-number">2.</span> <span class="nav-text">最大的子序和</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E8%A3%85%E8%BD%BD%E9%97%AE%E9%A2%98%EF%BC%88%E5%8A%A0%E5%8B%92%E6%AF%94%E6%B5%B7%E7%9B%97%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">最优装载问题（加勒比海盗）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">零钱兑换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F%E7%9A%84%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2"><span class="nav-number">2.1.</span> <span class="nav-text">另一种方式的零钱兑换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">3.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-1%E8%83%8C%E5%8C%85"><span class="nav-number">4.</span> <span class="nav-text">0-1背包</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
