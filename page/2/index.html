@@ -193,6 +193,160 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/1489199829.html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="LL">
+      <meta itemprop="description" content="良良的个人博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GHL-Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/1489199829.html/" class="post-title-link" itemprop="url">排序3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-08 00:52:28" itemprop="dateCreated datePublished" datetime="2021-08-08T00:52:28+08:00">2021-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-09 11:24:13" itemprop="dateModified" datetime="2021-08-09T11:24:13+08:00">2021-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" itemprop="url" rel="index"><span itemprop="name">排序</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/1489199829.html/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/1489199829.html/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p><strong>前言：</strong></p>
+<p>快速排序相较于之前的排序方法是一种比较特别排序方法</p>
+<p><strong>原理：</strong></p>
+<p>1、从序列中选择一个轴点元素（pivot） 假设每次选择 0 位置的元素为轴点元素 ；</p>
+<p>2、利用 pivot 将序列分割成 2 个子序列 将小于 pivot 的元素放在pivot前面（左侧） 将大于 pivot 的元素放在pivot后面（右侧） 等于pivot的元素放哪边都可以 </p>
+<p>3、对子序列进行 1、2、 操作 直到不能再分割（子序列中只剩下1个元素）</p>
+<p><img src="/posts/1489199829.html/1628353377907-1868ad9a-a881-40fc-bc33-b787e897a661.png" alt="image.png"></p>
+<p>快速排序的本质：逐渐将每一个元素都转换成轴点元素</p>
+<h2 id="快速排序-–-轴点构造"><a href="#快速排序-–-轴点构造" class="headerlink" title="快速排序 – 轴点构造"></a>快速排序 – 轴点构造</h2><p><img src="/posts/1489199829.html/1628353501143-ea4ac142-6da8-443c-aae7-fff6ad9a3929.png" alt="image.png"></p>
+<p>一个轴点完成之后，数组被分割成两部分，我们就可以构造成一个前轴点，和一个后轴点；以此类推，当每个元素都成为轴点之后，数组排列完成。</p>
+<p>*<strong>示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">protected void sort() &#123;</span><br><span class="line">        sort(0, array.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 对 [begin, end) 范围的元素进行快速排序</span><br><span class="line">     * @param begin</span><br><span class="line">     * @param end</span><br><span class="line">     */</span><br><span class="line">    private void sort(int begin, int end) &#123; </span><br><span class="line">        if (end - begin &lt; 2) return;</span><br><span class="line">        </span><br><span class="line">        // 确定轴点位置 O(n)</span><br><span class="line">        int mid = pivotIndex(begin, end);</span><br><span class="line">        // 对子序列进行快速排序</span><br><span class="line">        sort(begin, mid); </span><br><span class="line">        sort(mid + 1, end); </span><br><span class="line">    &#125; </span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 构造出 [begin, end) 范围的轴点元素</span><br><span class="line">     * @return 轴点元素的最终位置</span><br><span class="line">     */</span><br><span class="line">    private int pivotIndex(int begin, int end) &#123;</span><br><span class="line">        // 随机选择一个元素跟begin位置进行交换</span><br><span class="line">        swap(begin, begin + (int)(Math.random() * (end - begin)));</span><br><span class="line">        </span><br><span class="line">        // 备份begin位置的元素</span><br><span class="line">        T pivot = array[begin];</span><br><span class="line">        // end指向最后一个元素</span><br><span class="line">        end--;</span><br><span class="line">        //这里是一个很神奇的交替循环方式，不过还是比较好用的</span><br><span class="line">        //如果大家有更好的方法可以评论</span><br><span class="line">        while (begin &lt; end) &#123;</span><br><span class="line">            while (begin &lt; end) &#123;</span><br><span class="line">                if (cmp(pivot, array[end]) &lt; 0) &#123; // 右边元素 &gt; 轴点元素</span><br><span class="line">                    end--;</span><br><span class="line">                &#125; else &#123; // 右边元素 &lt;= 轴点元素</span><br><span class="line">                    array[begin++] = array[end];</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            while (begin &lt; end) &#123;</span><br><span class="line">                if (cmp(pivot, array[begin]) &gt; 0) &#123; // 左边元素 &lt; 轴点元素</span><br><span class="line">                    begin++;</span><br><span class="line">                &#125; else &#123; // 左边元素 &gt;= 轴点元素</span><br><span class="line">                    array[end--] = array[begin];</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将轴点元素放入最终的位置</span><br><span class="line">        array[begin] = pivot;</span><br><span class="line">        // 返回轴点元素的位置</span><br><span class="line">        return begin;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p><img src="/posts/1489199829.html/1628354600150-c0bdfa64-7683-4954-8498-ba5f81ce756a.png" alt="`3%ML8W`D70YE~HAAS9BK8X.png"></p>
+<h2 id="快速排序-–-与轴点相等的元素"><a href="#快速排序-–-与轴点相等的元素" class="headerlink" title="快速排序 – 与轴点相等的元素"></a>快速排序 – 与轴点相等的元素</h2><p><img src="/posts/1489199829.html/1628354720337-95d1ac45-2216-494d-b2b7-39a1add80e90.png" alt="image.png"></p>
+<p>如果序列中的所有元素都与轴点元素相等，利用目前的算法实现，轴点元素可以将序列分割成 2 个均匀的子序列 </p>
+<p><img src="/posts/1489199829.html/1628354762652-c63f4bbc-9316-4619-afed-e72c40bbaeda.png" alt="image.png"></p>
+<p>我们利用if else 中else实现了如果其他元素与轴点相等的情况，但是如果将其中’&lt;’或’&gt;’修改成’&lt;=’或’&gt;=’这种情况呢？</p>
+<p><img src="/posts/1489199829.html/1628354947961-41a55c99-83bc-4432-960e-5b3bbcf01f1c.png" alt="image.png"></p>
+<p>导致的结果是显而易见，他会造成轴点元素切割出来的子序列极度不均匀，从而影响了效率，导致出现最坏的时间复杂度.</p>
+<h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><p><strong>前言：</strong></p>
+<p>总感觉希尔排序就像归并的那种感觉，但是！他的原理就像插入排序一样，在不断减少逆序对进行排序</p>
+<p><strong>原理：</strong></p>
+<p>希尔排序把序列看作是一个矩阵，分成 𝑚 列，逐列进行排序 </p>
+<p>𝑚 从某个整数逐渐减为1 </p>
+<p>当 𝑚 为1时，整个序列将完全有序  </p>
+<p>因此，希尔排序也被称为递减增量排序（Diminishing Increment Sort）  </p>
+<p>矩阵的列数取决于步长序列（step sequence） </p>
+<p>比如，如果步长序列为{1,5,19,41,109,…}，就代表依次分成109列、41列、19列、5列、1列进行排序 </p>
+<p>不同的步长序列，执行效率也不同 </p>
+<p>希尔本人给出的步长序列是 𝑛/2𝑘，比如 𝑛 为16时，步长序列是{1, 2, 4, 8} </p>
+<p><img src="/posts/1489199829.html/1628435708290-feb47ecc-6c04-41d6-b010-4d73963fa9cc.png" alt="image.png"></p>
+<p>分成8列进行排序</p>
+<p><img src="/posts/1489199829.html/1628435771749-764b3a5b-556b-4df4-9231-b54094bc981b.png" alt="image.png"></p>
+<p>分成4列进行排序</p>
+<p><img src="/posts/1489199829.html/1628435818477-1defd585-9992-4077-91a2-e1d60fe0326c.png" alt="image.png"></p>
+<p>分成2列进行排序</p>
+<p><img src="/posts/1489199829.html/1628435849108-f5ffa812-c6bc-4a2e-9fbe-f9bf6f7e90f6.png" alt="image.png"></p>
+<p>分成1列进行排序</p>
+<p><img src="/posts/1489199829.html/1628435876039-baba66db-3ec1-4581-a818-e6b4e088e485.png" alt="image.png"></p>
+<p>不难看出来，从8列 变为 1列的过程中，逆序对的数量在逐渐减少；因此希尔排序底层一般使用插入排序对每一列进行排序，也很多资料认为希尔排序是插入排序的改进版</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">protected void sort() &#123;</span><br><span class="line">    //选择不长序列，后面会讲到</span><br><span class="line">        List&lt;Integer&gt; stepSequence = sedgewickStepSequence();</span><br><span class="line">    //循环使用步长序列排序</span><br><span class="line">        for (Integer step : stepSequence) &#123;</span><br><span class="line">            sort(step);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 分成step列进行排序</span><br><span class="line">     */</span><br><span class="line">    private void sort(int step) &#123;</span><br><span class="line">        // col : 第几列，column的简称</span><br><span class="line">        for (int col = 0; col &lt; step; col++) &#123; // 对第col列进行排序</span><br><span class="line">            // col、col+step、col+2*step、col+3*step</span><br><span class="line">            for (int begin = col + step; begin &lt; array.length; begin += step) &#123;</span><br><span class="line">                int cur = begin;</span><br><span class="line">                while (cur &gt; col &amp;&amp; cmp(cur, cur - step) &lt; 0) &#123;</span><br><span class="line">                    swap(cur, cur - step);</span><br><span class="line">                    cur -= step;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //希尔提供的步长序列</span><br><span class="line">    private List&lt;Integer&gt; shellStepSequence() &#123;</span><br><span class="line">        List&lt;Integer&gt; stepSequence = new ArrayList&lt;&gt;();</span><br><span class="line">        int step = array.length;</span><br><span class="line">        while ((step &gt;&gt;= 1) &gt; 0) &#123;</span><br><span class="line">            stepSequence.add(step);</span><br><span class="line">        &#125;</span><br><span class="line">        return stepSequence;</span><br><span class="line">    &#125;</span><br><span class="line">    //目前最好的步长序列</span><br><span class="line">    private List&lt;Integer&gt; sedgewickStepSequence() &#123;</span><br><span class="line">        List&lt;Integer&gt; stepSequence = new LinkedList&lt;&gt;();</span><br><span class="line">        int k = 0, step = 0;</span><br><span class="line">        while (true) &#123;</span><br><span class="line">            if (k % 2 == 0) &#123;</span><br><span class="line">                int pow = (int) Math.pow(2, k &gt;&gt; 1);</span><br><span class="line">                step = 1 + 9 * (pow * pow - pow);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                int pow1 = (int) Math.pow(2, (k - 1) &gt;&gt; 1);</span><br><span class="line">                int pow2 = (int) Math.pow(2, (k + 1) &gt;&gt; 1);</span><br><span class="line">                step = 1 + 8 * pow1 * pow2 - 6 * pow2;</span><br><span class="line">            &#125;</span><br><span class="line">            if (step &gt;= array.length) break;</span><br><span class="line">            stepSequence.add(0, step);</span><br><span class="line">            k++;</span><br><span class="line">        &#125;</span><br><span class="line">        return stepSequence;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="希尔排序——步长序列"><a href="#希尔排序——步长序列" class="headerlink" title="希尔排序——步长序列"></a>希尔排序——步长序列</h2><p>希尔排序中最灵魂的地方可能就是步长序列了吧</p>
+<p>希尔排序是利用步长序列来分割原序列，而每次分割，都会影响排序的复杂度，而目前已知的最好的步长序列，最坏情况时间复杂度是 O(n4/3) ，1986年由Robert Sedgewick提出 </p>
+<p><img src="/posts/1489199829.html/1628437057030-81332644-22ae-4f96-acd3-7bcbef28ab89.png" alt="image.png"></p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">private List&lt;Integer&gt; sedgewickStepSequence() &#123;</span><br><span class="line">        List&lt;Integer&gt; stepSequence = new LinkedList&lt;&gt;();</span><br><span class="line">        int k = 0, step = 0;</span><br><span class="line">        while (true) &#123;</span><br><span class="line">            if (k % 2 == 0) &#123;</span><br><span class="line">                int pow = (int) Math.pow(2, k &gt;&gt; 1);</span><br><span class="line">                step = 1 + 9 * (pow * pow - pow);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                int pow1 = (int) Math.pow(2, (k - 1) &gt;&gt; 1);</span><br><span class="line">                int pow2 = (int) Math.pow(2, (k + 1) &gt;&gt; 1);</span><br><span class="line">                step = 1 + 8 * pow1 * pow2 - 6 * pow2;</span><br><span class="line">            &#125;</span><br><span class="line">            if (step &gt;= array.length) break;</span><br><span class="line">            stepSequence.add(0, step);</span><br><span class="line">            k++;</span><br><span class="line">        &#125;</span><br><span class="line">        return stepSequence;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/posts/362397694.html/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1349,20 +1503,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1427,13 +1581,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">53k</span>
+    <span title="站点总字数">55k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">48 分钟</span>
+    <span title="站点阅读时长">50 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

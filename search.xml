@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>二分查找</title>
+    <url>/posts/3907716225.html/</url>
+    <content><![CDATA[<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
+<p>示例 1:</p>
+<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
+<p>输出: 4</p>
+<p>解释: 9 出现在 nums 中并且下标为 4</p>
+<p>示例 2:</p>
+<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
+<p>输出: -1</p>
+<p>解释: 2 不存在 nums 中因此返回 -1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int search(int[] nums, int target) &#123;</span><br><span class="line">        int life=0,right=nums.length-1;</span><br><span class="line">        int p;</span><br><span class="line">        while (life&lt;=right)&#123;</span><br><span class="line">            p=life+(right-life)/2;</span><br><span class="line">            if(nums[p]==target) return p;</span><br><span class="line">            if(nums[p]&lt;target) life=p+1;</span><br><span class="line">            else right=p-1;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分查找是一种基于比较目标值和数组中间元素的教科书式算法。</p>
+<ul>
+<li>如果目标值等于中间元素，则找到目标值。</li>
+<li>如果目标值较小，继续在左侧搜索。</li>
+<li>如果目标值较大，则继续在右侧搜索。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1834295/1625567991316-308e35ad-d3bc-4192-a91e-4cc9569111ee.jpeg" alt="image"></p>
+<h1 id="第一个错误版本"><a href="#第一个错误版本" class="headerlink" title="第一个错误版本"></a>第一个错误版本</h1><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
+<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
+<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
+<p>示例 1：</p>
+<p>输入：n = 5, bad = 4</p>
+<p>输出：4</p>
+<p>解释：</p>
+<p>调用 isBadVersion(3) -&gt; false</p>
+<p>调用 isBadVersion(5) -&gt; true</p>
+<p>调用 isBadVersion(4) -&gt; true</p>
+<p>所以，4 是第一个错误的版本。</p>
+<p>示例 2：</p>
+<p>输入：n = 1, bad = 1</p>
+<p>输出：1</p>
+<p>通过题干我们可以了解到，当一个版本为正确版本后，之前所有的版本都是正确版本，当一个版本为错误版本后之后的版本都是错误版本，我们所做的就是需要找到第一个出错的版本，就可以利用二分查找来确定</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Solution extends VersionControl &#123;</span><br><span class="line">    public int firstBadVersion(int n) &#123;</span><br><span class="line">        int left = 1, right = n;</span><br><span class="line">        while (left &lt; right) &#123; // 循环直至区间左右端点相同</span><br><span class="line">            int mid = left + (right - left) / 2; // 防止计算时溢出</span><br><span class="line">            if (isBadVersion(mid)) &#123;</span><br><span class="line">                right = mid; // 答案在区间 [left, mid] 中</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1; // 答案在区间 [mid+1, right] 中</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 此时有 left == right，区间缩为一个点，即为答案</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
+<p>你可以假设数组中无重复元素。</p>
+<p>示例 1:</p>
+<p>输入: [1,3,5,6], 5</p>
+<p>输出: 2</p>
+<p>示例 2:</p>
+<p>输入: [1,3,5,6], 2</p>
+<p>输出: 1</p>
+<p>示例 3:</p>
+<p>输入: [1,3,5,6], 7</p>
+<p>输出: 4</p>
+<p>示例 4:</p>
+<p>输入: [1,3,5,6], 0</p>
+<p>输出: 0</p>
+<p>此题结合了前两道题，找到那个数的位置是什么，在左右指针移动时我们就要考虑他的角标移动。而且我们还需要一个值来记录循环时需要插入的位置。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int left = 0, right = n - 1, ans = n;</span><br><span class="line">        while (left &lt;= right) &#123;// 循环直至区间左右端点换位</span><br><span class="line">            int mid = ((right - left) &gt;&gt; 1) + left;// 防止计算时溢出</span><br><span class="line">            if (target &lt;= nums[mid]) &#123;</span><br><span class="line">                ans = mid;//记录此次循环中间位置</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">*ans存在的重要性，如果target大于nums中最大值，ans为n输出</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
+
+<p><strong>小知识：</strong>是右移运算，在计算机中是一种运算操作，但是他的运算结果正好能对应一个整数的二分之一值，这就正好能代替数学上的除2运算，但是比除2运算要快。</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>二分查找</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo教程</title>
     <url>/posts/3555854685.html/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>设计以以下为工具讲起</p>
@@ -289,70 +356,58 @@
       </tags>
   </entry>
   <entry>
-    <title>二分查找</title>
-    <url>/posts/3907716225.html/</url>
-    <content><![CDATA[<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
-<p>示例 1:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
-<p>输出: 4</p>
-<p>解释: 9 出现在 nums 中并且下标为 4</p>
-<p>示例 2:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
-<p>输出: -1</p>
-<p>解释: 2 不存在 nums 中因此返回 -1</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int search(int[] nums, int target) &#123;</span><br><span class="line">        int life=0,right=nums.length-1;</span><br><span class="line">        int p;</span><br><span class="line">        while (life&lt;=right)&#123;</span><br><span class="line">            p=life+(right-life)/2;</span><br><span class="line">            if(nums[p]==target) return p;</span><br><span class="line">            if(nums[p]&lt;target) life=p+1;</span><br><span class="line">            else right=p-1;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>分治</title>
+    <url>/posts/2579510026.html/</url>
+    <content><![CDATA[<p>其实对于分治算法，如果有了解快速排序，归并排序的同学，其实就懂得差不多了</p>
+<p>分治，也就是分而治之。</p>
+<p>它的一般步骤是 </p>
+<p>① 将原问题分解成若干个规模较小的子问题（子问题和原问题的结构一样，只是规模不一样） </p>
+<p>② 子问题又不断分解成规模更小的子问题，直到不能再分解（直到可以轻易计算出子问题的解）</p>
+<p>③ 利用子问题的解推导出原问题的解 </p>
+<p>因此，分治策略非常适合用递归 需要注意的是：子问题之间是相互独立的</p>
+<p> <img src="/posts/2579510026.html/1629392416151-9be4de64-a111-4b28-a718-15b7098ce34c.png" alt="image.png"></p>
+<h1 id="主定理"><a href="#主定理" class="headerlink" title="主定理"></a>主定理</h1><p><img src="/posts/2579510026.html/1629392455370-24166873-2f87-4821-b95e-fc67acced07d.png" alt="image.png"></p>
+<p>因为公式太复杂了，就直接上图了</p>
+<h1 id="最大连续子序列和"><a href="#最大连续子序列和" class="headerlink" title="最大连续子序列和"></a>最大连续子序列和</h1><p>我们还是通过做题来讲解一下分治的运用</p>
+<p>问题：</p>
+<p><strong>输入：</strong>nums = [-2,1,-3,4,-1,2,1,-5,4]</p>
+<p><strong>输出：</strong>6</p>
+<p><strong>解释：</strong>连续子数组 [4,-1,2,1] 的和最大，为 6 。</p>
+<p>这道题也属于最大切片问题（最大区段，Greatest Slice）</p>
+<p>概念区分 </p>
+<p>子串、子数组、子区间必须是连续的，子序列是可以不连续的</p>
+<h2 id="暴力出奇迹"><a href="#暴力出奇迹" class="headerlink" title="暴力出奇迹"></a>暴力出奇迹</h2><p>这中解题方法我们丝毫都不推荐，暴力的确能解决问题，但是花费的时间太长了，损耗也很高；穷举出所有可能的连续子序列，并计算出它们的和，最后取它们中的最大值 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int maxSubarray2(int[] nums) &#123;</span><br><span class="line">    if (nums == null || nums.length == 0) return 0;</span><br><span class="line">    int max = Integer.MIN_VALUE;</span><br><span class="line">    for (int begin = 0; begin &lt; nums.length; begin++) &#123;</span><br><span class="line">        int sum = 0;</span><br><span class="line">        for (int end = begin; end &lt; nums.length; end++) &#123;</span><br><span class="line">            // sum是[begin, end]的和</span><br><span class="line">            sum += nums[end];</span><br><span class="line">            max = Math.max(max, sum);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>分查找是一种基于比较目标值和数组中间元素的教科书式算法。</p>
-<ul>
-<li>如果目标值等于中间元素，则找到目标值。</li>
-<li>如果目标值较小，继续在左侧搜索。</li>
-<li>如果目标值较大，则继续在右侧搜索。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1834295/1625567991316-308e35ad-d3bc-4192-a91e-4cc9569111ee.jpeg" alt="image"></p>
-<h1 id="第一个错误版本"><a href="#第一个错误版本" class="headerlink" title="第一个错误版本"></a>第一个错误版本</h1><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
-<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
-<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
-<p>示例 1：</p>
-<p>输入：n = 5, bad = 4</p>
-<p>输出：4</p>
-<p>解释：</p>
-<p>调用 isBadVersion(3) -&gt; false</p>
-<p>调用 isBadVersion(5) -&gt; true</p>
-<p>调用 isBadVersion(4) -&gt; true</p>
-<p>所以，4 是第一个错误的版本。</p>
-<p>示例 2：</p>
-<p>输入：n = 1, bad = 1</p>
-<p>输出：1</p>
-<p>通过题干我们可以了解到，当一个版本为正确版本后，之前所有的版本都是正确版本，当一个版本为错误版本后之后的版本都是错误版本，我们所做的就是需要找到第一个出错的版本，就可以利用二分查找来确定</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Solution extends VersionControl &#123;</span><br><span class="line">    public int firstBadVersion(int n) &#123;</span><br><span class="line">        int left = 1, right = n;</span><br><span class="line">        while (left &lt; right) &#123; // 循环直至区间左右端点相同</span><br><span class="line">            int mid = left + (right - left) / 2; // 防止计算时溢出</span><br><span class="line">            if (isBadVersion(mid)) &#123;</span><br><span class="line">                right = mid; // 答案在区间 [left, mid] 中</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1; // 答案在区间 [mid+1, right] 中</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 此时有 left == right，区间缩为一个点，即为答案</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>空间复杂度O(1)</p>
+<p>时间复杂度O(n2)</p>
+<h2 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h2><p>将序列均匀地分割成 2 个子序列</p>
+<p>[begin , end) = [begin , mid) + [mid , end)，mid = (begin + end) &gt;&gt; 1</p>
+<p>假设 [begin , end) 的最大连续子序列和是 S[i , j) ，那么它有 3 种可能</p>
+<p>[i , j) 存在于 [begin , mid) 中，同时 S[i , j) 也是 [begin , mid) 的最大连续子序列和</p>
+<p>[i , j) 存在于 [mid , end) 中，同时 S[i , j) 也是 [mid , end) 的最大连续子序列和</p>
+<p>[i , j) 一部分存在于 [begin , mid) 中，另一部分存在于 [mid , end) 中</p>
+<p>[i , j) = [i , mid) + [mid , j)</p>
+<p>S[i , mid) = max { S[k , mid) }，begin ≤ k ＜ mid</p>
+<p>S[mid , j) = max { S[mid , k) }，mid ＜ k ≤ end</p>
+<p><img src="/posts/2579510026.html/1629435140141-10721fe3-8da1-4879-92eb-721e0a2f5fb1.png" alt="image.png"></p>
+<p>简笔画</p>
+<p><img src="/posts/2579510026.html/1629437218166-baa65623-39b7-4e33-9bb6-8b5dbcb012a3.jpeg" alt="QQ图片20210820132406.jpg"></p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">       int[] nums = &#123;-2, 1, -3, 4, -1, 2, 1, -5, 4 &#125;;</span><br><span class="line">       System.out.println(maxSubArray(nums));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   static int maxSubArray(int[] nums) &#123;</span><br><span class="line">       if (nums == null || nums.length == 0) &#123;return 0;&#125;</span><br><span class="line">       return maxSubArray(nums, 0, nums.length);</span><br><span class="line">   &#125;</span><br><span class="line">   static int maxSubArray(int[] nums, int begin, int end) &#123;</span><br><span class="line"></span><br><span class="line">       if (end - begin &lt; 2)</span><br><span class="line">       &#123;return nums[begin];&#125;</span><br><span class="line">       int mid = (begin + end) &gt;&gt; 1;</span><br><span class="line">       int leftMax = nums[mid - 1];</span><br><span class="line">       int leftSum = leftMax;</span><br><span class="line">       for (int i = mid - 2; i &gt;= begin; i--) &#123;</span><br><span class="line">           leftSum += nums[i];</span><br><span class="line">           leftMax = Math.max(leftMax, leftSum);</span><br><span class="line">       &#125;</span><br><span class="line">       int rightMax = nums[mid];</span><br><span class="line">       int rightSum = rightMax;</span><br><span class="line">       for (int i = mid + 1; i &lt; end; i++) &#123;</span><br><span class="line">           rightSum += nums[i];</span><br><span class="line">           rightMax = Math.max(rightMax, rightSum);</span><br><span class="line">       &#125;</span><br><span class="line">       return Math.max(leftMax + rightMax,</span><br><span class="line">               Math.max(</span><br><span class="line">                       maxSubArray(nums, begin, mid),</span><br><span class="line">                       maxSubArray(nums, mid, end))</span><br><span class="line">       );</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
-
-
-<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
-<p>你可以假设数组中无重复元素。</p>
-<p>示例 1:</p>
-<p>输入: [1,3,5,6], 5</p>
-<p>输出: 2</p>
-<p>示例 2:</p>
-<p>输入: [1,3,5,6], 2</p>
-<p>输出: 1</p>
-<p>示例 3:</p>
-<p>输入: [1,3,5,6], 7</p>
-<p>输出: 4</p>
-<p>示例 4:</p>
-<p>输入: [1,3,5,6], 0</p>
-<p>输出: 0</p>
-<p>此题结合了前两道题，找到那个数的位置是什么，在左右指针移动时我们就要考虑他的角标移动。而且我们还需要一个值来记录循环时需要插入的位置。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int left = 0, right = n - 1, ans = n;</span><br><span class="line">        while (left &lt;= right) &#123;// 循环直至区间左右端点换位</span><br><span class="line">            int mid = ((right - left) &gt;&gt; 1) + left;// 防止计算时溢出</span><br><span class="line">            if (target &lt;= nums[mid]) &#123;</span><br><span class="line">                ans = mid;//记录此次循环中间位置</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">*ans存在的重要性，如果target大于nums中最大值，ans为n输出</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
-
-<p><strong>小知识：</strong>是右移运算，在计算机中是一种运算操作，但是他的运算结果正好能对应一个整数的二分之一值，这就正好能代替数学上的除2运算，但是比除2运算要快。</p>
+<p><img src="/posts/2579510026.html/1629437585649-f099c164-3583-4e93-9b07-1d11b61c041a.png" alt="image.png"></p>
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p>分治并不是这道题的最优解，还有一种更好的解题方式</p>
+<p>（此处应该有链接）</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>分治和动态规划的时间复杂度相同，但是因为分治使用了递归，并且维护了四个信息的结构体，运行的时间略长，空间复杂度也不如方法一优秀，而且难以理解。那么这种方法存在的意义是什么呢？</p>
+<p>对于这道题而言，确实是如此的。但是仔细观察分治，它不仅可以解决区间 [0, n-1][0,n−1]，还可以用于解决任意的子区间 [l,r][l,r] 的问题。如果我们把 [0, n-1][0,n−1] 分治下去出现的所有子区间的信息都用堆式存储的方式记忆化下来，即建成一颗真正的树之后，我们就可以在 O(\log n)O(logn) 的时间内求到任意区间内的答案，我们甚至可以修改序列中的值，做一些简单的维护，之后仍然可以在 O(\log n)O(logn) 的时间内求到任意区间内的答案，对于大规模查询的情况下，这种方法的优势便体现了出来。</p>
 ]]></content>
       <categories>
         <category>算法</category>
-        <category>二分查找</category>
+        <category>分治</category>
       </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>分治</tag>
       </tags>
   </entry>
   <entry>
@@ -912,52 +967,6 @@
       </tags>
   </entry>
   <entry>
-    <title>排序4</title>
-    <url>/posts/3332896630.html/</url>
-    <content><![CDATA[<h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><p><strong>前言：</strong></p>
-<p>这是一种不需要比较的排序方式，但极其浪费空间。（写嵌入式的小伙伴会气死吧）</p>
-<p><strong>原理：</strong></p>
-<p>统计每个整数在序列中出现的次数，进而推导出每个整数在有序序列中的索引</p>
-<p><img src="/posts/3332896630.html/1628443378045-18531bd2-4697-4e8a-908c-c2da8ff65033.png" alt="image.png"></p>
-<p><em><strong>示例：</strong></em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//这是最简单的实现方式</span><br><span class="line"> </span><br><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; // O(n)</span><br><span class="line">        </span><br><span class="line">        // 开辟内存空间，存储每个整数出现的次数</span><br><span class="line">        int[] counts = new int[1 + max];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i]]++;</span><br><span class="line">        &#125; // O(n)</span><br><span class="line">        </span><br><span class="line">        // 根据整数的出现次数，对整数进行排序</span><br><span class="line">        int index = 0;</span><br><span class="line">        for (int i = 0; i &lt; counts.length; i++) &#123;</span><br><span class="line">            while (counts[i]-- &gt; 0) &#123;</span><br><span class="line">                array[index++] = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; // O(n)</span><br></pre></td></tr></table></figure>
-
-<p><strong>算法分析：</strong></p>
-<p>这个版本的实现存在以下问题：无法对负整数进行排序；极其浪费内存空间；是个不稳定的排序 。</p>
-<p>（用这个的人就很神奇）</p>
-<h2 id="计数排序-–-改进思路"><a href="#计数排序-–-改进思路" class="headerlink" title="计数排序 – 改进思路"></a>计数排序 – 改进思路</h2><p>原本我们是把数组的索引作为记录原序列中的数值，但是数组中没有负数，所以我们就没有办法比较序列中的负数。</p>
-<p>现在我们将数组中第一个位置就是序列中最小的数，利用这个数和数组索引的差，</p>
-<p><img src="/posts/3332896630.html/1628502501716-0b0fab4a-528f-4371-8956-5911b2b69299.png" alt="image.png"></p>
-<p>解决的不能负数的问题，现在来解决不稳定</p>
-<p><img src="/posts/3332896630.html/1628504775294-927e1ec9-5d2f-4616-9136-aef799f1bb1f.png" alt="image.png"></p>
-<p>假设array中的最小值是 min； array中的元素 k 对应的 counts 索引是 k – min； array中的元素 k 在有序序列中的索引； counts[k – min] – p； p 代表着是倒数第几个 k； </p>
-<p><img src="/posts/3332896630.html/1628504893826-410f34bf-89fe-4f9c-a60c-c38162ecd423.png" alt="image.png"></p>
-<p><img src="/posts/3332896630.html/1628504906903-6b638877-9008-431e-92d8-9497c162ded5.png" alt="image.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        int min = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">            if (array[i] &lt; min) &#123;</span><br><span class="line">                min = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 开辟内存空间，存储次数</span><br><span class="line">        int[] counts = new int[max - min + 1];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i] - min]++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 累加次数</span><br><span class="line">        for (int i = 1; i &lt; counts.length; i++) &#123;</span><br><span class="line">            counts[i] += counts[i - 1];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 从后往前遍历元素，将它放到有序数组中的合适位置</span><br><span class="line">        int[] newArray = new int[array.length];</span><br><span class="line">        for (int i = array.length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            newArray[--counts[array[i] - min]] = array[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将有序数组赋值到array</span><br><span class="line">        for (int i = 0; i &lt; newArray.length; i++) &#123;</span><br><span class="line">            array[i] = newArray[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h1><p><strong>前言：</strong></p>
-<p>基数排序，所谓的基数就是他的个位，十位，百位，通过个十百千的顺序依次排列各位的数字大小，最后得到所有数字的大小。</p>
-<p><strong>原理：</strong></p>
-<p>基数排序非常适合用于整数排序（尤其是非负整数），因此只演示对非负整数进行基数排序 执行流程：依次对个位数、十位数、百位数、千位数、万位数…进行排序（从低位到高位）</p>
-<p><img src="/posts/3332896630.html/1628525299836-3c0692cc-ae6d-4646-b9e6-2799e1b80f75.png" alt="image.png"></p>
-<p>对位数排序时，我们使用计数排序</p>
-<p><strong>*示例：*</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 个位数: array[i] / 1 % 10 = 3</span><br><span class="line">        // 十位数：array[i] / 10 % 10 = 9</span><br><span class="line">        // 百位数：array[i] / 100 % 10 = 5</span><br><span class="line">        // 千位数：array[i] / 1000 % 10 = ...</span><br><span class="line"></span><br><span class="line">        for (int divider = 1; divider &lt;= max; divider *= 10) &#123;</span><br><span class="line">            countingSort(divider);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">protected void countingSort(int divider) &#123;</span><br><span class="line">        // 开辟内存空间，存储次数</span><br><span class="line">        int[] counts = new int[10];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i] / divider % 10]++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 累加次数</span><br><span class="line">        for (int i = 1; i &lt; counts.length; i++) &#123;</span><br><span class="line">            counts[i] += counts[i - 1];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 从后往前遍历元素，将它放到有序数组中的合适位置</span><br><span class="line">        int[] newArray = new int[array.length];</span><br><span class="line">        for (int i = array.length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            newArray[--counts[array[i] / divider % 10]] = array[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将有序数组赋值到array</span><br><span class="line">        for (int i = 0; i &lt; newArray.length; i++) &#123;</span><br><span class="line">            array[i] = newArray[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="基数排序-–-另一种思路"><a href="#基数排序-–-另一种思路" class="headerlink" title="基数排序 – 另一种思路"></a>基数排序 – 另一种思路</h2><p>我们先按照个位数的大小竖着放起来</p>
-<p><img src="/posts/3332896630.html/1628526998097-1d4fac61-723a-4ef6-bf58-5d56b4405973.png" alt="image.png"></p>
-<p>然后，我们依次将数穿起来，最后，就会把数列排好</p>
-<p><strong>*示例：*</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //用来记录的二维数组</span><br><span class="line">        int buckets[][]=new int[10][array.length];</span><br><span class="line">        //二维数组每列的数量</span><br><span class="line">        int bucketSizes[]=new int[buckets.length];</span><br><span class="line"></span><br><span class="line">        for (int divider = 1; divider &lt;= max; divider *= 10)&#123;</span><br><span class="line">            for (int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">                int a=array[i] / divider % 10;</span><br><span class="line">                buckets[a][bucketSizes[a]++]=array[i];</span><br><span class="line">            &#125;</span><br><span class="line">            int index=0;</span><br><span class="line">            for (int i=0;i&lt;buckets.length;i++)&#123;</span><br><span class="line">                for (int j=0;j&lt;bucketSizes[i];j++)&#123;</span><br><span class="line">                    array[index++]=buckets[i][j];</span><br><span class="line">                &#125;</span><br><span class="line">                bucketSizes[i]=0;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>算法</category>
-        <category>排序</category>
-      </categories>
-      <tags>
-        <tag>计数排序</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数组</title>
     <url>/posts/872565161.html/</url>
     <content><![CDATA[<h1 id="存在重复元素"><a href="#存在重复元素" class="headerlink" title="存在重复元素"></a>存在重复元素</h1><p>给定一个整数数组，判断是否存在重复元素。</p>
@@ -1007,6 +1016,52 @@
       </categories>
       <tags>
         <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>排序4</title>
+    <url>/posts/3332896630.html/</url>
+    <content><![CDATA[<h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><p><strong>前言：</strong></p>
+<p>这是一种不需要比较的排序方式，但极其浪费空间。（写嵌入式的小伙伴会气死吧）</p>
+<p><strong>原理：</strong></p>
+<p>统计每个整数在序列中出现的次数，进而推导出每个整数在有序序列中的索引</p>
+<p><img src="/posts/3332896630.html/1628443378045-18531bd2-4697-4e8a-908c-c2da8ff65033.png" alt="image.png"></p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//这是最简单的实现方式</span><br><span class="line"> </span><br><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; // O(n)</span><br><span class="line">        </span><br><span class="line">        // 开辟内存空间，存储每个整数出现的次数</span><br><span class="line">        int[] counts = new int[1 + max];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i]]++;</span><br><span class="line">        &#125; // O(n)</span><br><span class="line">        </span><br><span class="line">        // 根据整数的出现次数，对整数进行排序</span><br><span class="line">        int index = 0;</span><br><span class="line">        for (int i = 0; i &lt; counts.length; i++) &#123;</span><br><span class="line">            while (counts[i]-- &gt; 0) &#123;</span><br><span class="line">                array[index++] = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; // O(n)</span><br></pre></td></tr></table></figure>
+
+<p><strong>算法分析：</strong></p>
+<p>这个版本的实现存在以下问题：无法对负整数进行排序；极其浪费内存空间；是个不稳定的排序 。</p>
+<p>（用这个的人就很神奇）</p>
+<h2 id="计数排序-–-改进思路"><a href="#计数排序-–-改进思路" class="headerlink" title="计数排序 – 改进思路"></a>计数排序 – 改进思路</h2><p>原本我们是把数组的索引作为记录原序列中的数值，但是数组中没有负数，所以我们就没有办法比较序列中的负数。</p>
+<p>现在我们将数组中第一个位置就是序列中最小的数，利用这个数和数组索引的差，</p>
+<p><img src="/posts/3332896630.html/1628502501716-0b0fab4a-528f-4371-8956-5911b2b69299.png" alt="image.png"></p>
+<p>解决的不能负数的问题，现在来解决不稳定</p>
+<p><img src="/posts/3332896630.html/1628504775294-927e1ec9-5d2f-4616-9136-aef799f1bb1f.png" alt="image.png"></p>
+<p>假设array中的最小值是 min； array中的元素 k 对应的 counts 索引是 k – min； array中的元素 k 在有序序列中的索引； counts[k – min] – p； p 代表着是倒数第几个 k； </p>
+<p><img src="/posts/3332896630.html/1628504893826-410f34bf-89fe-4f9c-a60c-c38162ecd423.png" alt="image.png"></p>
+<p><img src="/posts/3332896630.html/1628504906903-6b638877-9008-431e-92d8-9497c162ded5.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        int min = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">            if (array[i] &lt; min) &#123;</span><br><span class="line">                min = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 开辟内存空间，存储次数</span><br><span class="line">        int[] counts = new int[max - min + 1];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i] - min]++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 累加次数</span><br><span class="line">        for (int i = 1; i &lt; counts.length; i++) &#123;</span><br><span class="line">            counts[i] += counts[i - 1];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 从后往前遍历元素，将它放到有序数组中的合适位置</span><br><span class="line">        int[] newArray = new int[array.length];</span><br><span class="line">        for (int i = array.length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            newArray[--counts[array[i] - min]] = array[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将有序数组赋值到array</span><br><span class="line">        for (int i = 0; i &lt; newArray.length; i++) &#123;</span><br><span class="line">            array[i] = newArray[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h1><p><strong>前言：</strong></p>
+<p>基数排序，所谓的基数就是他的个位，十位，百位，通过个十百千的顺序依次排列各位的数字大小，最后得到所有数字的大小。</p>
+<p><strong>原理：</strong></p>
+<p>基数排序非常适合用于整数排序（尤其是非负整数），因此只演示对非负整数进行基数排序 执行流程：依次对个位数、十位数、百位数、千位数、万位数…进行排序（从低位到高位）</p>
+<p><img src="/posts/3332896630.html/1628525299836-3c0692cc-ae6d-4646-b9e6-2799e1b80f75.png" alt="image.png"></p>
+<p>对位数排序时，我们使用计数排序</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 个位数: array[i] / 1 % 10 = 3</span><br><span class="line">        // 十位数：array[i] / 10 % 10 = 9</span><br><span class="line">        // 百位数：array[i] / 100 % 10 = 5</span><br><span class="line">        // 千位数：array[i] / 1000 % 10 = ...</span><br><span class="line"></span><br><span class="line">        for (int divider = 1; divider &lt;= max; divider *= 10) &#123;</span><br><span class="line">            countingSort(divider);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">protected void countingSort(int divider) &#123;</span><br><span class="line">        // 开辟内存空间，存储次数</span><br><span class="line">        int[] counts = new int[10];</span><br><span class="line">        // 统计每个整数出现的次数</span><br><span class="line">        for (int i = 0; i &lt; array.length; i++) &#123;</span><br><span class="line">            counts[array[i] / divider % 10]++;</span><br><span class="line">        &#125;</span><br><span class="line">        // 累加次数</span><br><span class="line">        for (int i = 1; i &lt; counts.length; i++) &#123;</span><br><span class="line">            counts[i] += counts[i - 1];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 从后往前遍历元素，将它放到有序数组中的合适位置</span><br><span class="line">        int[] newArray = new int[array.length];</span><br><span class="line">        for (int i = array.length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            newArray[--counts[array[i] / divider % 10]] = array[i];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 将有序数组赋值到array</span><br><span class="line">        for (int i = 0; i &lt; newArray.length; i++) &#123;</span><br><span class="line">            array[i] = newArray[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基数排序-–-另一种思路"><a href="#基数排序-–-另一种思路" class="headerlink" title="基数排序 – 另一种思路"></a>基数排序 – 另一种思路</h2><p>我们先按照个位数的大小竖着放起来</p>
+<p><img src="/posts/3332896630.html/1628526998097-1d4fac61-723a-4ef6-bf58-5d56b4405973.png" alt="image.png"></p>
+<p>然后，我们依次将数穿起来，最后，就会把数列排好</p>
+<p><strong>*示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 找出最大值</span><br><span class="line">        int max = array[0];</span><br><span class="line">        for (int i = 1; i &lt; array.length; i++) &#123;</span><br><span class="line">            if (array[i] &gt; max) &#123;</span><br><span class="line">                max = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //用来记录的二维数组</span><br><span class="line">        int buckets[][]=new int[10][array.length];</span><br><span class="line">        //二维数组每列的数量</span><br><span class="line">        int bucketSizes[]=new int[buckets.length];</span><br><span class="line"></span><br><span class="line">        for (int divider = 1; divider &lt;= max; divider *= 10)&#123;</span><br><span class="line">            for (int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">                int a=array[i] / divider % 10;</span><br><span class="line">                buckets[a][bucketSizes[a]++]=array[i];</span><br><span class="line">            &#125;</span><br><span class="line">            int index=0;</span><br><span class="line">            for (int i=0;i&lt;buckets.length;i++)&#123;</span><br><span class="line">                for (int j=0;j&lt;bucketSizes[i];j++)&#123;</span><br><span class="line">                    array[index++]=buckets[i][j];</span><br><span class="line">                &#125;</span><br><span class="line">                bucketSizes[i]=0;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>算法</category>
+        <category>排序</category>
+      </categories>
+      <tags>
+        <tag>计数排序</tag>
       </tags>
   </entry>
   <entry>

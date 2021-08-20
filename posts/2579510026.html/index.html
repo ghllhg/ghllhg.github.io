@@ -20,38 +20,26 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="这里介绍了计算机网络的五层模型结构，正在持续更新中……">
+  <meta name="description" content="其实对于分治算法，如果有了解快速排序，归并排序的同学，其实就懂得差不多了 分治，也就是分而治之。 它的一般步骤是  ① 将原问题分解成若干个规模较小的子问题（子问题和原问题的结构一样，只是规模不一样）  ② 子问题又不断分解成规模更小的子问题，直到不能再分解（直到可以轻易计算出子问题的解） ③ 利用子问题的解推导出原问题的解  因此，分治策略非常适合用递归 需要注意的是：子问题之间是相互独立的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="网路互通模型">
-<meta property="og:url" content="http://example.com/posts/37276003.html/index.html">
+<meta property="og:title" content="分治">
+<meta property="og:url" content="http://example.com/posts/2579510026.html/index.html">
 <meta property="og:site_name" content="GHL-Blog">
-<meta property="og:description" content="这里介绍了计算机网络的五层模型结构，正在持续更新中……">
+<meta property="og:description" content="其实对于分治算法，如果有了解快速排序，归并排序的同学，其实就懂得差不多了 分治，也就是分而治之。 它的一般步骤是  ① 将原问题分解成若干个规模较小的子问题（子问题和原问题的结构一样，只是规模不一样）  ② 子问题又不断分解成规模更小的子问题，直到不能再分解（直到可以轻易计算出子问题的解） ③ 利用子问题的解推导出原问题的解  因此，分治策略非常适合用递归 需要注意的是：子问题之间是相互独立的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629274873953-4ab62fa1-4597-4129-a9aa-b8b420a390d0.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629274904417-00c8f27e-cc35-411d-a3da-7c4218e1bc24.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629274915186-6a60454f-b6ba-4ba1-ba85-ea3754833548.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275395892-2d3843a2-ebaa-4ebd-b035-2d4498da3c3c.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275471400-7439f102-fb8d-4f4f-846e-7685cb28710b.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275540060-92a34d2e-c83e-4f0e-80b2-a978ca4fb294.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275554344-2f244478-f2e8-4763-adb2-a6300568894c.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275693272-8cdc9760-1c42-437d-a565-98004aa51f10.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275755003-5a50c572-3ee5-4b37-a931-ce4655355308.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275822174-5bc265d1-9396-4806-9282-5328499777f4.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275851191-2b5f03d7-807c-474b-96cb-f10ab9fa379d.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629275862616-8dbe1294-4690-4206-93a8-49480e7b58f4.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629276026650-da94307e-978b-4567-b096-289fe5dfc85a.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629276108819-bfe191bd-1ac7-44a5-8512-868f672bbdf7.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629276158545-c047adcb-4f3a-4bce-a253-e3eb67b4df04.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629276199348-62b632f6-1175-448f-b0e5-a08720098752.png">
-<meta property="og:image" content="http://example.com/posts/37276003.html/1629276231722-c6eaf22b-eb36-4b80-b044-65cd8aa2621b.png">
-<meta property="article:published_time" content="2021-08-18T08:45:44.000Z">
-<meta property="article:modified_time" content="2021-08-18T08:48:21.343Z">
+<meta property="og:image" content="http://example.com/posts/2579510026.html/1629392416151-9be4de64-a111-4b28-a718-15b7098ce34c.png">
+<meta property="og:image" content="http://example.com/posts/2579510026.html/1629392455370-24166873-2f87-4821-b95e-fc67acced07d.png">
+<meta property="og:image" content="http://example.com/posts/2579510026.html/1629435140141-10721fe3-8da1-4879-92eb-721e0a2f5fb1.png">
+<meta property="og:image" content="http://example.com/posts/2579510026.html/1629437218166-baa65623-39b7-4e33-9bb6-8b5dbcb012a3.jpeg">
+<meta property="og:image" content="http://example.com/posts/2579510026.html/1629437585649-f099c164-3583-4e93-9b07-1d11b61c041a.png">
+<meta property="article:published_time" content="2021-08-20T05:39:19.000Z">
+<meta property="article:modified_time" content="2021-08-20T05:40:15.469Z">
 <meta property="article:author" content="LL">
-<meta property="article:tag" content="计网">
+<meta property="article:tag" content="分治">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/posts/37276003.html/1629274873953-4ab62fa1-4597-4129-a9aa-b8b420a390d0.png">
+<meta name="twitter:image" content="http://example.com/posts/2579510026.html/1629392416151-9be4de64-a111-4b28-a718-15b7098ce34c.png">
 
-<link rel="canonical" href="http://example.com/posts/37276003.html/">
+<link rel="canonical" href="http://example.com/posts/2579510026.html/">
 
 
 <script id="page-configurations">
@@ -64,7 +52,7 @@
   };
 </script>
 
-  <title>网路互通模型 | GHL-Blog</title>
+  <title>分治 | GHL-Blog</title>
   
 
 
@@ -215,7 +203,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/posts/37276003.html/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/2579510026.html/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -228,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          网路互通模型
+          分治
         </h1>
 
         <div class="post-meta">
@@ -239,7 +227,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-08-18 16:45:44 / 修改时间：16:48:21" itemprop="dateCreated datePublished" datetime="2021-08-18T16:45:44+08:00">2021-08-18</time>
+              <time title="创建时间：2021-08-20 13:39:19 / 修改时间：13:40:15" itemprop="dateCreated datePublished" datetime="2021-08-20T13:39:19+08:00">2021-08-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,11 +235,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E8%B7%AF/" itemprop="url" rel="index"><span itemprop="name">计算机网路</span></a>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E8%B7%AF/%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB/" itemprop="url" rel="index"><span itemprop="name">分治</span></a>
                 </span>
             </span>
 
@@ -271,8 +259,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/posts/37276003.html/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/37276003.html/" itemprop="commentCount"></span>
+    <a title="valine" href="/posts/2579510026.html/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/2579510026.html/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -282,16 +270,15 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
-            <div class="post-description">这里介绍了计算机网络的五层模型结构，正在持续更新中……</div>
 
         </div>
       </header>
@@ -302,87 +289,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>为了更好地促进互联网络的研究和发展，国际标准化组织 ISO 在 1985 年制定了网络互连模型 OSI 参考模型（Open System Interconnect Reference Model），具有 7 层结构 </p>
-<p><img src="/posts/37276003.html/1629274873953-4ab62fa1-4597-4129-a9aa-b8b420a390d0.png" alt="image.png"></p>
-<p><img src="/posts/37276003.html/1629274904417-00c8f27e-cc35-411d-a3da-7c4218e1bc24.png" alt="image.png"></p>
-<p><img src="/posts/37276003.html/1629274915186-6a60454f-b6ba-4ba1-ba85-ea3754833548.png" alt="image.png"></p>
-<h1 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h1><p>物理层定义了接口标准、线缆标准、传输速率、传输方式等 </p>
-<p><img src="/posts/37276003.html/1629275395892-2d3843a2-ebaa-4ebd-b035-2d4498da3c3c.png" alt="image.png"></p>
-<h2 id="数字信号、模拟信号"><a href="#数字信号、模拟信号" class="headerlink" title="数字信号、模拟信号"></a>数字信号、模拟信号</h2><p><img src="/posts/37276003.html/1629275471400-7439f102-fb8d-4f4f-846e-7685cb28710b.png" alt="image.png"></p>
-<p>模拟信号（Analog Signal） </p>
-<p>连续的信号，适合长距离传输 </p>
-<p>抗干扰能力差，受到干扰时波形变形很难纠正</p>
-<p> 数字信号（Digital Signal） </p>
-<p>离散的信号，不适合长距离传输 </p>
-<p>抗干扰能力强，受到干扰时波形失真可以修复</p>
-<h2 id="数据通信模型"><a href="#数据通信模型" class="headerlink" title="数据通信模型"></a>数据通信模型</h2><p>局域网通信模型 </p>
-<p><img src="/posts/37276003.html/1629275540060-92a34d2e-c83e-4f0e-80b2-a978ca4fb294.png" alt="image.png"></p>
-<p>广域网通信模型 </p>
-<p><img src="/posts/37276003.html/1629275554344-2f244478-f2e8-4763-adb2-a6300568894c.png" alt="image.png"></p>
-<h2 id="信道"><a href="#信道" class="headerlink" title="信道"></a>信道</h2><p>信道：信息传输的通道，一条传输介质上（比如网线）上可以有多条信道  </p>
-<p>单工通信 </p>
-<p>信号只能往一个方向传输，任何时候都不能改变信号的传输方向 </p>
-<p>比如无线电广播、有线电视广播</p>
-<p>半双工通信 </p>
-<p>信号可以双向传输，但必须是交替进行，同一时间只能往一个方向传输 </p>
-<p>比如对讲机</p>
-<p>全双工通信 </p>
-<p>信号可以同时双向传输 </p>
-<p>比如手机（打电话，听说同时进行）</p>
-<h1 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h1><p>链路：从1个节点到相邻节点的一段物理线路（有线或无线），中间没有其他交换节点   </p>
-<p><img src="/posts/37276003.html/1629275693272-8cdc9760-1c42-437d-a565-98004aa51f10.png" alt="image.png"></p>
-<p>数据链路：在一条链路上传输数据时，需要有对应的通信协议来控制数据的传输 </p>
-<p>不同类型的数据链路，所用的通信协议可能是不同的</p>
-<p>广播信道：CSMA/CD协议（比如同轴电缆、集线器等组成的网络） </p>
-<p>点对点信道：PPP协议（比如2个路由器之间的信道）</p>
-<p>数据链路层的3个基本问题：封装成帧、透明传输、差错检验</p>
-<h2 id="封装成帧"><a href="#封装成帧" class="headerlink" title="封装成帧"></a>封装成帧</h2><p><img src="/posts/37276003.html/1629275755003-5a50c572-3ee5-4b37-a931-ce4655355308.png" alt="image.png"></p>
-<p> 帧（Frame）的数据部分 </p>
-<p>就是网络层传递下来的数据包（IP数据包，Packet）</p>
-<p>最大传输单元MTU（Maximum Transfer Unit） </p>
-<p>每一种数据链路层协议都规定了所能够传送的帧的数据长度上限 </p>
-<p>以太网的MTU为1500个字节</p>
-<h2 id="透明传输"><a href="#透明传输" class="headerlink" title="透明传输"></a>透明传输</h2><p><img src="/posts/37276003.html/1629275822174-5bc265d1-9396-4806-9282-5328499777f4.png" alt="image.png"></p>
-<p>使用SOH（Start Of Header）作为帧开始符  </p>
-<p>使用EOT（End Of Transmission）作为帧结束符 </p>
-<p>数据部分一旦出现了SOH、EOT，就需要进行转义 </p>
-<p><img src="/posts/37276003.html/1629275851191-2b5f03d7-807c-474b-96cb-f10ab9fa379d.png" alt="image.png"></p>
-<h2 id="差错检验"><a href="#差错检验" class="headerlink" title="差错检验"></a>差错检验</h2><p><img src="/posts/37276003.html/1629275862616-8dbe1294-4690-4206-93a8-49480e7b58f4.png" alt="image.png"></p>
-<p>FCS是根据数据部分 + 首部计算得出的 </p>
-<h3 id="CSMA-CD协议"><a href="#CSMA-CD协议" class="headerlink" title="CSMA/CD协议"></a>CSMA/CD协议</h3><p>CSMA/CD（Carrier Sense Multiple Access with Collision Detectio） </p>
-<p>载波侦听多路访问/冲突检测</p>
-<p>使用了CSMA/CD的网络可以称为是以太网（Ethernet），它传输的是以太网帧 </p>
-<p>以太网帧的格式有：Ethernet V2标准、IEEE的802.3标准 </p>
-<p>使用最多的是：Ethernet V2标准</p>
-<p>为了能够检测正在发送的帧是否产生了冲突，以太网的帧至少要64字节  </p>
-<p>用交换机组建的网络，已经支持全双工通信，不需要再使用CSMA/CD，但它传输的帧依然是以太网帧 </p>
-<p>所以，用交换机组建的网络，依然可以叫做以太网</p>
-<h4 id="Ethernet-V2"><a href="#Ethernet-V2" class="headerlink" title="Ethernet V2"></a>Ethernet V2</h4><p><strong>帧格式</strong></p>
-<p><img src="/posts/37276003.html/1629276026650-da94307e-978b-4567-b096-289fe5dfc85a.png" alt="image.png"></p>
-<p>首部：目标MAC +源MAC + 网络类型 </p>
-<p>以太网帧：首部 + 数据 + FCS</p>
-<p>数据的长度至少是：64 – 6 – 6 – 2 – 4 = 46字节 </p>
-<p><strong>标准</strong></p>
-<p>当数据部分的长度小于46字节时 </p>
-<p>数据链路层会在数据的后面加入一些字节填充 </p>
-<p>接收端会将添加的字节去掉</p>
-<p><img src="/posts/37276003.html/1629276108819-bfe191bd-1ac7-44a5-8512-868f672bbdf7.png" alt="image.png"></p>
-<p>长度总结 </p>
-<p>以太网帧的数据长度：46~1500字节 </p>
-<p>以太网帧的长度：64~1518字节（目标MAC +源MAC + 网络类型 + 数据 + FCS）</p>
-<h3 id="网卡"><a href="#网卡" class="headerlink" title="网卡"></a>网卡</h3><p><img src="/posts/37276003.html/1629276158545-c047adcb-4f3a-4bce-a253-e3eb67b4df04.png" alt="image.png"></p>
-<p>网卡接收到一个帧，首先会进行差错校验，如果校验通过则接收，否则丢弃 </p>
-<p>Wireshark抓到的帧没有FCS ，因为它抓到的是差错校验通过的帧（帧尾的FCS会被硬件去掉） </p>
-<p>Wireshark抓不到差错校验失败的帧 </p>
-<h3 id="PPP协议"><a href="#PPP协议" class="headerlink" title="PPP协议"></a>PPP协议</h3><p><img src="/posts/37276003.html/1629276199348-62b632f6-1175-448f-b0e5-a08720098752.png" alt="image.png"></p>
-<p>Address字段：图中的值是0xFF，形同虚设，点到点信道不需要源MAC、目标MAC地址 </p>
-<p>Control字段：图中的值是0x03，目前没有什么作用 </p>
-<p>Protocol字段：内部用到的协议类型 </p>
-<p>帧开始符、帧结束符：0x7E </p>
-<p><strong>字节填充</strong></p>
-<p><strong><img src="/posts/37276003.html/1629276231722-c6eaf22b-eb36-4b80-b044-65cd8aa2621b.png" alt="image.png"></strong></p>
-<p>将0x7E替换成0x7D5E </p>
-<p>将0x7D替换成0x7D5D</p>
+        <p>其实对于分治算法，如果有了解快速排序，归并排序的同学，其实就懂得差不多了</p>
+<p>分治，也就是分而治之。</p>
+<p>它的一般步骤是 </p>
+<p>① 将原问题分解成若干个规模较小的子问题（子问题和原问题的结构一样，只是规模不一样） </p>
+<p>② 子问题又不断分解成规模更小的子问题，直到不能再分解（直到可以轻易计算出子问题的解）</p>
+<p>③ 利用子问题的解推导出原问题的解 </p>
+<p>因此，分治策略非常适合用递归 需要注意的是：子问题之间是相互独立的</p>
+<p> <img src="/posts/2579510026.html/1629392416151-9be4de64-a111-4b28-a718-15b7098ce34c.png" alt="image.png"></p>
+<h1 id="主定理"><a href="#主定理" class="headerlink" title="主定理"></a>主定理</h1><p><img src="/posts/2579510026.html/1629392455370-24166873-2f87-4821-b95e-fc67acced07d.png" alt="image.png"></p>
+<p>因为公式太复杂了，就直接上图了</p>
+<h1 id="最大连续子序列和"><a href="#最大连续子序列和" class="headerlink" title="最大连续子序列和"></a>最大连续子序列和</h1><p>我们还是通过做题来讲解一下分治的运用</p>
+<p>问题：</p>
+<p><strong>输入：</strong>nums = [-2,1,-3,4,-1,2,1,-5,4]</p>
+<p><strong>输出：</strong>6</p>
+<p><strong>解释：</strong>连续子数组 [4,-1,2,1] 的和最大，为 6 。</p>
+<p>这道题也属于最大切片问题（最大区段，Greatest Slice）</p>
+<p>概念区分 </p>
+<p>子串、子数组、子区间必须是连续的，子序列是可以不连续的</p>
+<h2 id="暴力出奇迹"><a href="#暴力出奇迹" class="headerlink" title="暴力出奇迹"></a>暴力出奇迹</h2><p>这中解题方法我们丝毫都不推荐，暴力的确能解决问题，但是花费的时间太长了，损耗也很高；穷举出所有可能的连续子序列，并计算出它们的和，最后取它们中的最大值 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">static int maxSubarray2(int[] nums) &#123;</span><br><span class="line">    if (nums == null || nums.length == 0) return 0;</span><br><span class="line">    int max = Integer.MIN_VALUE;</span><br><span class="line">    for (int begin = 0; begin &lt; nums.length; begin++) &#123;</span><br><span class="line">        int sum = 0;</span><br><span class="line">        for (int end = begin; end &lt; nums.length; end++) &#123;</span><br><span class="line">            // sum是[begin, end]的和</span><br><span class="line">            sum += nums[end];</span><br><span class="line">            max = Math.max(max, sum);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>空间复杂度O(1)</p>
+<p>时间复杂度O(n2)</p>
+<h2 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h2><p>将序列均匀地分割成 2 个子序列</p>
+<p>[begin , end) = [begin , mid) + [mid , end)，mid = (begin + end) &gt;&gt; 1</p>
+<p>假设 [begin , end) 的最大连续子序列和是 S[i , j) ，那么它有 3 种可能</p>
+<p>[i , j) 存在于 [begin , mid) 中，同时 S[i , j) 也是 [begin , mid) 的最大连续子序列和</p>
+<p>[i , j) 存在于 [mid , end) 中，同时 S[i , j) 也是 [mid , end) 的最大连续子序列和</p>
+<p>[i , j) 一部分存在于 [begin , mid) 中，另一部分存在于 [mid , end) 中</p>
+<p>[i , j) = [i , mid) + [mid , j)</p>
+<p>S[i , mid) = max { S[k , mid) }，begin ≤ k ＜ mid</p>
+<p>S[mid , j) = max { S[mid , k) }，mid ＜ k ≤ end</p>
+<p><img src="/posts/2579510026.html/1629435140141-10721fe3-8da1-4879-92eb-721e0a2f5fb1.png" alt="image.png"></p>
+<p>简笔画</p>
+<p><img src="/posts/2579510026.html/1629437218166-baa65623-39b7-4e33-9bb6-8b5dbcb012a3.jpeg" alt="QQ图片20210820132406.jpg"></p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">       int[] nums = &#123;-2, 1, -3, 4, -1, 2, 1, -5, 4 &#125;;</span><br><span class="line">       System.out.println(maxSubArray(nums));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   static int maxSubArray(int[] nums) &#123;</span><br><span class="line">       if (nums == null || nums.length == 0) &#123;return 0;&#125;</span><br><span class="line">       return maxSubArray(nums, 0, nums.length);</span><br><span class="line">   &#125;</span><br><span class="line">   static int maxSubArray(int[] nums, int begin, int end) &#123;</span><br><span class="line"></span><br><span class="line">       if (end - begin &lt; 2)</span><br><span class="line">       &#123;return nums[begin];&#125;</span><br><span class="line">       int mid = (begin + end) &gt;&gt; 1;</span><br><span class="line">       int leftMax = nums[mid - 1];</span><br><span class="line">       int leftSum = leftMax;</span><br><span class="line">       for (int i = mid - 2; i &gt;= begin; i--) &#123;</span><br><span class="line">           leftSum += nums[i];</span><br><span class="line">           leftMax = Math.max(leftMax, leftSum);</span><br><span class="line">       &#125;</span><br><span class="line">       int rightMax = nums[mid];</span><br><span class="line">       int rightSum = rightMax;</span><br><span class="line">       for (int i = mid + 1; i &lt; end; i++) &#123;</span><br><span class="line">           rightSum += nums[i];</span><br><span class="line">           rightMax = Math.max(rightMax, rightSum);</span><br><span class="line">       &#125;</span><br><span class="line">       return Math.max(leftMax + rightMax,</span><br><span class="line">               Math.max(</span><br><span class="line">                       maxSubArray(nums, begin, mid),</span><br><span class="line">                       maxSubArray(nums, mid, end))</span><br><span class="line">       );</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/posts/2579510026.html/1629437585649-f099c164-3583-4e93-9b07-1d11b61c041a.png" alt="image.png"></p>
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p>分治并不是这道题的最优解，还有一种更好的解题方式</p>
+<p>（此处应该有链接）</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>分治和动态规划的时间复杂度相同，但是因为分治使用了递归，并且维护了四个信息的结构体，运行的时间略长，空间复杂度也不如方法一优秀，而且难以理解。那么这种方法存在的意义是什么呢？</p>
+<p>对于这道题而言，确实是如此的。但是仔细观察分治，它不仅可以解决区间 [0, n-1][0,n−1]，还可以用于解决任意的子区间 [l,r][l,r] 的问题。如果我们把 [0, n-1][0,n−1] 分治下去出现的所有子区间的信息都用堆式存储的方式记忆化下来，即建成一颗真正的树之后，我们就可以在 O(\log n)O(logn) 的时间内求到任意区间内的答案，我们甚至可以修改序列中的值，做一些简单的维护，之后仍然可以在 O(\log n)O(logn) 的时间内求到任意区间内的答案，对于大规模查询的情况下，这种方法的优势便体现了出来。</p>
 
     </div>
 
@@ -398,7 +347,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/posts/37276003.html/" title="网路互通模型">http://example.com/posts/37276003.html/</a>
+    <a href="http://example.com/posts/2579510026.html/" title="分治">http://example.com/posts/2579510026.html/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -409,7 +358,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag"># 计网</a>
+              <a href="/tags/%E5%88%86%E6%B2%BB/" rel="tag"># 分治</a>
           </div>
 
         
@@ -418,13 +367,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/4180606813.html/" rel="prev" title="回溯">
-      <i class="fa fa-chevron-left"></i> 回溯
+    <a href="/posts/3209966166.html/" rel="prev" title="浅谈贪心算法">
+      <i class="fa fa-chevron-left"></i> 浅谈贪心算法
     </a></div>
-      <div class="post-nav-item">
-    <a href="/posts/3209966166.html/" rel="next" title="浅谈贪心算法">
-      浅谈贪心算法 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -485,7 +431,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-number">1.</span> <span class="nav-text">物理层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E3%80%81%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.</span> <span class="nav-text">数字信号、模拟信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">数据通信模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E9%81%93"><span class="nav-number">1.3.</span> <span class="nav-text">信道</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">2.</span> <span class="nav-text">数据链路层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7"><span class="nav-number">2.1.</span> <span class="nav-text">封装成帧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="nav-number">2.2.</span> <span class="nav-text">透明传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E9%AA%8C"><span class="nav-number">2.3.</span> <span class="nav-text">差错检验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CSMA-CD%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.3.1.</span> <span class="nav-text">CSMA&#x2F;CD协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ethernet-V2"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">Ethernet V2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E5%8D%A1"><span class="nav-number">2.3.2.</span> <span class="nav-text">网卡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PPP%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.3.3.</span> <span class="nav-text">PPP协议</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E5%AE%9A%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">主定理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E8%BF%9E%E7%BB%AD%E5%AD%90%E5%BA%8F%E5%88%97%E5%92%8C"><span class="nav-number">2.</span> <span class="nav-text">最大连续子序列和</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E5%87%BA%E5%A5%87%E8%BF%B9"><span class="nav-number">2.1.</span> <span class="nav-text">暴力出奇迹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%B2%BB"><span class="nav-number">2.2.</span> <span class="nav-text">分治</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">2.3.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-number">2.4.</span> <span class="nav-text">思考</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
