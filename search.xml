@@ -1,73 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>二分查找</title>
-    <url>/posts/3907716225.html/</url>
-    <content><![CDATA[<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
-<p>示例 1:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
-<p>输出: 4</p>
-<p>解释: 9 出现在 nums 中并且下标为 4</p>
-<p>示例 2:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
-<p>输出: -1</p>
-<p>解释: 2 不存在 nums 中因此返回 -1</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int search(int[] nums, int target) &#123;</span><br><span class="line">        int life=0,right=nums.length-1;</span><br><span class="line">        int p;</span><br><span class="line">        while (life&lt;=right)&#123;</span><br><span class="line">            p=life+(right-life)/2;</span><br><span class="line">            if(nums[p]==target) return p;</span><br><span class="line">            if(nums[p]&lt;target) life=p+1;</span><br><span class="line">            else right=p-1;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>分查找是一种基于比较目标值和数组中间元素的教科书式算法。</p>
-<ul>
-<li>如果目标值等于中间元素，则找到目标值。</li>
-<li>如果目标值较小，继续在左侧搜索。</li>
-<li>如果目标值较大，则继续在右侧搜索。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1834295/1625567991316-308e35ad-d3bc-4192-a91e-4cc9569111ee.jpeg" alt="image"></p>
-<h1 id="第一个错误版本"><a href="#第一个错误版本" class="headerlink" title="第一个错误版本"></a>第一个错误版本</h1><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
-<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
-<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
-<p>示例 1：</p>
-<p>输入：n = 5, bad = 4</p>
-<p>输出：4</p>
-<p>解释：</p>
-<p>调用 isBadVersion(3) -&gt; false</p>
-<p>调用 isBadVersion(5) -&gt; true</p>
-<p>调用 isBadVersion(4) -&gt; true</p>
-<p>所以，4 是第一个错误的版本。</p>
-<p>示例 2：</p>
-<p>输入：n = 1, bad = 1</p>
-<p>输出：1</p>
-<p>通过题干我们可以了解到，当一个版本为正确版本后，之前所有的版本都是正确版本，当一个版本为错误版本后之后的版本都是错误版本，我们所做的就是需要找到第一个出错的版本，就可以利用二分查找来确定</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Solution extends VersionControl &#123;</span><br><span class="line">    public int firstBadVersion(int n) &#123;</span><br><span class="line">        int left = 1, right = n;</span><br><span class="line">        while (left &lt; right) &#123; // 循环直至区间左右端点相同</span><br><span class="line">            int mid = left + (right - left) / 2; // 防止计算时溢出</span><br><span class="line">            if (isBadVersion(mid)) &#123;</span><br><span class="line">                right = mid; // 答案在区间 [left, mid] 中</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1; // 答案在区间 [mid+1, right] 中</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 此时有 left == right，区间缩为一个点，即为答案</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
-<p>你可以假设数组中无重复元素。</p>
-<p>示例 1:</p>
-<p>输入: [1,3,5,6], 5</p>
-<p>输出: 2</p>
-<p>示例 2:</p>
-<p>输入: [1,3,5,6], 2</p>
-<p>输出: 1</p>
-<p>示例 3:</p>
-<p>输入: [1,3,5,6], 7</p>
-<p>输出: 4</p>
-<p>示例 4:</p>
-<p>输入: [1,3,5,6], 0</p>
-<p>输出: 0</p>
-<p>此题结合了前两道题，找到那个数的位置是什么，在左右指针移动时我们就要考虑他的角标移动。而且我们还需要一个值来记录循环时需要插入的位置。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int left = 0, right = n - 1, ans = n;</span><br><span class="line">        while (left &lt;= right) &#123;// 循环直至区间左右端点换位</span><br><span class="line">            int mid = ((right - left) &gt;&gt; 1) + left;// 防止计算时溢出</span><br><span class="line">            if (target &lt;= nums[mid]) &#123;</span><br><span class="line">                ans = mid;//记录此次循环中间位置</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">*ans存在的重要性，如果target大于nums中最大值，ans为n输出</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
-
-<p><strong>小知识：</strong>是右移运算，在计算机中是一种运算操作，但是他的运算结果正好能对应一个整数的二分之一值，这就正好能代替数学上的除2运算，但是比除2运算要快。</p>
-]]></content>
-      <categories>
-        <category>算法</category>
-        <category>二分查找</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hexo教程</title>
     <url>/posts/3555854685.html/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>设计以以下为工具讲起</p>
@@ -353,6 +286,149 @@
       </categories>
       <tags>
         <tag>计网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>动态规划</title>
+    <url>/posts/2819424305.html/</url>
+    <content><![CDATA[<p>动态规划，简称DP；在面试中的算法题中也很常见，是求最优化解的一种常用思路，之前也是一直困扰我的一个问题。</p>
+<p>通常的使用套路（一步一步优化） </p>
+<p>① 暴力递归（自顶向下，出现了重叠子问题） </p>
+<p>② 记忆化搜索（自顶向下） </p>
+<p>③ 递推（自底向上）</p>
+<p><strong>动态规划常用步骤：</strong></p>
+<p>动态规划中的“动态”可以理解为是“会变化的状态”  </p>
+<p>① 定义状态（状态是原问题、子问题的解） 比如定义 dp(i) 的含义  </p>
+<p>② 设置初始状态（边界） 比如设置 dp(0) 的值  </p>
+<p>③ 确定状态转移方程 比如确定 dp(i) 和 dp(i – 1) 的关系 </p>
+<p><strong>含义：</strong></p>
+<p>① 将复杂的原问题拆解成若干个简单的子问题 </p>
+<p>② 每个子问题仅仅解决1次，并保存它们的解 </p>
+<p>③ 最后推导出原问题的解</p>
+<p>可以用动态规划来解决的问题，通常具备2个特点 最优子结构（最优化原理）：</p>
+<p>通过求解子问题的最优解，可以获得原问题的最优解；无后效性；某阶段的状态一旦确定，则此后过程的演变不再受此前各状态及决策的影响（未来与过去无关）；在推导后面阶段的状态时，只关心前面阶段的具体状态值，不关心这个状态是怎么一步步推导出来的</p>
+<h1 id="无后效性"><a href="#无后效性" class="headerlink" title="无后效性"></a>无后效性</h1><p><img src="/posts/2819424305.html/1629520772727-063d24fb-a5b1-48e9-b965-e7a72c4dede2.png" alt="image.png"></p>
+<p>从起点（0, 0）走到终点（4, 4）一共有多少种走法？只能向右、向下走  </p>
+<p>假设 dp(i, j) 是从（0, 0）走到（i, j）的走法 </p>
+<p>dp(i, 0) = dp(0, j) = 1 </p>
+<p>dp(i, j) = dp(i, j – 1) + dp(i – 1, j)</p>
+<p> 无后效性 </p>
+<p>推导 dp(i, j) 时只需要用到 dp(i, j – 1)、dp(i – 1, j) 的值 </p>
+<p>不需要关心 dp(i, j – 1)、dp(i – 1, j) 的值是怎么求出来的</p>
+<p>如果可以向左、向右、向上、向下走，并且同一个格子不能走 2 次  </p>
+<p>有后效性 </p>
+<p>dp(i, j) 下一步要怎么走，还要关心上一步是怎么来的 </p>
+<p>也就是还要关心 dp(i, j – 1)、dp(i – 1, j) 是怎么来的？</p>
+<h1 id="找零钱"><a href="#找零钱" class="headerlink" title="找零钱"></a>找零钱</h1><p>在贪心算法那一张中我们也讲到了这一题，但是我们当时只用了贪心算法，在这道题中并不能求出最优解</p>
+<p>[贪心](<a href="https://blog.ghl.asia/posts/3209966166.html/">浅谈贪心算法 | GHL-Blog</a>)</p>
+<p>今天我们利用动态规划来解决这道问题。</p>
+<p>问题：</p>
+<p>假设有25分、20分、5分、1分的硬币，现要找给客户41分的零钱，如何办到硬币个数最少？ </p>
+<p>假设 dp(n) 是凑到 n 分需要的最少硬币个数 </p>
+<p>如果第 1 次选择了 25 分的硬币，那么 dp(n) = dp(n – 25) + 1 </p>
+<p>如果第 1 次选择了 20 分的硬币，那么 dp(n) = dp(n – 20) + 1 </p>
+<p>如果第 1 次选择了 5 分的硬币，那么 dp(n) = dp(n – 5) + 1 </p>
+<p>如果第 1 次选择了 1 分的硬币，那么 dp(n) = dp(n – 1) + 1 </p>
+<p>所以 dp(n) = min { dp(n – 25), dp(n – 20), dp(n – 5), dp(n – 1) } + 1 </p>
+<h2 id="暴力递归"><a href="#暴力递归" class="headerlink" title="暴力递归"></a>暴力递归</h2><p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins1(int n) &#123;</span><br><span class="line">    if (n &lt; 1) return Integer.MAX_VALUE;</span><br><span class="line">    if (n == 25 || n == 20 || n == 5 || n == 1) return 1;</span><br><span class="line">    int min1 = Math.min(coins1(n - 25), coins1(n - 20));</span><br><span class="line">    int min2 = Math.min(coins1(n - 5), coins1(n - 1));</span><br><span class="line">    return Math.min(min1, min2) + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自顶向下的调用，出现了重叠子问题</p>
+<h2 id="记忆化搜索"><a href="#记忆化搜索" class="headerlink" title="记忆化搜索"></a>记忆化搜索</h2><p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins2(int n) &#123;</span><br><span class="line">    if (n &lt; 1) return -1;</span><br><span class="line">    int[] dp = new int[n + 1];</span><br><span class="line">    int[] faces = &#123;1, 5, 20, 25&#125;;</span><br><span class="line">    for (int face : faces) &#123;</span><br><span class="line">        if (n &lt; face) break;</span><br><span class="line">        dp[face] = 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return coins2(n, dp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int coins2(int n, int[] dp) &#123;</span><br><span class="line">    if (n &lt; 1) return Integer.MAX_VALUE;</span><br><span class="line">    if (dp[n] == 0) &#123;</span><br><span class="line">        int min1 = Math.min(coins2(n - 25, dp), coins2(n - 20, dp));</span><br><span class="line">        int min2 = Math.min(coins2(n - 5, dp), coins2(n - 1, dp));</span><br><span class="line">        dp[n] = Math.min(min1, min2) + 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自顶向下的调用</p>
+<p>为什么我们要用数组来存储对应的值呢？是不是有人想用哈希才存储值？那么问题来了，如我们去了解一下哈希表的底层，看一下哈希的实现，我们会发现，哈希的底层实现就是用数组来完成的，但是为了有更快的查找速度，在哈希表中，我们开辟的数组空间可能有很多都没有用上。所有我们使用数组会更加的减少内存的浪费。</p>
+<h2 id="递推实现"><a href="#递推实现" class="headerlink" title="递推实现"></a>递推实现</h2><p>这种方法没有使用递归的方式</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins3(int n) &#123;</span><br><span class="line">        if (n &lt; 1) return -1;</span><br><span class="line">        int[] dp = new int[n + 1];</span><br><span class="line">        for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">            int min = Integer.MAX_VALUE;</span><br><span class="line">            if (i &gt;= 1)</span><br><span class="line">            &#123;min = Math.min(dp[i-1],min);&#125;</span><br><span class="line">            if (i &gt;= 5)</span><br><span class="line">            &#123;min = Math.min(dp[i - 5], min);&#125;</span><br><span class="line">            if (i &gt;= 20)</span><br><span class="line">            &#123;min = Math.min(dp[i - 20], min);&#125;</span><br><span class="line">            if (i &gt;= 25)</span><br><span class="line">            &#123;min = Math.min(dp[i - 25], min);&#125;</span><br><span class="line">            dp[i] = min + 1;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[n];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>它是从较小的值开始计算，如果n为41，那我们就从1开始计算，根据代码所示，在四之前我们都是用价值为1的硬币，当达到五之后我们用价值为5的硬币，……</p>
+<p><img src="/posts/2819424305.html/1629553737321-76a0adb0-6b2a-4927-b6f4-d198a5a30445.jpeg" alt="QQ图片20210821214831.jpg"></p>
+<p>整个dp数组存储着之前每个值所需的硬币数，每次寻找都是根据之前最少的硬币数，再加上现在所要的那一枚，</p>
+<p>根据硬币所给的值，划分成不规则的分组。</p>
+<h2 id="通用实现"><a href="#通用实现" class="headerlink" title="通用实现"></a>通用实现</h2><p>现在我们解决了找零钱的问题，但是我们做的是零钱地固定值，面试的时候面试官出的题不可能是和现在一的一样吧，就算代码上的数能改，要是每次给你的数都不一样呢？那咋办，哪能每次都改一下吗？那是不可能的，所以我们需要一个通解，但这不是让大家被代码，而是对这种类型题的更深层次理解。</p>
+<p>第一件事就是根据上面的代码，我们要怎么才能知道我们每次凑齐的是哪些硬币</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">    static int coins4(int n) &#123;</span><br><span class="line">        if (n &lt; 1) return -1;</span><br><span class="line">        int[] dp = new int[n + 1];</span><br><span class="line">        // faces[i]是凑够i分时最后那枚硬币的面值</span><br><span class="line">        int[] faces = new int[dp.length];</span><br><span class="line">        for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">            int min = dp[i - 1];</span><br><span class="line">            faces[i] = 1;</span><br><span class="line"></span><br><span class="line">            if (i &gt;= 5 &amp;&amp; dp[i - 5] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 5];</span><br><span class="line">                faces[i] = 5;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &gt;= 20 &amp;&amp; dp[i - 20] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 20];</span><br><span class="line">                faces[i] = 20;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &gt;= 25 &amp;&amp; dp[i - 25] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 25];</span><br><span class="line">                faces[i] = 25;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[i] = min + 1;</span><br><span class="line">            print(faces, i);</span><br><span class="line">        &#125;</span><br><span class="line">//      print(faces, n);</span><br><span class="line">        return dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    static void print(int[] faces, int n) &#123;</span><br><span class="line">        System.out.print(&quot;[&quot; + n + &quot;] = &quot;);</span><br><span class="line">        while (n &gt; 0) &#123;</span><br><span class="line">            System.out.print(faces[n] + &quot; &quot;);</span><br><span class="line">            n -= faces[n];</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们利用一个faces数组来记录最后一个添加硬币的值，之后我们不断向上推导，我们就知道了它是由哪些硬币组成的。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins0(int n, int[] faces) &#123;</span><br><span class="line">    if (n &lt; 1 || faces == null || faces.length == 0) return -1;</span><br><span class="line">    int[] dp = new int[n + 1];</span><br><span class="line">    for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">        int min = Integer.MAX_VALUE;</span><br><span class="line">        for (int face : faces) &#123;</span><br><span class="line">            if (i &lt; face) continue;</span><br><span class="line">            min=Math.min(dp[i-face],min );</span><br><span class="line">        &#125;</span><br><span class="line">        dp[i]=min+1;</span><br><span class="line">    &#125;</span><br><span class="line">    return dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们用数组来存贮硬币的面值，利用for循环来进行我们之前的判断</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>动态规划</category>
+      </categories>
+      <tags>
+        <tag>DP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二分查找</title>
+    <url>/posts/3907716225.html/</url>
+    <content><![CDATA[<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
+<p>示例 1:</p>
+<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
+<p>输出: 4</p>
+<p>解释: 9 出现在 nums 中并且下标为 4</p>
+<p>示例 2:</p>
+<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
+<p>输出: -1</p>
+<p>解释: 2 不存在 nums 中因此返回 -1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int search(int[] nums, int target) &#123;</span><br><span class="line">        int life=0,right=nums.length-1;</span><br><span class="line">        int p;</span><br><span class="line">        while (life&lt;=right)&#123;</span><br><span class="line">            p=life+(right-life)/2;</span><br><span class="line">            if(nums[p]==target) return p;</span><br><span class="line">            if(nums[p]&lt;target) life=p+1;</span><br><span class="line">            else right=p-1;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分查找是一种基于比较目标值和数组中间元素的教科书式算法。</p>
+<ul>
+<li>如果目标值等于中间元素，则找到目标值。</li>
+<li>如果目标值较小，继续在左侧搜索。</li>
+<li>如果目标值较大，则继续在右侧搜索。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1834295/1625567991316-308e35ad-d3bc-4192-a91e-4cc9569111ee.jpeg" alt="image"></p>
+<h1 id="第一个错误版本"><a href="#第一个错误版本" class="headerlink" title="第一个错误版本"></a>第一个错误版本</h1><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
+<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
+<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
+<p>示例 1：</p>
+<p>输入：n = 5, bad = 4</p>
+<p>输出：4</p>
+<p>解释：</p>
+<p>调用 isBadVersion(3) -&gt; false</p>
+<p>调用 isBadVersion(5) -&gt; true</p>
+<p>调用 isBadVersion(4) -&gt; true</p>
+<p>所以，4 是第一个错误的版本。</p>
+<p>示例 2：</p>
+<p>输入：n = 1, bad = 1</p>
+<p>输出：1</p>
+<p>通过题干我们可以了解到，当一个版本为正确版本后，之前所有的版本都是正确版本，当一个版本为错误版本后之后的版本都是错误版本，我们所做的就是需要找到第一个出错的版本，就可以利用二分查找来确定</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Solution extends VersionControl &#123;</span><br><span class="line">    public int firstBadVersion(int n) &#123;</span><br><span class="line">        int left = 1, right = n;</span><br><span class="line">        while (left &lt; right) &#123; // 循环直至区间左右端点相同</span><br><span class="line">            int mid = left + (right - left) / 2; // 防止计算时溢出</span><br><span class="line">            if (isBadVersion(mid)) &#123;</span><br><span class="line">                right = mid; // 答案在区间 [left, mid] 中</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1; // 答案在区间 [mid+1, right] 中</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 此时有 left == right，区间缩为一个点，即为答案</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
+<p>你可以假设数组中无重复元素。</p>
+<p>示例 1:</p>
+<p>输入: [1,3,5,6], 5</p>
+<p>输出: 2</p>
+<p>示例 2:</p>
+<p>输入: [1,3,5,6], 2</p>
+<p>输出: 1</p>
+<p>示例 3:</p>
+<p>输入: [1,3,5,6], 7</p>
+<p>输出: 4</p>
+<p>示例 4:</p>
+<p>输入: [1,3,5,6], 0</p>
+<p>输出: 0</p>
+<p>此题结合了前两道题，找到那个数的位置是什么，在左右指针移动时我们就要考虑他的角标移动。而且我们还需要一个值来记录循环时需要插入的位置。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        int left = 0, right = n - 1, ans = n;</span><br><span class="line">        while (left &lt;= right) &#123;// 循环直至区间左右端点换位</span><br><span class="line">            int mid = ((right - left) &gt;&gt; 1) + left;// 防止计算时溢出</span><br><span class="line">            if (target &lt;= nums[mid]) &#123;</span><br><span class="line">                ans = mid;//记录此次循环中间位置</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">*ans存在的重要性，如果target大于nums中最大值，ans为n输出</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
+
+<p><strong>小知识：</strong>是右移运算，在计算机中是一种运算操作，但是他的运算结果正好能对应一个整数的二分之一值，这就正好能代替数学上的除2运算，但是比除2运算要快。</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>二分查找</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -1222,7 +1298,7 @@
 <p>将0x7D替换成0x7D5D</p>
 ]]></content>
       <categories>
-        <category>计算机网路</category>
+        <category>计算机网络</category>
         <category>基础</category>
       </categories>
       <tags>
@@ -1371,7 +1447,7 @@
 <h2 id="PAT"><a href="#PAT" class="headerlink" title="PAT"></a>PAT</h2><p>多对一转换，最大程度节约公网IP资源；采用端口多路复用方式，通过端口号标识不同的数据流；目前应用最广泛的NAT实现方式 </p>
 ]]></content>
       <categories>
-        <category>计算机网路</category>
+        <category>计算机网络</category>
         <category>基础</category>
       </categories>
       <tags>
