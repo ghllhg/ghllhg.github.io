@@ -289,82 +289,6 @@
       </tags>
   </entry>
   <entry>
-    <title>动态规划</title>
-    <url>/posts/2819424305.html/</url>
-    <content><![CDATA[<p>动态规划，简称DP；在面试中的算法题中也很常见，是求最优化解的一种常用思路，之前也是一直困扰我的一个问题。</p>
-<p>通常的使用套路（一步一步优化） </p>
-<p>① 暴力递归（自顶向下，出现了重叠子问题） </p>
-<p>② 记忆化搜索（自顶向下） </p>
-<p>③ 递推（自底向上）</p>
-<p><strong>动态规划常用步骤：</strong></p>
-<p>动态规划中的“动态”可以理解为是“会变化的状态”  </p>
-<p>① 定义状态（状态是原问题、子问题的解） 比如定义 dp(i) 的含义  </p>
-<p>② 设置初始状态（边界） 比如设置 dp(0) 的值  </p>
-<p>③ 确定状态转移方程 比如确定 dp(i) 和 dp(i – 1) 的关系 </p>
-<p><strong>含义：</strong></p>
-<p>① 将复杂的原问题拆解成若干个简单的子问题 </p>
-<p>② 每个子问题仅仅解决1次，并保存它们的解 </p>
-<p>③ 最后推导出原问题的解</p>
-<p>可以用动态规划来解决的问题，通常具备2个特点 最优子结构（最优化原理）：</p>
-<p>通过求解子问题的最优解，可以获得原问题的最优解；无后效性；某阶段的状态一旦确定，则此后过程的演变不再受此前各状态及决策的影响（未来与过去无关）；在推导后面阶段的状态时，只关心前面阶段的具体状态值，不关心这个状态是怎么一步步推导出来的</p>
-<h1 id="无后效性"><a href="#无后效性" class="headerlink" title="无后效性"></a>无后效性</h1><p><img src="/posts/2819424305.html/1629520772727-063d24fb-a5b1-48e9-b965-e7a72c4dede2.png" alt="image.png"></p>
-<p>从起点（0, 0）走到终点（4, 4）一共有多少种走法？只能向右、向下走  </p>
-<p>假设 dp(i, j) 是从（0, 0）走到（i, j）的走法 </p>
-<p>dp(i, 0) = dp(0, j) = 1 </p>
-<p>dp(i, j) = dp(i, j – 1) + dp(i – 1, j)</p>
-<p> 无后效性 </p>
-<p>推导 dp(i, j) 时只需要用到 dp(i, j – 1)、dp(i – 1, j) 的值 </p>
-<p>不需要关心 dp(i, j – 1)、dp(i – 1, j) 的值是怎么求出来的</p>
-<p>如果可以向左、向右、向上、向下走，并且同一个格子不能走 2 次  </p>
-<p>有后效性 </p>
-<p>dp(i, j) 下一步要怎么走，还要关心上一步是怎么来的 </p>
-<p>也就是还要关心 dp(i, j – 1)、dp(i – 1, j) 是怎么来的？</p>
-<h1 id="找零钱"><a href="#找零钱" class="headerlink" title="找零钱"></a>找零钱</h1><p>在贪心算法那一张中我们也讲到了这一题，但是我们当时只用了贪心算法，在这道题中并不能求出最优解</p>
-<p>[贪心](<a href="https://blog.ghl.asia/posts/3209966166.html/">浅谈贪心算法 | GHL-Blog</a>)</p>
-<p>今天我们利用动态规划来解决这道问题。</p>
-<p>问题：</p>
-<p>假设有25分、20分、5分、1分的硬币，现要找给客户41分的零钱，如何办到硬币个数最少？ </p>
-<p>假设 dp(n) 是凑到 n 分需要的最少硬币个数 </p>
-<p>如果第 1 次选择了 25 分的硬币，那么 dp(n) = dp(n – 25) + 1 </p>
-<p>如果第 1 次选择了 20 分的硬币，那么 dp(n) = dp(n – 20) + 1 </p>
-<p>如果第 1 次选择了 5 分的硬币，那么 dp(n) = dp(n – 5) + 1 </p>
-<p>如果第 1 次选择了 1 分的硬币，那么 dp(n) = dp(n – 1) + 1 </p>
-<p>所以 dp(n) = min { dp(n – 25), dp(n – 20), dp(n – 5), dp(n – 1) } + 1 </p>
-<h2 id="暴力递归"><a href="#暴力递归" class="headerlink" title="暴力递归"></a>暴力递归</h2><p><em><strong>示例：</strong></em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins1(int n) &#123;</span><br><span class="line">    if (n &lt; 1) return Integer.MAX_VALUE;</span><br><span class="line">    if (n == 25 || n == 20 || n == 5 || n == 1) return 1;</span><br><span class="line">    int min1 = Math.min(coins1(n - 25), coins1(n - 20));</span><br><span class="line">    int min2 = Math.min(coins1(n - 5), coins1(n - 1));</span><br><span class="line">    return Math.min(min1, min2) + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>自顶向下的调用，出现了重叠子问题</p>
-<h2 id="记忆化搜索"><a href="#记忆化搜索" class="headerlink" title="记忆化搜索"></a>记忆化搜索</h2><p><em><strong>示例：</strong></em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins2(int n) &#123;</span><br><span class="line">    if (n &lt; 1) return -1;</span><br><span class="line">    int[] dp = new int[n + 1];</span><br><span class="line">    int[] faces = &#123;1, 5, 20, 25&#125;;</span><br><span class="line">    for (int face : faces) &#123;</span><br><span class="line">        if (n &lt; face) break;</span><br><span class="line">        dp[face] = 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return coins2(n, dp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int coins2(int n, int[] dp) &#123;</span><br><span class="line">    if (n &lt; 1) return Integer.MAX_VALUE;</span><br><span class="line">    if (dp[n] == 0) &#123;</span><br><span class="line">        int min1 = Math.min(coins2(n - 25, dp), coins2(n - 20, dp));</span><br><span class="line">        int min2 = Math.min(coins2(n - 5, dp), coins2(n - 1, dp));</span><br><span class="line">        dp[n] = Math.min(min1, min2) + 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>自顶向下的调用</p>
-<p>为什么我们要用数组来存储对应的值呢？是不是有人想用哈希才存储值？那么问题来了，如我们去了解一下哈希表的底层，看一下哈希的实现，我们会发现，哈希的底层实现就是用数组来完成的，但是为了有更快的查找速度，在哈希表中，我们开辟的数组空间可能有很多都没有用上。所有我们使用数组会更加的减少内存的浪费。</p>
-<h2 id="递推实现"><a href="#递推实现" class="headerlink" title="递推实现"></a>递推实现</h2><p>这种方法没有使用递归的方式</p>
-<p><em><strong>示例：</strong></em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins3(int n) &#123;</span><br><span class="line">        if (n &lt; 1) return -1;</span><br><span class="line">        int[] dp = new int[n + 1];</span><br><span class="line">        for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">            int min = Integer.MAX_VALUE;</span><br><span class="line">            if (i &gt;= 1)</span><br><span class="line">            &#123;min = Math.min(dp[i-1],min);&#125;</span><br><span class="line">            if (i &gt;= 5)</span><br><span class="line">            &#123;min = Math.min(dp[i - 5], min);&#125;</span><br><span class="line">            if (i &gt;= 20)</span><br><span class="line">            &#123;min = Math.min(dp[i - 20], min);&#125;</span><br><span class="line">            if (i &gt;= 25)</span><br><span class="line">            &#123;min = Math.min(dp[i - 25], min);&#125;</span><br><span class="line">            dp[i] = min + 1;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[n];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>它是从较小的值开始计算，如果n为41，那我们就从1开始计算，根据代码所示，在四之前我们都是用价值为1的硬币，当达到五之后我们用价值为5的硬币，……</p>
-<p><img src="/posts/2819424305.html/1629553737321-76a0adb0-6b2a-4927-b6f4-d198a5a30445.jpeg" alt="QQ图片20210821214831.jpg"></p>
-<p>整个dp数组存储着之前每个值所需的硬币数，每次寻找都是根据之前最少的硬币数，再加上现在所要的那一枚，</p>
-<p>根据硬币所给的值，划分成不规则的分组。</p>
-<h2 id="通用实现"><a href="#通用实现" class="headerlink" title="通用实现"></a>通用实现</h2><p>现在我们解决了找零钱的问题，但是我们做的是零钱地固定值，面试的时候面试官出的题不可能是和现在一的一样吧，就算代码上的数能改，要是每次给你的数都不一样呢？那咋办，哪能每次都改一下吗？那是不可能的，所以我们需要一个通解，但这不是让大家被代码，而是对这种类型题的更深层次理解。</p>
-<p>第一件事就是根据上面的代码，我们要怎么才能知道我们每次凑齐的是哪些硬币</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">    static int coins4(int n) &#123;</span><br><span class="line">        if (n &lt; 1) return -1;</span><br><span class="line">        int[] dp = new int[n + 1];</span><br><span class="line">        // faces[i]是凑够i分时最后那枚硬币的面值</span><br><span class="line">        int[] faces = new int[dp.length];</span><br><span class="line">        for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">            int min = dp[i - 1];</span><br><span class="line">            faces[i] = 1;</span><br><span class="line"></span><br><span class="line">            if (i &gt;= 5 &amp;&amp; dp[i - 5] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 5];</span><br><span class="line">                faces[i] = 5;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &gt;= 20 &amp;&amp; dp[i - 20] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 20];</span><br><span class="line">                faces[i] = 20;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &gt;= 25 &amp;&amp; dp[i - 25] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 25];</span><br><span class="line">                faces[i] = 25;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[i] = min + 1;</span><br><span class="line">            print(faces, i);</span><br><span class="line">        &#125;</span><br><span class="line">//      print(faces, n);</span><br><span class="line">        return dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    static void print(int[] faces, int n) &#123;</span><br><span class="line">        System.out.print(&quot;[&quot; + n + &quot;] = &quot;);</span><br><span class="line">        while (n &gt; 0) &#123;</span><br><span class="line">            System.out.print(faces[n] + &quot; &quot;);</span><br><span class="line">            n -= faces[n];</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>我们利用一个faces数组来记录最后一个添加硬币的值，之后我们不断向上推导，我们就知道了它是由哪些硬币组成的。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins0(int n, int[] faces) &#123;</span><br><span class="line">    if (n &lt; 1 || faces == null || faces.length == 0) return -1;</span><br><span class="line">    int[] dp = new int[n + 1];</span><br><span class="line">    for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">        int min = Integer.MAX_VALUE;</span><br><span class="line">        for (int face : faces) &#123;</span><br><span class="line">            if (i &lt; face) continue;</span><br><span class="line">            min=Math.min(dp[i-face],min );</span><br><span class="line">        &#125;</span><br><span class="line">        dp[i]=min+1;</span><br><span class="line">    &#125;</span><br><span class="line">    return dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>我们用数组来存贮硬币的面值，利用for循环来进行我们之前的判断</p>
-]]></content>
-      <categories>
-        <category>算法</category>
-        <category>动态规划</category>
-      </categories>
-      <tags>
-        <tag>DP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>二分查找</title>
     <url>/posts/3907716225.html/</url>
     <content><![CDATA[<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1</p>
@@ -432,6 +356,145 @@
       </tags>
   </entry>
   <entry>
+    <title>动态规划</title>
+    <url>/posts/2819424305.html/</url>
+    <content><![CDATA[<p>动态规划，简称DP；在面试中的算法题中也很常见，是求最优化解的一种常用思路，之前也是一直困扰我的一个问题。</p>
+<p>通常的使用套路（一步一步优化） </p>
+<p>① 暴力递归（自顶向下，出现了重叠子问题） </p>
+<p>② 记忆化搜索（自顶向下） </p>
+<p>③ 递推（自底向上）</p>
+<p><strong>动态规划常用步骤：</strong></p>
+<p>动态规划中的“动态”可以理解为是“会变化的状态”  </p>
+<p>① 定义状态（状态是原问题、子问题的解） 比如定义 dp(i) 的含义  </p>
+<p>② 设置初始状态（边界） 比如设置 dp(0) 的值  </p>
+<p>③ 确定状态转移方程 比如确定 dp(i) 和 dp(i – 1) 的关系 </p>
+<p><strong>含义：</strong></p>
+<p>① 将复杂的原问题拆解成若干个简单的子问题 </p>
+<p>② 每个子问题仅仅解决1次，并保存它们的解 </p>
+<p>③ 最后推导出原问题的解</p>
+<p>可以用动态规划来解决的问题，通常具备2个特点 最优子结构（最优化原理）：</p>
+<p>通过求解子问题的最优解，可以获得原问题的最优解；无后效性；某阶段的状态一旦确定，则此后过程的演变不再受此前各状态及决策的影响（未来与过去无关）；在推导后面阶段的状态时，只关心前面阶段的具体状态值，不关心这个状态是怎么一步步推导出来的</p>
+<h1 id="无后效性"><a href="#无后效性" class="headerlink" title="无后效性"></a>无后效性</h1><p><img src="/posts/2819424305.html/1629520772727-063d24fb-a5b1-48e9-b965-e7a72c4dede2.png" alt="image.png"></p>
+<p>从起点（0, 0）走到终点（4, 4）一共有多少种走法？只能向右、向下走  </p>
+<p>假设 dp(i, j) 是从（0, 0）走到（i, j）的走法 </p>
+<p>dp(i, 0) = dp(0, j) = 1 </p>
+<p>dp(i, j) = dp(i, j – 1) + dp(i – 1, j)</p>
+<p> 无后效性 </p>
+<p>推导 dp(i, j) 时只需要用到 dp(i, j – 1)、dp(i – 1, j) 的值 </p>
+<p>不需要关心 dp(i, j – 1)、dp(i – 1, j) 的值是怎么求出来的</p>
+<p>如果可以向左、向右、向上、向下走，并且同一个格子不能走 2 次  </p>
+<p>有后效性 </p>
+<p>dp(i, j) 下一步要怎么走，还要关心上一步是怎么来的 </p>
+<p>也就是还要关心 dp(i, j – 1)、dp(i – 1, j) 是怎么来的？</p>
+<h1 id="找零钱"><a href="#找零钱" class="headerlink" title="找零钱"></a>找零钱</h1><p>在贪心算法那一张中我们也讲到了这一题，但是我们当时只用了贪心算法，在这道题中并不能求出最优解</p>
+<p>[贪心](<a href="https://blog.ghl.asia/posts/3209966166.html/">浅谈贪心算法 | GHL-Blog</a>)</p>
+<p>今天我们利用动态规划来解决这道问题。</p>
+<p>问题：</p>
+<p>假设有25分、20分、5分、1分的硬币，现要找给客户41分的零钱，如何办到硬币个数最少？ </p>
+<p>假设 dp(n) 是凑到 n 分需要的最少硬币个数 </p>
+<p>如果第 1 次选择了 25 分的硬币，那么 dp(n) = dp(n – 25) + 1 </p>
+<p>如果第 1 次选择了 20 分的硬币，那么 dp(n) = dp(n – 20) + 1 </p>
+<p>如果第 1 次选择了 5 分的硬币，那么 dp(n) = dp(n – 5) + 1 </p>
+<p>如果第 1 次选择了 1 分的硬币，那么 dp(n) = dp(n – 1) + 1 </p>
+<p>所以 dp(n) = min { dp(n – 25), dp(n – 20), dp(n – 5), dp(n – 1) } + 1 </p>
+<h2 id="暴力递归"><a href="#暴力递归" class="headerlink" title="暴力递归"></a>暴力递归</h2><p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins1(int n) &#123;</span><br><span class="line">    if (n &lt; 1) return Integer.MAX_VALUE;</span><br><span class="line">    if (n == 25 || n == 20 || n == 5 || n == 1) return 1;</span><br><span class="line">    int min1 = Math.min(coins1(n - 25), coins1(n - 20));</span><br><span class="line">    int min2 = Math.min(coins1(n - 5), coins1(n - 1));</span><br><span class="line">    return Math.min(min1, min2) + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自顶向下的调用，出现了重叠子问题</p>
+<h2 id="记忆化搜索"><a href="#记忆化搜索" class="headerlink" title="记忆化搜索"></a>记忆化搜索</h2><p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins2(int n) &#123;</span><br><span class="line">    if (n &lt; 1) return -1;</span><br><span class="line">    int[] dp = new int[n + 1];</span><br><span class="line">    int[] faces = &#123;1, 5, 20, 25&#125;;</span><br><span class="line">    for (int face : faces) &#123;</span><br><span class="line">        if (n &lt; face) break;</span><br><span class="line">        dp[face] = 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return coins2(n, dp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int coins2(int n, int[] dp) &#123;</span><br><span class="line">    if (n &lt; 1) return Integer.MAX_VALUE;</span><br><span class="line">    if (dp[n] == 0) &#123;</span><br><span class="line">        int min1 = Math.min(coins2(n - 25, dp), coins2(n - 20, dp));</span><br><span class="line">        int min2 = Math.min(coins2(n - 5, dp), coins2(n - 1, dp));</span><br><span class="line">        dp[n] = Math.min(min1, min2) + 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自顶向下的调用</p>
+<p>为什么我们要用数组来存储对应的值呢？是不是有人想用哈希才存储值？那么问题来了，如我们去了解一下哈希表的底层，看一下哈希的实现，我们会发现，哈希的底层实现就是用数组来完成的，但是为了有更快的查找速度，在哈希表中，我们开辟的数组空间可能有很多都没有用上。所有我们使用数组会更加的减少内存的浪费。</p>
+<h2 id="递推实现"><a href="#递推实现" class="headerlink" title="递推实现"></a>递推实现</h2><p>这种方法没有使用递归的方式</p>
+<p><em><strong>示例：</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins3(int n) &#123;</span><br><span class="line">        if (n &lt; 1) return -1;</span><br><span class="line">        int[] dp = new int[n + 1];</span><br><span class="line">        for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">            int min = Integer.MAX_VALUE;</span><br><span class="line">            if (i &gt;= 1)</span><br><span class="line">            &#123;min = Math.min(dp[i-1],min);&#125;</span><br><span class="line">            if (i &gt;= 5)</span><br><span class="line">            &#123;min = Math.min(dp[i - 5], min);&#125;</span><br><span class="line">            if (i &gt;= 20)</span><br><span class="line">            &#123;min = Math.min(dp[i - 20], min);&#125;</span><br><span class="line">            if (i &gt;= 25)</span><br><span class="line">            &#123;min = Math.min(dp[i - 25], min);&#125;</span><br><span class="line">            dp[i] = min + 1;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[n];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>它是从较小的值开始计算，如果n为41，那我们就从1开始计算，根据代码所示，在四之前我们都是用价值为1的硬币，当达到五之后我们用价值为5的硬币，……</p>
+<p><img src="/posts/2819424305.html/1629553737321-76a0adb0-6b2a-4927-b6f4-d198a5a30445.jpeg" alt="QQ图片20210821214831.jpg"></p>
+<p>整个dp数组存储着之前每个值所需的硬币数，每次寻找都是根据之前最少的硬币数，再加上现在所要的那一枚，</p>
+<p>根据硬币所给的值，划分成不规则的分组。</p>
+<h2 id="通用实现"><a href="#通用实现" class="headerlink" title="通用实现"></a>通用实现</h2><p>现在我们解决了找零钱的问题，但是我们做的是零钱地固定值，面试的时候面试官出的题不可能是和现在一的一样吧，就算代码上的数能改，要是每次给你的数都不一样呢？那咋办，哪能每次都改一下吗？那是不可能的，所以我们需要一个通解，但这不是让大家被代码，而是对这种类型题的更深层次理解。</p>
+<p>第一件事就是根据上面的代码，我们要怎么才能知道我们每次凑齐的是哪些硬币</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">    static int coins4(int n) &#123;</span><br><span class="line">        if (n &lt; 1) return -1;</span><br><span class="line">        int[] dp = new int[n + 1];</span><br><span class="line">        // faces[i]是凑够i分时最后那枚硬币的面值</span><br><span class="line">        int[] faces = new int[dp.length];</span><br><span class="line">        for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">            int min = dp[i - 1];</span><br><span class="line">            faces[i] = 1;</span><br><span class="line"></span><br><span class="line">            if (i &gt;= 5 &amp;&amp; dp[i - 5] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 5];</span><br><span class="line">                faces[i] = 5;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &gt;= 20 &amp;&amp; dp[i - 20] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 20];</span><br><span class="line">                faces[i] = 20;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &gt;= 25 &amp;&amp; dp[i - 25] &lt; min) &#123;</span><br><span class="line">                min = dp[i - 25];</span><br><span class="line">                faces[i] = 25;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[i] = min + 1;</span><br><span class="line">            print(faces, i);</span><br><span class="line">        &#125;</span><br><span class="line">//      print(faces, n);</span><br><span class="line">        return dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    static void print(int[] faces, int n) &#123;</span><br><span class="line">        System.out.print(&quot;[&quot; + n + &quot;] = &quot;);</span><br><span class="line">        while (n &gt; 0) &#123;</span><br><span class="line">            System.out.print(faces[n] + &quot; &quot;);</span><br><span class="line">            n -= faces[n];</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们利用一个faces数组来记录最后一个添加硬币的值，之后我们不断向上推导，我们就知道了它是由哪些硬币组成的。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int coins0(int n, int[] faces) &#123;</span><br><span class="line">    if (n &lt; 1 || faces == null || faces.length == 0) return -1;</span><br><span class="line">    int[] dp = new int[n + 1];</span><br><span class="line">    for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">        int min = Integer.MAX_VALUE;</span><br><span class="line">        for (int face : faces) &#123;</span><br><span class="line">            if (i &lt; face) continue;</span><br><span class="line">            min=Math.min(dp[i-face],min );</span><br><span class="line">        &#125;</span><br><span class="line">        dp[i]=min+1;</span><br><span class="line">    &#125;</span><br><span class="line">    return dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们用数组来存贮硬币的面值，利用for循环来进行我们之前的判断</p>
+<h1 id="最大连续子序列和"><a href="#最大连续子序列和" class="headerlink" title="最大连续子序列和"></a>最大连续子序列和</h1><p>问题：</p>
+<p>给定一个长度为 n 的整数序列，求它的最大连续子序列和 比如 –2、1、–3、4、–1、2、1、–5、4 的最大连续子序列和是 4 + (–1) + 2 + 1 = 6</p>
+<p>状态定义 </p>
+<p>假设 dp(i) 是以 nums[i] 结尾的最大连续子序列和（nums是整个序列） </p>
+<p>以 nums[0] –2 结尾的最大连续子序列是 –2，所以 dp(0) = –2 </p>
+<p>以 nums[1] 1 结尾的最大连续子序列是 1，所以 dp(1) = 1 </p>
+<p>以 nums[2] –3 结尾的最大连续子序列是 1、–3，所以 dp(2) = dp(1) + (–3) = –2 </p>
+<p>以 nums[3] 4 结尾的最大连续子序列是 4，所以 dp(3) = 4 </p>
+<p>以 nums[4] –1 结尾的最大连续子序列是 4、–1，所以 dp(4) = dp(3) + (–1) = 3 </p>
+<p>以 nums[5] 2 结尾的最大连续子序列是 4、–1、2，所以 dp(5) = dp(4) + 2 = 5 </p>
+<p>以 nums[6] 1 结尾的最大连续子序列是 4、–1、2、1，所以 dp(6) = dp(5) + 1 = 6 </p>
+<p>以 nums[7] –5 结尾的最大连续子序列是 4、–1、2、1、–5，所以 dp(7) = dp(6) + (–5) = 1 </p>
+<p>以 nums[8] 4 结尾的最大连续子序列是 4、–1、2、1、–5、4，所以 dp(8) = dp(7) + 4 = 5</p>
+<h2 id="状态转移方程和初始状态"><a href="#状态转移方程和初始状态" class="headerlink" title="状态转移方程和初始状态"></a>状态转移方程和初始状态</h2><p>动态规划这个问题的精髓；我就觉得就是状态转移方程和初始状态，我们就算理解了DP的思想，知道DP是怎么回事，但是我们如果遇到的这道题，我们不能找出他的状态转移方程；我们对这道题还是束手无策。</p>
+<p>状态转移方程  </p>
+<p>如果 dp(i – 1) ≤ 0，那么 dp(i) = nums[i]</p>
+<p>如果 dp(i – 1) &gt; 0，那么 dp(i) = dp(i – 1) + nums[i]</p>
+<p>初始状态 </p>
+<p>dp(0) 的值是 nums[0]</p>
+<p>最终的解 </p>
+<p>最大连续子序列和是所有 dp(i) 中的最大值 max { dp(i) }，i ∈ [0, nums.length)</p>
+<p>在我看来，状态转移方程，最开始并不是要你直接写出公式，而是明白了他其中是怎么变化的，经过自己慢慢的炼化，最后总结出的公式</p>
+<p>*<strong>示例：*</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int maxSubArray1(int[] nums) &#123;</span><br><span class="line">        if (nums == null || nums.length == 0) return 0;</span><br><span class="line">        int[] dp = new int[nums.length];</span><br><span class="line">        dp[0] = nums[0];</span><br><span class="line">        int max = dp[0];</span><br><span class="line">        for (int i = 1; i &lt; dp.length; i++) &#123;</span><br><span class="line">            int prev = dp[i - 1];</span><br><span class="line">            if (prev &lt;= 0) &#123;</span><br><span class="line">                dp[i] = nums[i];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                dp[i] = prev + nums[i];</span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(dp[i], max);</span><br><span class="line">        &#125;</span><br><span class="line">        return max;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们创建了一个dp数组来存储以每个数结尾的最大连续子序列</p>
+<p>空间复杂度O(n)</p>
+<p>时间复杂度O(n)</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p><img src="/posts/2819424305.html/1629641480626-de1ac462-49ab-4a93-b5ac-6df04bd8ccbf.jpeg" alt="E98ECD35902D4952F21547FD1672947A.jpg"></p>
+<p>我们为什么要存储那些较小的值呢？我们不断遍历，寻找最大值，当前项sum为负数，我们再相加就是减小自身，所以我们重新的地方开始</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int maxSubArray2(int[] nums) &#123;</span><br><span class="line">        if (nums == null || nums.length == 0) return 0;</span><br><span class="line">        int dp = nums[0];</span><br><span class="line">        int max = dp;</span><br><span class="line">        for (int i = 1; i &lt; nums.length; i++) &#123;</span><br><span class="line">            if (dp &lt;= 0) &#123;</span><br><span class="line">                dp = nums[i];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                dp = dp + nums[i];</span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(dp, max);</span><br><span class="line">        &#125;</span><br><span class="line">        return max;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="最长上升子序列（LIS）"><a href="#最长上升子序列（LIS）" class="headerlink" title="最长上升子序列（LIS）"></a>最长上升子序列（LIS）</h1><p>问题：</p>
+<p>给定一个无序的整数序列，求出它最长上升子序列的长度（要求严格上升） </p>
+<p>比如 [10, 2, 2, 5, 1, 7, 101, 18] 的最长上升子序列是 [2, 5, 7, 101]、[2, 5, 7, 18]，长度是 4</p>
+<p>状态定义</p>
+<p>假设数组是 nums， [10, 2, 2, 5, 1, 7, 101, 18] </p>
+<p>dp(i) 是以 nums[i] 结尾的最长上升子序列的长度，i ∈ [0, nums.length) </p>
+<p>以 nums[0] 10 结尾的最长上升子序列是 10，所以 dp(0) = 1 </p>
+<p>以 nums[1] 2 结尾的最长上升子序列是 2，所以 dp(1) = 1 </p>
+<p>以 nums[2] 2 结尾的最长上升子序列是 2，所以 dp(2) = 1 </p>
+<p>以 nums[3] 5 结尾的最长上升子序列是 2、5，所以 dp(3) = dp(1) + 1 = dp(2) + 1 = 2 </p>
+<p>以 nums[4] 1 结尾的最长上升子序列是 1，所以 dp(4) = 1 </p>
+<p>以 nums[5] 7 结尾的最长上升子序列是 2、5、7，所以 dp(5) = dp(3) + 1 = 3 </p>
+<p>以 nums[6] 101 结尾的最长上升子序列是 2、5、7、101，所以 dp(6) = dp(5) + 1 = 4 </p>
+<p>以 nums[7] 18 结尾的最长上升子序列是 2、5、7、18，所以 dp(7) = dp(5) + 1 = 4</p>
+<p>最长上升子序列的长度是所有 dp(i) 中的最大值 max { dp(i) }，i ∈ [0, nums.length)</p>
+<p><img src="/posts/2819424305.html/1629648632174-9ba78e33-d6b3-4be0-8223-b42a4a5495b9.jpeg" alt="QQ图片20210823001018.jpg"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static int lengthOfLIS1(int[] nums) &#123;</span><br><span class="line">    if (nums == null || nums.length == 0) return 0;</span><br><span class="line">    int[] dp = new int[nums.length];</span><br><span class="line">    int max = dp[0] = 1;</span><br><span class="line">    for (int i = 1; i &lt; dp.length; i++) &#123;</span><br><span class="line">        dp[i] = 1;</span><br><span class="line">        for (int j = 0; j &lt; i; j++) &#123;</span><br><span class="line">            if (nums[i] &lt;= nums[j]) continue;</span><br><span class="line">            dp[i] = Math.max(dp[i], dp[j] + 1);</span><br><span class="line">        &#125;</span><br><span class="line">        max = Math.max(dp[i], max);</span><br><span class="line">    &#125;</span><br><span class="line">    return max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>二分搜索 – 实现</p>
+<p><img src="/posts/2819424305.html/1629649041908-0e84497a-b928-4249-82e2-c82a9fac2322.png" alt="image.png"></p>
+<h1 id="最长公共子序列（LCS）"><a href="#最长公共子序列（LCS）" class="headerlink" title="最长公共子序列（LCS）"></a>最长公共子序列（LCS）</h1><p>问题</p>
+<p>求两个序列的最长公共子序列长度</p>
+<p>[1, 3, 5, 9, 10] 和 [1, 4, 9, 10] 的最长公共子序列是 [1, 9, 10]，长度为 3</p>
+<p>ABCBDAB 和 BDCABA 的最长公共子序列长度是 4，可能是</p>
+<p>ABCBDAB 和 BDCABA &gt; BDAB</p>
+<p>ABCBDAB 和 BDCABA &gt; BDAB</p>
+<p>ABCBDAB 和 BDCABA &gt; BCAB</p>
+<p>ABCBDAB 和 BDCABA &gt; BCBA</p>
+<p>思路和我们刚刚的思路是一样的，原本我们对应的是一个值，现在是多个值</p>
+<p><img src="/posts/2819424305.html/1629650110868-482f3dd5-130c-471a-8462-7836f30e4e78.png" alt="image.png"></p>
+<p>上面的解题思路和之前的十分相似，大家应该都看的明白，下面才是重点想说的</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+        <category>动态规划</category>
+      </categories>
+      <tags>
+        <tag>DP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>分治</title>
     <url>/posts/2579510026.html/</url>
     <content><![CDATA[<p>其实对于分治算法，如果有了解快速排序，归并排序的同学，其实就懂得差不多了</p>
@@ -474,7 +537,7 @@
 
 <p><img src="/posts/2579510026.html/1629437585649-f099c164-3583-4e93-9b07-1d11b61c041a.png" alt="image.png"></p>
 <h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p>分治并不是这道题的最优解，还有一种更好的解题方式</p>
-<p>（此处应该有链接）</p>
+<p>[动规题解](<a href="https://blog.ghl.asia/posts/2819424305.html/">动态规划 | GHL-Blog</a>)</p>
 <h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>分治和动态规划的时间复杂度相同，但是因为分治使用了递归，并且维护了四个信息的结构体，运行的时间略长，空间复杂度也不如方法一优秀，而且难以理解。那么这种方法存在的意义是什么呢？</p>
 <p>对于这道题而言，确实是如此的。但是仔细观察分治，它不仅可以解决区间 [0, n-1][0,n−1]，还可以用于解决任意的子区间 [l,r][l,r] 的问题。如果我们把 [0, n-1][0,n−1] 分治下去出现的所有子区间的信息都用堆式存储的方式记忆化下来，即建成一颗真正的树之后，我们就可以在 O(\log n)O(logn) 的时间内求到任意区间内的答案，我们甚至可以修改序列中的值，做一些简单的维护，之后仍然可以在 O(\log n)O(logn) 的时间内求到任意区间内的答案，对于大规模查询的情况下，这种方法的优势便体现了出来。</p>
 ]]></content>
@@ -1043,58 +1106,6 @@
       </tags>
   </entry>
   <entry>
-    <title>数组</title>
-    <url>/posts/872565161.html/</url>
-    <content><![CDATA[<h1 id="存在重复元素"><a href="#存在重复元素" class="headerlink" title="存在重复元素"></a>存在重复元素</h1><p>给定一个整数数组，判断是否存在重复元素。</p>
-<p>如果存在一值在数组中出现至少两次，函数返回 <code>true</code> 。如果数组中每个元素都不相同，则返回 <code>false</code> 。</p>
-<p>示例 1:</p>
-<p>输入: [1,2,3,1]</p>
-<p>输出: true</p>
-<p>示例 2:</p>
-<p>输入: [1,2,3,4]</p>
-<p>输出: false</p>
-<p>示例 3:</p>
-<p>输入: [1,1,1,3,3,4,3,2,4,2]</p>
-<p>输出: true</p>
-<p><strong>排序</strong></p>
-<p>在对数字从小到大排序之后，数组的重复元素一定出现在相邻位置中。因此，我们可以扫描已排序的数组，每次判断相邻的两个元素是否相等，如果相等则说明存在重复的元素。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean containsDuplicate(int[] nums) &#123;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        for (int i = 0; i &lt; n - 1; i++) &#123;</span><br><span class="line">            if (nums[i] == nums[i + 1]) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>哈希表</strong></p>
-<p>对于数组中每个元素，我们将它插入到哈希表中。如果插入一个元素时发现该元素已经存在于哈希表中，则说明存在重复的元素。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean containsDuplicate(int[] nums) &#123;</span><br><span class="line">        Set&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();</span><br><span class="line">        for (int x : nums) &#123;</span><br><span class="line">            if (!set.add(x)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>PS：做这道题的时候看到的是查找重复的元素，就直接想到了哈希表，没有想到还有排序的这种解法</p>
-<h1 id="最大的子序和"><a href="#最大的子序和" class="headerlink" title="最大的子序和"></a>最大的子序和</h1><p>给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
-<p>示例 1：</p>
-<p>输入：nums = [-2,1,-3,4,-1,2,1,-5,4]</p>
-<p>输出：6</p>
-<p>解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。</p>
-<p>示例 2：</p>
-<p>输入：nums = [1]</p>
-<p>输出：1</p>
-<p>示例 3：</p>
-<p>输入：nums = [0]</p>
-<p>输出：0</p>
-<p>示例 4：</p>
-<p>输入：nums = [-1]</p>
-<p>输出：-1</p>
-<p>示例 5：</p>
-<p>输入：nums = [-100000]</p>
-<p>输出：-100000</p>
-<p><strong>动态规划：</strong></p>
-<p>下面的解法是用动态规划的思想来做的，以后也会写一篇关于动态规划的专题，看了很多的讲解还是不能很好地理解，后来看到评论区中大神d而一句话：“之前数值所有的和加上自身，还没有我自己大，我要他干啥”看到这句话之后的我幡然醒悟。</p>
-<p>pre是用来存储之前数值和加上自身的值，maxAns是用来维护最大子序和</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int maxSubArray(int[] nums) &#123;</span><br><span class="line">        int pre = 0, maxAns = nums[0];</span><br><span class="line">        for (int x : nums) &#123;</span><br><span class="line">            pre = Math.max(pre + x, x);</span><br><span class="line">            maxAns = Math.max(maxAns, pre);</span><br><span class="line">        &#125;</span><br><span class="line">        return maxAns;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>数据结构</category>
-        <category>数组</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>排序4</title>
     <url>/posts/3332896630.html/</url>
     <content><![CDATA[<h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><p><strong>前言：</strong></p>
@@ -1213,6 +1224,58 @@
       </tags>
   </entry>
   <entry>
+    <title>数组</title>
+    <url>/posts/872565161.html/</url>
+    <content><![CDATA[<h1 id="存在重复元素"><a href="#存在重复元素" class="headerlink" title="存在重复元素"></a>存在重复元素</h1><p>给定一个整数数组，判断是否存在重复元素。</p>
+<p>如果存在一值在数组中出现至少两次，函数返回 <code>true</code> 。如果数组中每个元素都不相同，则返回 <code>false</code> 。</p>
+<p>示例 1:</p>
+<p>输入: [1,2,3,1]</p>
+<p>输出: true</p>
+<p>示例 2:</p>
+<p>输入: [1,2,3,4]</p>
+<p>输出: false</p>
+<p>示例 3:</p>
+<p>输入: [1,1,1,3,3,4,3,2,4,2]</p>
+<p>输出: true</p>
+<p><strong>排序</strong></p>
+<p>在对数字从小到大排序之后，数组的重复元素一定出现在相邻位置中。因此，我们可以扫描已排序的数组，每次判断相邻的两个元素是否相等，如果相等则说明存在重复的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean containsDuplicate(int[] nums) &#123;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        int n = nums.length;</span><br><span class="line">        for (int i = 0; i &lt; n - 1; i++) &#123;</span><br><span class="line">            if (nums[i] == nums[i + 1]) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>哈希表</strong></p>
+<p>对于数组中每个元素，我们将它插入到哈希表中。如果插入一个元素时发现该元素已经存在于哈希表中，则说明存在重复的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean containsDuplicate(int[] nums) &#123;</span><br><span class="line">        Set&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();</span><br><span class="line">        for (int x : nums) &#123;</span><br><span class="line">            if (!set.add(x)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PS：做这道题的时候看到的是查找重复的元素，就直接想到了哈希表，没有想到还有排序的这种解法</p>
+<h1 id="最大的子序和"><a href="#最大的子序和" class="headerlink" title="最大的子序和"></a>最大的子序和</h1><p>给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p>示例 1：</p>
+<p>输入：nums = [-2,1,-3,4,-1,2,1,-5,4]</p>
+<p>输出：6</p>
+<p>解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。</p>
+<p>示例 2：</p>
+<p>输入：nums = [1]</p>
+<p>输出：1</p>
+<p>示例 3：</p>
+<p>输入：nums = [0]</p>
+<p>输出：0</p>
+<p>示例 4：</p>
+<p>输入：nums = [-1]</p>
+<p>输出：-1</p>
+<p>示例 5：</p>
+<p>输入：nums = [-100000]</p>
+<p>输出：-100000</p>
+<p><strong>动态规划：</strong></p>
+<p>下面的解法是用动态规划的思想来做的，以后也会写一篇关于动态规划的专题，看了很多的讲解还是不能很好地理解，后来看到评论区中大神d而一句话：“之前数值所有的和加上自身，还没有我自己大，我要他干啥”看到这句话之后的我幡然醒悟。</p>
+<p>pre是用来存储之前数值和加上自身的值，maxAns是用来维护最大子序和</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int maxSubArray(int[] nums) &#123;</span><br><span class="line">        int pre = 0, maxAns = nums[0];</span><br><span class="line">        for (int x : nums) &#123;</span><br><span class="line">            pre = Math.max(pre + x, x);</span><br><span class="line">            maxAns = Math.max(maxAns, pre);</span><br><span class="line">        &#125;</span><br><span class="line">        return maxAns;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>数据结构</category>
+        <category>数组</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网路互通模型</title>
     <url>/posts/37276003.html/</url>
     <content><![CDATA[<p>为了更好地促进互联网络的研究和发展，国际标准化组织 ISO 在 1985 年制定了网络互连模型 OSI 参考模型（Open System Interconnect Reference Model），具有 7 层结构 </p>
@@ -1306,6 +1369,62 @@
       </tags>
   </entry>
   <entry>
+    <title>计网名词</title>
+    <url>/posts/521997408.html/</url>
+    <content><![CDATA[<h1 id="网络、互联网、因特网"><a href="#网络、互联网、因特网" class="headerlink" title="网络、互联网、因特网"></a>网络、互联网、因特网</h1><p><img src="/posts/521997408.html/1629130821204-5705f111-60b9-4fc9-82f8-74878839f519.png" alt="image.png"></p>
+<p>网络</p>
+<p><img src="/posts/521997408.html/1629130829620-adf8d5c3-4541-4884-968c-2fb2858583ab.png" alt="image.png"></p>
+<p>互联网</p>
+<p>全球最大的互联网是：因特网；将全世界所有的计算机都连接在一起；一般使用大写I开头的Ineternet特指因特网；日常生活中说的：你的电脑上不了网。其实就是指：你的电脑没有连接到因特网 </p>
+<h1 id="ISP"><a href="#ISP" class="headerlink" title="ISP"></a>ISP</h1><p>ISP，Internet Service Provider，Internet服务提供商，比如移动、电信、网通、铁通等 </p>
+<p>我们平时拉的宽带都是通过ISP连接到Internet的</p>
+<p><img src="/posts/521997408.html/1629131061785-03d9188e-5568-40b2-a038-7a8633c48443.png" alt="image.png"></p>
+<h2 id="服务器机房"><a href="#服务器机房" class="headerlink" title="服务器机房"></a>服务器机房</h2><p><img src="/posts/521997408.html/1629131089550-ff68b2ca-bb42-4455-9535-be7b9fe7e261.png" alt="image.png"><img src="/posts/521997408.html/1629131098174-ac927715-3dcd-4f36-ac69-dd981702ab5b.png" alt="image.png"></p>
+<h1 id="网络分类"><a href="#网络分类" class="headerlink" title="网络分类"></a>网络分类</h1><p>按照网络的范围进行分类，可以分为：局域网、城域网、广域网等 </p>
+<p><strong>局域网（Local Area Network, LAN）</strong></p>
+<p>一般是范围在几百米到十几公里内的计算机所构成的计算机网络；常用于公司、家庭、学校、医院、机关、一幢大楼等；</p>
+<p>局域网中使用最广泛的网络技术叫<strong>以太网（Ethernet）</strong></p>
+<p>在电脑、手机上经常见到的一个英文；意思是无线局域网 </p>
+<p><strong>城域网（Metropolitan Area Network，MAN）</strong></p>
+<p>一般范围是数十公里到数百公里，可以覆盖一个城市</p>
+<p><strong>广域网（Wide Area Network，WAN）</strong></p>
+<p>一般范围是几百公里到几千公里，可以覆盖一个国家。通常都需要租用IPS线路</p>
+<h1 id="常见的几种接口"><a href="#常见的几种接口" class="headerlink" title="常见的几种接口"></a>常见的几种接口</h1><p>FastEthernet 快速以太网接口（100M）</p>
+<p>GigabitEthernet 千兆以太网接口</p>
+<p>Serial 串行接口</p>
+<h1 id="上网方式"><a href="#上网方式" class="headerlink" title="上网方式"></a>上网方式</h1><h2 id="电话线入户"><a href="#电话线入户" class="headerlink" title="电话线入户"></a>电话线入户</h2><p><img src="/posts/521997408.html/1629132959057-f86bd945-de25-4937-b280-55fd420eb388.png" alt="image.png"></p>
+<p>这就是平时说的：ADSL电话拨号上网；非对称数字用户线路，提供上、下行不对称的传输带宽 </p>
+<p>猫（Modem）,调制解调器，进行数字信号和模拟信号的转换 </p>
+<h2 id="光纤入户"><a href="#光纤入户" class="headerlink" title="光纤入户"></a>光纤入户</h2><p><img src="/posts/521997408.html/1629133048356-d7b33702-466c-49fc-86be-cd16694e88ef.png" alt="image.png"></p>
+<p>光猫（ Optical Modem）光调制解调器，进行数字信号和光信号的转换</p>
+<h2 id="网线入户"><a href="#网线入户" class="headerlink" title="网线入户"></a>网线入户</h2><p><img src="/posts/521997408.html/1629133106103-5a1caf2b-2949-456a-af15-65efb3b17178.png" alt="image.png"></p>
+<h1 id="家用无线路由器的逻辑结构"><a href="#家用无线路由器的逻辑结构" class="headerlink" title="家用无线路由器的逻辑结构"></a>家用无线路由器的逻辑结构</h1><p><img src="/posts/521997408.html/1629133136680-1cdf7a1a-8c87-4cd0-a6b9-80adf5909aa3.png" alt="image.png"></p>
+<h1 id="公网IP-amp-私网IP"><a href="#公网IP-amp-私网IP" class="headerlink" title="公网IP&amp;私网IP"></a>公网IP&amp;私网IP</h1><p>公网IP（Public） </p>
+<p>Internet上的路由器中只有到达公网的路由表，没有到达私网的路由表 </p>
+<p>公网IP由因特网信息中心统一分配和管理</p>
+<p>IPS需要向Inter NIC申请公网IP</p>
+<p>私网IP（Private） </p>
+<p>主要用于局域网。</p>
+<p>下面是保留的私网网段 </p>
+<p>A类：10.0.0.0/8，1个A类网络 </p>
+<p>B类：172.16.0.0/16 ~ 172.31.0.0/16，16个B类网络 </p>
+<p>C类：192.168.0.0/24 ~ 192.168.255.0/24，256个C类网络 </p>
+<h1 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h1><p>私网IP访问Internet需要进行NAT转换为公网IP；这一步可以由路由器来完成</p>
+<h2 id="NAT特点"><a href="#NAT特点" class="headerlink" title="NAT特点"></a>NAT特点</h2><p>可以节约公网IP资源；</p>
+<p>会隐藏内部真实IP</p>
+<h2 id="NAT分类"><a href="#NAT分类" class="headerlink" title="NAT分类"></a>NAT分类</h2><p>静态转换；手动配置NAT；映射表 一对一转换</p>
+<p>动态转换；定义外部地址池，动态随机转换；一对一转换</p>
+<h2 id="PAT"><a href="#PAT" class="headerlink" title="PAT"></a>PAT</h2><p>多对一转换，最大程度节约公网IP资源；采用端口多路复用方式，通过端口号标识不同的数据流；目前应用最广泛的NAT实现方式 </p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+        <category>基础</category>
+      </categories>
+      <tags>
+        <tag>计网</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计算机网络基本概念</title>
     <url>/posts/1471950494.html/</url>
     <content><![CDATA[<h1 id="必知必会"><a href="#必知必会" class="headerlink" title="必知必会"></a>必知必会</h1><p><img src="/posts/1471950494.html/1628772576324-178a7943-a30e-476a-8ef0-74f635bdb290.png" alt="image.png"></p>
@@ -1389,62 +1508,6 @@
 </li>
 </ul>
 <p>网线直连、同轴电缆、集线器、网桥、交换机连接的设备必须在同一网段且处在同一广播域 </p>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-        <category>基础</category>
-      </categories>
-      <tags>
-        <tag>计网</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计网名词</title>
-    <url>/posts/521997408.html/</url>
-    <content><![CDATA[<h1 id="网络、互联网、因特网"><a href="#网络、互联网、因特网" class="headerlink" title="网络、互联网、因特网"></a>网络、互联网、因特网</h1><p><img src="/posts/521997408.html/1629130821204-5705f111-60b9-4fc9-82f8-74878839f519.png" alt="image.png"></p>
-<p>网络</p>
-<p><img src="/posts/521997408.html/1629130829620-adf8d5c3-4541-4884-968c-2fb2858583ab.png" alt="image.png"></p>
-<p>互联网</p>
-<p>全球最大的互联网是：因特网；将全世界所有的计算机都连接在一起；一般使用大写I开头的Ineternet特指因特网；日常生活中说的：你的电脑上不了网。其实就是指：你的电脑没有连接到因特网 </p>
-<h1 id="ISP"><a href="#ISP" class="headerlink" title="ISP"></a>ISP</h1><p>ISP，Internet Service Provider，Internet服务提供商，比如移动、电信、网通、铁通等 </p>
-<p>我们平时拉的宽带都是通过ISP连接到Internet的</p>
-<p><img src="/posts/521997408.html/1629131061785-03d9188e-5568-40b2-a038-7a8633c48443.png" alt="image.png"></p>
-<h2 id="服务器机房"><a href="#服务器机房" class="headerlink" title="服务器机房"></a>服务器机房</h2><p><img src="/posts/521997408.html/1629131089550-ff68b2ca-bb42-4455-9535-be7b9fe7e261.png" alt="image.png"><img src="/posts/521997408.html/1629131098174-ac927715-3dcd-4f36-ac69-dd981702ab5b.png" alt="image.png"></p>
-<h1 id="网络分类"><a href="#网络分类" class="headerlink" title="网络分类"></a>网络分类</h1><p>按照网络的范围进行分类，可以分为：局域网、城域网、广域网等 </p>
-<p><strong>局域网（Local Area Network, LAN）</strong></p>
-<p>一般是范围在几百米到十几公里内的计算机所构成的计算机网络；常用于公司、家庭、学校、医院、机关、一幢大楼等；</p>
-<p>局域网中使用最广泛的网络技术叫<strong>以太网（Ethernet）</strong></p>
-<p>在电脑、手机上经常见到的一个英文；意思是无线局域网 </p>
-<p><strong>城域网（Metropolitan Area Network，MAN）</strong></p>
-<p>一般范围是数十公里到数百公里，可以覆盖一个城市</p>
-<p><strong>广域网（Wide Area Network，WAN）</strong></p>
-<p>一般范围是几百公里到几千公里，可以覆盖一个国家。通常都需要租用IPS线路</p>
-<h1 id="常见的几种接口"><a href="#常见的几种接口" class="headerlink" title="常见的几种接口"></a>常见的几种接口</h1><p>FastEthernet 快速以太网接口（100M）</p>
-<p>GigabitEthernet 千兆以太网接口</p>
-<p>Serial 串行接口</p>
-<h1 id="上网方式"><a href="#上网方式" class="headerlink" title="上网方式"></a>上网方式</h1><h2 id="电话线入户"><a href="#电话线入户" class="headerlink" title="电话线入户"></a>电话线入户</h2><p><img src="/posts/521997408.html/1629132959057-f86bd945-de25-4937-b280-55fd420eb388.png" alt="image.png"></p>
-<p>这就是平时说的：ADSL电话拨号上网；非对称数字用户线路，提供上、下行不对称的传输带宽 </p>
-<p>猫（Modem）,调制解调器，进行数字信号和模拟信号的转换 </p>
-<h2 id="光纤入户"><a href="#光纤入户" class="headerlink" title="光纤入户"></a>光纤入户</h2><p><img src="/posts/521997408.html/1629133048356-d7b33702-466c-49fc-86be-cd16694e88ef.png" alt="image.png"></p>
-<p>光猫（ Optical Modem）光调制解调器，进行数字信号和光信号的转换</p>
-<h2 id="网线入户"><a href="#网线入户" class="headerlink" title="网线入户"></a>网线入户</h2><p><img src="/posts/521997408.html/1629133106103-5a1caf2b-2949-456a-af15-65efb3b17178.png" alt="image.png"></p>
-<h1 id="家用无线路由器的逻辑结构"><a href="#家用无线路由器的逻辑结构" class="headerlink" title="家用无线路由器的逻辑结构"></a>家用无线路由器的逻辑结构</h1><p><img src="/posts/521997408.html/1629133136680-1cdf7a1a-8c87-4cd0-a6b9-80adf5909aa3.png" alt="image.png"></p>
-<h1 id="公网IP-amp-私网IP"><a href="#公网IP-amp-私网IP" class="headerlink" title="公网IP&amp;私网IP"></a>公网IP&amp;私网IP</h1><p>公网IP（Public） </p>
-<p>Internet上的路由器中只有到达公网的路由表，没有到达私网的路由表 </p>
-<p>公网IP由因特网信息中心统一分配和管理</p>
-<p>IPS需要向Inter NIC申请公网IP</p>
-<p>私网IP（Private） </p>
-<p>主要用于局域网。</p>
-<p>下面是保留的私网网段 </p>
-<p>A类：10.0.0.0/8，1个A类网络 </p>
-<p>B类：172.16.0.0/16 ~ 172.31.0.0/16，16个B类网络 </p>
-<p>C类：192.168.0.0/24 ~ 192.168.255.0/24，256个C类网络 </p>
-<h1 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h1><p>私网IP访问Internet需要进行NAT转换为公网IP；这一步可以由路由器来完成</p>
-<h2 id="NAT特点"><a href="#NAT特点" class="headerlink" title="NAT特点"></a>NAT特点</h2><p>可以节约公网IP资源；</p>
-<p>会隐藏内部真实IP</p>
-<h2 id="NAT分类"><a href="#NAT分类" class="headerlink" title="NAT分类"></a>NAT分类</h2><p>静态转换；手动配置NAT；映射表 一对一转换</p>
-<p>动态转换；定义外部地址池，动态随机转换；一对一转换</p>
-<h2 id="PAT"><a href="#PAT" class="headerlink" title="PAT"></a>PAT</h2><p>多对一转换，最大程度节约公网IP资源；采用端口多路复用方式，通过端口号标识不同的数据流；目前应用最广泛的NAT实现方式 </p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
